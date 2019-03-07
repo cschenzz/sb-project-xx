@@ -2,7 +2,7 @@
     <meta charset="utf-8">
 
     <link rel="shortcut icon" href="/assets/images/favicon_1.ico" th:href="@{/assets/images/favicon_1.ico}">
-    <title>高血压健康管理平台</title>
+    <title>cnSibo管理平台</title>
     <link href="/assets/css/bootstrap.min.css" th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"
           type="text/css">
     <link href="/assets/css/core.css" th:href="@{/assets/css/core.css}" rel="stylesheet" type="text/css">
@@ -29,12 +29,6 @@
 <!-- ============================================================== -->
 <div th:fragment="topbar">
     <div class="topbar">
-        <!-- LOGO -->
-        <div class="topbar-left">
-            <div class="text-center">
-                <a href="/" class="logo"><i class="md md-terrain"></i> <span>cnSibo </span></a>
-            </div>
-        </div>
         <!-- Button mobile view to collapse sidebar menu -->
         <div class="navbar navbar-default" role="navigation">
             <div class="container">
@@ -43,8 +37,13 @@
                         <button class="button-menu-mobile open-left">
                             <i class="fa fa-bars"></i>
                         </button>
-                        <span class="clearfix"></span>
+                        <!--<span class="clearfix"></span>-->
                     </div>
+                    <ul class="nav navbar-nav navbar-left pull-left">
+                        <li class="hidden-xs">
+                            <a href="/"  class="waves-effect"><img src="/img/sibo-logo.svg" height="28px"></a>
+                        </li>
+                    </ul>
 
                     <ul class="nav navbar-nav navbar-right pull-right">
                         <li><a href="javascript:location.reload();" data-toggle="reload"><i class="ion-refresh"></i></a>
