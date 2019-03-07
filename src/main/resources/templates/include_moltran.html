@@ -103,17 +103,17 @@
                     <!-- ======================================== -->
                     <li>
                         <a id="home" href="/" class="waves-effect waves-light">
-                            <i class="md md-home"></i><span> 首页 </span>
+                            <span style="font-size: 2.5rem; color: gray;"><i class="md md-home"></i></span><span> 首页 </span>
                         </a>
                     </li>
 
 
                     <li class="has_sub" th:each="menu : ${menus}">
                         <a th:id="'m1_'+${menu.menuId}" href="#" class="waves-effect waves-light">
-                            <i class="md md-mail" th:class="${menu.icon}"></i>
+                            <span style="font-size: 2.5rem; color: gray;"><i class="md md-mail" th:class="${menu.icon}"></i></span>
                             <span th:text="${menu.menuName}"> 一级菜单 </span>
                             <span class="pull-right">
-                                <i class="md md-add"></i>
+                                <span style="font-size: 2.5rem; color: gray;"><i class="md md-add"></i></span>
                             </span>
                         </a>
                         <ul class="list-unstyled">
