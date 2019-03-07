@@ -40,7 +40,8 @@ public class UserController extends BaseController {
 
     @RequiresPermissions("system:user:view")
     @GetMapping()
-    public String user() {
+    public String user(ModelMap mmap) {
+        putBaseModelMap(mmap, "system:user:view");
         return prefix + "/user";
     }
 

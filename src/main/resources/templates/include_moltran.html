@@ -119,8 +119,8 @@
                         <ul class="list-unstyled">
 
                             <li th:id="'m2_'+${cmenu.menuId}" th:each="cmenu : ${menu.children}">
-                                <a th:if="${cmenu.menuId lt 1900}" href="#" th:data-id="${cmenu.menuId}" th:data-url="${cmenu.url}" onclick="open_url(this.getAttribute('data-url'))" th:text="${cmenu.menuName}">二级菜单</a>
-                                <a th:unless="${cmenu.menuId lt 1900}" href="#" th:utext="${cmenu.menuName}" th:href="@{${cmenu.url}}" target="_self">二级菜单</a>
+                                <a th:if="${cmenu.menuId lt 0}" href="#" th:data-id="${cmenu.menuId}" th:data-url="${cmenu.url}" onclick="open_url(this.getAttribute('data-url'))" th:text="${cmenu.menuName}">二级菜单</a>
+                                <a th:unless="${cmenu.menuId lt 0}" href="#" th:utext="${cmenu.menuName}" th:href="@{${cmenu.url}}" target="_self">二级菜单</a>
                             </li>
                         </ul>
                     </li>
