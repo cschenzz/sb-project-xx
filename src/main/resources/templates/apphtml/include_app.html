@@ -1,0 +1,43 @@
+<head th:fragment="header">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="keywords" content="sibo">
+    <meta name="description" content="sibo,cnsibo">
+    <link href="../../../static/appstatic/bootstrap.min.css" th:href="@{/appstatic/bootstrap.min.css}"
+          rel="stylesheet"/>
+    <link href="../../../static/appstatic/menu.css" th:href="@{/appstatic/menu.css}" rel="stylesheet"/>
+    <link href="../../../static/appstatic/sweetalert.css" th:href="@{/appstatic/sweetalert.css}" rel="stylesheet"/>
+    <link href="../../../static/appstatic/core.css" th:href="@{/appstatic/core.css}" rel="stylesheet"/>
+    <link href="../../../static/appstatic/icons.css" th:href="@{/appstatic/icons.css}" rel="stylesheet"/>
+    <link href="../../../static/appstatic/components.css" th:href="@{/appstatic/components.css}" rel="stylesheet"/>
+    <link href="../../../static/appstatic/pages.css" th:href="@{/appstatic/pages.css}" rel="stylesheet"/>
+    <link href="../../../static/appstatic/responsive.css" th:href="@{/appstatic/responsive.css}" rel="stylesheet"/>
+
+</head>
+
+<!-- ============================================================== -->
+<div th:fragment="footer">
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+    <script src="../../../static/appstatic/modernizr.min.js?v=3.3.6" th:src="@{/appstatic/modernizr.min.js}"></script>
+
+    <!-- jquery-validate 表单验证插件 -->
+    <script th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
+    <script th:src="@{/ajax/libs/validate/messages_zh.min.js}"></script>
+    <script th:src="@{/ajax/libs/validate/jquery.validate.extend.js}"></script>
+
+
+    <!-- 遮罩层 -->
+    <script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+    <script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+    <script th:src="@{/ajax/libs/layui/layui.js}"></script>
+    <script th:src="@{/sb-ooo/js/common.js?v=3.0.0}"></script>
+    <script th:src="@{/sb-ooo/js/ry-ui.js?v=3.0.0}"></script>
+
+    <script src="../../static/appstatic/js/ooxoo.js" th:src="@{/appstatic/js/ooxoo.js}"></script>
+    <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+</div>

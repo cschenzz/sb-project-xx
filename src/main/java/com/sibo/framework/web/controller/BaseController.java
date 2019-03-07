@@ -1,0 +1,147 @@
+package com.sibo.framework.web.controller;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sibo.common.utils.StringUtils;
+import com.sibo.common.utils.security.ShiroUtils;
+import com.sibo.framework.web.entity.R;
+import com.sibo.framework.web.page.PageDomain;
+import com.sibo.framework.web.page.TableSupport;
+import com.sibo.project.system.menu.entity.Menu;
+import com.sibo.project.system.menu.service.IMenuService;
+import com.sibo.project.system.user.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * web层通用数据处理
+ *
+ * @author chenzz
+ */
+public class BaseController {
+
+    /**
+     * 设置请求分页数据
+     */
+    protected void startPage() {
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize)) {
+            String orderBy = pageDomain.getOrderBy();
+            PageHelper.startPage(pageNum, pageSize, orderBy);
+        }
+    }
+
+    @Autowired
+    private IMenuService menuService;
+
+    protected void putBaseModelMap(ModelMap mmap, String annotationValue) {
+        // 取身份信息
+        User user = getUser();
+        // 根据用户id取出菜单
+        List<Menu> menus = menuService.selectMenusByUser(user);
+        mmap.put("menus", menus);
+        mmap.put("user", user);
+        //-----------------
+        List<Menu> curPageMenus = new ArrayList<>();
+        for (Menu m : menus) {
+            for (Menu cm : m.getChildren()) {
+                if (cm.getPerms().equalsIgnoreCase(annotationValue)) {
+                    curPageMenus.add(cm);
+                }
+            }
+        }
+        if (curPageMenus.size() > 0) {
+            Menu curMenu = curPageMenus.get(0);
+            mmap.put("m1", "m1_" + curMenu.getParentId());
+            mmap.put("m2", "m2_" + curMenu.getMenuId());
+        } else {
+            mmap.put("m1", annotationValue);
+            mmap.put("m2", "");
+        }
+
+    }
+
+    /**
+     * 响应请求分页数据
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    protected R getDataTable(List<?> list) {
+        //--------------------------------
+        PageInfo pageInfo = new PageInfo(list);
+        return R.ok().dataRows(pageInfo.getTotal(), pageInfo.getPages(), list);
+    }
+
+    /**
+     * 响应返回结果
+     *
+     * @param rows 影响行数
+     * @return 操作结果
+     */
+    protected R toAjax(int rows) {
+        return rows > 0 ? success() : error();
+    }
+
+    /**
+     * 返回成功
+     */
+    public R success() {
+        return R.ok();
+    }
+
+    /**
+     * 返回失败消息
+     */
+    public R error() {
+        return R.error();
+    }
+
+    /**
+     * 返回成功消息
+     */
+    public R success(String message) {
+        return R.ok(message);
+    }
+
+    /**
+     * 返回失败消息
+     */
+    public R error(String message) {
+        return R.error(message);
+    }
+
+    /**
+     * 返回错误码消息
+     */
+    public R error(int code, String message) {
+        return R.error(code, message);
+    }
+
+    /**
+     * 页面跳转
+     */
+    public String redirect(String url) {
+        return StringUtils.format("redirect:{}", url);
+    }
+
+    public User getUser() {
+        return ShiroUtils.getUser();
+    }
+
+    public void setUser(User user) {
+        ShiroUtils.setUser(user);
+    }
+
+    public Long getUserId() {
+        return getUser().getUserId();
+    }
+
+    public String getLoginName() {
+        return getUser().getLoginName();
+    }
+
+}
