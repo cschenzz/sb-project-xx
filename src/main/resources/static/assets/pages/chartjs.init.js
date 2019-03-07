@@ -56,18 +56,18 @@
             labels : ["January","February","March","April","May","June","July"],
             datasets : [
                 {
-                    fillColor : "rgba(94, 53, 114, 0.3)",
-                    strokeColor : "rgba(94, 53, 114, 1)",
-                    pointColor : "#rgba(94, 53, 114, 1)",
-                    pointStrokeColor : "#fff",
+                    fillColor : "rgba(49, 126, 235, 0.75)",
+                    strokeColor : "rgba(49, 126, 235, 0.75)",
+                    pointColor : "#fff",
+                    pointStrokeColor : "rgba(49, 126, 235, 0.75)",
                     data : [33,52,63,92,50,53,46]
                 },
                 
                 {
-                    fillColor : "rgba(0, 177, 157, 0.5)",
-                    strokeColor : "#00b19d",
-                    pointColor : "#00b19d",
-                    pointStrokeColor : "#fff",
+                    fillColor : "#dcdcdc",
+                    strokeColor : "#dcdcdc",
+                    pointColor : "#fff",
+                    pointStrokeColor : "#dcdcdc",
                     data : [15,25,40,35,32,9,33]
                 }
 
@@ -80,19 +80,19 @@
         var data1 = [
             {
                         value: 80,
-                        color:"#00b19d"
+                        color:"#60b1cc"
                     },
                     {
                         value : 50,
-                        color : "#7e57c2"
+                        color : "#bac3d2"
                     },
                     {
                         value : 80,
-                        color : "#ebeff2"
+                        color : "#4697ce"
                     },
                     {
                         value : 50,
-                        color : "#dcdcdc"
+                        color : "#6c85bd"
                     }
 
         ]
@@ -103,15 +103,15 @@
         var data2 = [
             {
                 value: 40,
-                color:"#00b19d"
+                color:"#dcdcdc"
             },
             {
                 value : 80,
-                color : "#7e57c2"
+                color : "#337ab7"
             },
             {
                 value : 70,
-                color : "#ebeff2"
+                color : "#999999"
             }
         ]
         this.respChart($("#pie"),'Pie',data2);
@@ -122,13 +122,13 @@
             labels : ["January","February","March","April","May","June","July"],
                     datasets : [
                         {
-                            fillColor : "#7e57c2",
-                            strokeColor : "#7e57c2",
+                            fillColor : "#337ab7",
+                            strokeColor : "#337ab7",
                             data : [65,59,90,81,56,55,40]
                         },
                         {
-                            fillColor : "#ebeff2",
-                            strokeColor : "#ebeff2",
+                            fillColor : "#dcdcdc",
+                            strokeColor : "#dcdcdc",
                             data : [28,48,40,19,96,27,100]
                         }
                     ]
@@ -140,9 +140,9 @@
             labels : ["Eating","Drinking","Sleeping","Designing","Coding","Partying","Running"],
             datasets : [
                 {
-                    fillColor : "rgba(0, 177, 157, 0.5)",
-                    strokeColor : "rgba(0, 177, 157, 0.75))",
-                    pointColor : "rgba(0, 177, 157, 1)",
+                    fillColor : "rgba(49, 126, 235, 0.5)",
+                    strokeColor : "rgba(49, 126, 235, 0.75)",
+                    pointColor : "rgba(49, 126, 235, 1)",
                     pointStrokeColor : "#fff",
                     data : [65,59,90,81,56,55,40]
                 },
@@ -161,7 +161,7 @@
         var data5 = [
             {
                 value : 30,
-                color: "#00b19d"
+                color: "#60b1cc"
             },
             {
                 value : 90,
@@ -177,7 +177,7 @@
             },
             {
                 value : 82,
-                color: "#7e57c2"
+                color: "#337ab7"
             },
             {
                 value : 8,

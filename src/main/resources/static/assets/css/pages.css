@@ -85,7 +85,7 @@ File: Pages
   font-size: 16px;
 }
 /* ==============
-  Timeline -2
+  Timeline-2
 ===================*/
 .timeline-2 {
   border-left: 2px solid #14082d;
@@ -140,6 +140,19 @@ File: Pages
 }
 .item-info p {
   margin-bottom: 10px !important;
+}
+/* ==============
+  Sweet Alert
+===================*/
+.sweet-alert p {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+}
+button.confirm {
+  background-color: #337ab7 !important;
+  border-color: #337ab7 !important;
+  box-shadow: none !important;
 }
 /* ==============
   Pricing
@@ -270,19 +283,6 @@ File: Pages
   margin-top: 30px;
 }
 /* ==============
-  Sweet Alert
-===================*/
-.sweet-alert p {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 22px;
-}
-button.confirm {
-  background-color: #5e35b1 !important;
-  border-color: #5e35b1 !important;
-  box-shadow: none !important;
-}
-/* ==============
   Maps
 ===================*/
 .gmaps,
@@ -297,7 +297,7 @@ button.confirm {
   color: #ffffff;
   font-size: 16px;
   line-height: 40px;
-  background: #5e35b1;
+  background: #337ab7;
   border-radius: 4px;
   padding: 10px 20px;
 }
@@ -312,13 +312,13 @@ button.confirm {
   bottom: -15px;
   border-left: 16px solid transparent;
   border-right: 16px solid transparent;
-  border-top: 16px solid #5e35b1;
+  border-top: 16px solid #337ab7;
 }
 .gmaps-overlay_arrow.below {
   top: -15px;
   border-left: 16px solid transparent;
   border-right: 16px solid transparent;
-  border-bottom: 16px solid #5e35b1;
+  border-bottom: 16px solid #337ab7;
 }
 /* ==============
   Email
@@ -335,7 +335,7 @@ button.confirm {
   min-height: 16px;
 }
 /* ==============
-  Time line-1
+  Timeline
 ===================*/
 .cd-container {
   width: 90%;
@@ -412,7 +412,7 @@ button.confirm {
   color: #fff;
 }
 .cd-timeline-img.cd-success {
-  background: #00b19d;
+  background: #33b86c;
 }
 .cd-timeline-img.cd-info {
   background: #29b6f6;
@@ -424,7 +424,7 @@ button.confirm {
   background: #ef5350;
 }
 .cd-timeline-img.cd-primary {
-  background: #5e35b1;
+  background: #337ab7;
 }
 .cd-timeline-img.cd-warning {
   background: #ffd740;
@@ -614,6 +614,9 @@ button.confirm {
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
+.flot-chart .error {
+  display: none;
+}
 /* ==============
   Count Down
 ===================*/
@@ -624,7 +627,7 @@ button.confirm {
   font-family: 'Nunito', sans-serif;
 }
 .lj-countdown {
-  color: #5e35b1;
+  color: #337ab7;
   margin-top: 40px;
   text-align: center;
 }
@@ -666,11 +669,11 @@ button.confirm {
   transition: all 0.3s ease-out;
 }
 .portfolioFilter a:hover {
-  background-color: #5e35b1;
+  background-color: #337ab7;
   color: #ffffff;
 }
 .portfolioFilter a.current {
-  background-color: #5e35b1;
+  background-color: #337ab7;
   color: #ffffff;
 }
 .thumb {
@@ -721,7 +724,7 @@ button.confirm {
   padding-top: 10px;
 }
 /* ==============
-  Accounts Pages
+  Account pages
 ===================*/
 .wrapper-page {
   margin: 7.5% auto;
