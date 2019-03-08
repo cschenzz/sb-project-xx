@@ -40,17 +40,11 @@ public class ApiAspect extends BaseAspect {
         //--------------------
         String requestToken = getRequestToken(request);
 
-        //极光推送regid
-        String regid = request.getHeader("regid");
-        //System.out.println("极光推送id:" + regid);
-
-        //System.out.println("token=" + requestToken);
-
         if (checkToken()) {
             //-----------------------
             if (StringUtils.isEmpty(requestToken)) {
                 LocalUtil.setLocalUser(null);
-                return R.error("Token无效");
+                return R.error("Authorization无效");
             } else {
                 try {
 
@@ -58,27 +52,24 @@ public class ApiAspect extends BaseAspect {
                     Claims claims = Jwts.parser()
                             .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET))
                             .parseClaimsJws(requestToken).getBody();
-                    System.out.println("usertype: " + claims.getIssuer());
                     System.out.println("userid: " + claims.getId());
                     System.out.println("Expiration: " + claims.getExpiration());
 
                     if (claims.getExpiration().getTime() < System.currentTimeMillis()) {
-                        return R.error(4100, "token令牌已过期,请重新获取!");
+                        return R.error(4100, "Authorization令牌已过期,请重新获取!");
                     }
                     //--------
                     Long userId = Long.parseLong(claims.getId());
-                    Long userType = Long.parseLong(claims.getIssuer());
                     //--------------------
                     UserTokenDtoEntity dtoEntity = new UserTokenDtoEntity();
                     dtoEntity.setUserid(userId);
-                    dtoEntity.setUsertype(userType);
-                    dtoEntity.setToken(requestToken);
+                    dtoEntity.setAuthorization(requestToken);
 
                     LocalUtil.setLocalUser(dtoEntity);
 
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
-                    return R.error(4001, "token无效,请重新登陆");
+                    return R.error(4001, "Authorization无效,请重新登陆");
                 }
             }
 
@@ -112,21 +103,13 @@ public class ApiAspect extends BaseAspect {
             String uri = request.getRequestURI();
 
             //白名单模式,以下接口不验证签名
-            if (uri.indexOf("/user/login-by-code") > -1) {
-                return false;
-            } else if (uri.indexOf("/user/login-by-pwd") > -1) {
+            if (uri.indexOf("/user/login") > -1) {
                 return false;
             } else if (uri.indexOf("/register") > -1) {
                 return false;
             } else if (uri.indexOf("/getcode") > -1) {
                 return false;
             } else if (uri.indexOf("/api/test1") > -1) {
-                return false;
-            }else if (uri.indexOf("/api/device/online") > -1) {
-                return false;
-            }else if (uri.indexOf("/api/device/sendDAQ") > -1) {
-                return false;
-            }else if (uri.indexOf("/api/device/sendsetbpxy") > -1) {
                 return false;
             }
             //---------------------

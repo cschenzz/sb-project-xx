@@ -324,4 +324,26 @@ public class UserServiceImpl implements IUserService {
         }
         return idsStr.toString();
     }
+
+    /**
+     * 根据用户名和密码登陆
+     *
+     * @param loginName
+     * @param password
+     * @return
+     */
+    @Override
+    public User checkLogin(String loginName, String password) {
+        User loginUser = selectUserByLoginName(loginName);
+        if (loginUser != null) {
+            //使用salt进行md5加密后验证密码
+            String encryptPwd = passwordService.encryptPassword(loginName, password, loginUser.getSalt());
+            if (encryptPwd.equals(loginUser.getPassword())) {
+                return loginUser;
+            }
+        }
+
+        return null;
+    }
+
 }

@@ -1,10 +1,11 @@
 package com.sibo.api.controller;
 
 import com.sibo.framework.web.entity.R;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
 
 /**
  * @author chenzz
@@ -22,7 +23,7 @@ public class ApiController {
 
     @GetMapping("/test2")
     public R test2() {
-        return R.error("发生错误");
+        return R.ok().data(LocalDateTime.now());
     }
 
 }

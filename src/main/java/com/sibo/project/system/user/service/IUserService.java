@@ -139,4 +139,13 @@ public interface IUserService {
      * @return 结果
      */
     public String selectUserPostGroup(Long userId);
+
+    /**
+     * 根据用户名和密码登陆
+     *
+     * @param loginName
+     * @param password
+     * @return
+     */
+    User checkLogin(String loginName, String password);
 }
