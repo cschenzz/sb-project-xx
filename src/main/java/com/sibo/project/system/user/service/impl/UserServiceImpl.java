@@ -400,6 +400,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public void registerUser(String name, String password, String email, String mobile, String address, String realname) {
         User u = new User();
+        u.setUserName("sibo");
         u.setLoginName(name);
         u.setEmail(email);
         u.setPhonenumber(mobile);
