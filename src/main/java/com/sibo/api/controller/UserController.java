@@ -2,6 +2,8 @@ package com.sibo.api.controller;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.lang.Dict;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.sibo.api.utils.LocalUtil;
 import com.sibo.common.validator.Assert;
 import com.sibo.framework.web.entity.R;
@@ -110,7 +112,37 @@ public class UserController {
 
 
         boolean result = userService.modifyNewPassword(userid, newPassword);
-        return result ? R.ok() : R.error("发生错误!");
+        return result ? R.ok("密码修改成功") : R.error("发生错误!");
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public R regUser(String name, String password, String email, String mobile, String address, String realname) {
+        Assert.isBlank(name, "登录名不能为空(name)");
+        Assert.isBlank(password, "密码不能为空(password)");
+        Assert.isBlank(email, "邮箱不能为空(email)");
+        Assert.isBlank(mobile, "手机不能为空(mobile)");
+        Assert.isBlank(address, "地址不能为空(address)");
+        Assert.isBlank(realname, "真是姓名不能为空(realname)");
+
+        //验证唯一性,name,email,mobile
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getLoginName, name);
+        Integer rowCount = userService.count(wrapper);
+        if (rowCount > 0) return R.error("已存在的name:" + name);
+
+        Wrapper<User> wrapper2 = new LambdaQueryWrapper<User>()
+                .eq(User::getEmail, email);
+        rowCount = userService.count(wrapper2);
+        if (rowCount > 0) return R.error("已存在的email:" + email);
+
+        Wrapper<User> wrapper3 = new LambdaQueryWrapper<User>()
+                .eq(User::getPhonenumber, mobile);
+        rowCount = userService.count(wrapper3);
+        if (rowCount > 0) return R.error("已存在的手机号:" + mobile);
+        //--------------------------------
+        userService.registerUser(name, password, email, mobile, address, realname);
+
+        return R.ok("注册成功");
     }
 
     //-----------------------------------------

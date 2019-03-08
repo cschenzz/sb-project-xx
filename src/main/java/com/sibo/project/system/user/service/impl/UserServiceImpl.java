@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -364,7 +365,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return false;
     }
 
-    private String randomSalt() {
+    @Override
+    public String randomSalt() {
         // 一个Byte占两个字节，此处生成的3字节，字符串长度为6
         SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
         String hex = secureRandom.nextBytes(3).toHex();
@@ -393,5 +395,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         return false;
+    }
+
+    @Override
+    public void registerUser(String name, String password, String email, String mobile, String address, String realname) {
+        User u = new User();
+        u.setLoginName(name);
+        u.setEmail(email);
+        u.setPhonenumber(mobile);
+        String salt = randomSalt();
+        String encryptPwd = passwordService.encryptPassword(name, password, salt);
+        u.setSalt(salt);
+        u.setPassword(encryptPwd);
+        u.setCreateTime(new Date());
+
+        this.save(u);
+
     }
 }

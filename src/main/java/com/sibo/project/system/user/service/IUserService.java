@@ -153,4 +153,8 @@ public interface IUserService extends IService<User> {
     boolean checkPassword(Long userid, String password);
 
     boolean modifyNewPassword(Long userid, String newPasswod);
+
+    String randomSalt();
+
+    void registerUser(String name, String password, String email, String mobile, String address, String realname);
 }
