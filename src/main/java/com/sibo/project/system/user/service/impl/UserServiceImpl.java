@@ -1,5 +1,6 @@
 package com.sibo.project.system.user.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sibo.common.constant.UserConstants;
 import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
@@ -17,6 +18,7 @@ import com.sibo.project.system.user.entity.User;
 import com.sibo.project.system.user.entity.UserPost;
 import com.sibo.project.system.user.entity.UserRole;
 import com.sibo.project.system.user.service.IUserService;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,8 @@ import java.util.List;
  * @author chenzz
  */
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+
     @Autowired
     private UserMapper userMapper;
 
@@ -346,4 +349,49 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
+    @Override
+    public boolean checkPassword(Long userid, String password) {
+
+        User loginUser = selectUserById(userid);
+        if (loginUser != null) {
+            //使用salt进行md5加密后验证密码
+            String encryptPwd = passwordService.encryptPassword(loginUser.getLoginName(), password, loginUser.getSalt());
+            if (encryptPwd.equals(loginUser.getPassword())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private String randomSalt() {
+        // 一个Byte占两个字节，此处生成的3字节，字符串长度为6
+        SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
+        String hex = secureRandom.nextBytes(3).toHex();
+        return hex;
+    }
+
+    @Override
+    public boolean modifyNewPassword(Long userid, String newPasswod) {
+
+        User loginUser = selectUserById(userid);
+        if (loginUser != null) {
+            //使用salt进行md5加密后验证密码
+            String salt = randomSalt();
+            String encryptPwd = passwordService.encryptPassword(loginUser.getLoginName(), newPasswod, salt);
+
+
+            User u = new User();
+            u.setUserId(userid);
+            u.setSalt(salt);
+            u.setPassword(encryptPwd);
+
+            this.updateById(u);
+
+            return true;
+
+        }
+
+        return false;
+    }
 }

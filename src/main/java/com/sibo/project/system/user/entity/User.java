@@ -1,5 +1,8 @@
 package com.sibo.project.system.user.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.aspectj.lang.annotation.Excel;
 import com.sibo.framework.web.entity.BaseEntity;
 import com.sibo.project.system.dept.entity.Dept;
@@ -16,6 +19,7 @@ import java.util.List;
  *
  * @author chenzz
  */
+@TableName("sys_user")
 public class User extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -23,6 +27,7 @@ public class User extends BaseEntity {
      * 用户ID
      */
     @Excel(name = "用户序号")
+    @TableId
     private Long userId;
 
     /**
@@ -33,6 +38,7 @@ public class User extends BaseEntity {
     /**
      * 部门父ID
      */
+    @TableField(exist = false)
     private Long parentId;
 
     /**
@@ -106,21 +112,25 @@ public class User extends BaseEntity {
     /**
      * 部门对象
      */
+    @TableField(exist = false)
     private Dept dept;
 
     /**
      * 角色集合
      */
+    @TableField(exist = false)
     private List<Role> roles;
 
     /**
      * 角色组
      */
+    @TableField(exist = false)
     private Long[] roleIds;
 
     /**
      * 岗位组
      */
+    @TableField(exist = false)
     private Long[] postIds;
 
     public Long getUserId() {

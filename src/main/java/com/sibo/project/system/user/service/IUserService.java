@@ -1,5 +1,6 @@
 package com.sibo.project.system.user.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.sibo.project.system.user.entity.User;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author chenzz
  */
-public interface IUserService {
+public interface IUserService extends IService<User> {
 
     /**
      * 根据条件分页查询用户对象
@@ -148,4 +149,8 @@ public interface IUserService {
      * @return
      */
     User checkLogin(String loginName, String password);
+
+    boolean checkPassword(Long userid, String password);
+
+    boolean modifyNewPassword(Long userid, String newPasswod);
 }

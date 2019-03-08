@@ -2,7 +2,8 @@ package com.sibo.api.controller;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
+import com.sibo.api.utils.LocalUtil;
+import com.sibo.common.validator.Assert;
 import com.sibo.framework.web.entity.R;
 import com.sibo.project.system.menu.entity.Menu;
 import com.sibo.project.system.menu.service.IMenuService;
@@ -48,14 +49,9 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public R loginByPwd(@RequestParam("name") String loginName, String password) {
-
-        if (StrUtil.isEmptyIfStr(loginName)) {
-            return R.error("用户名不能为空!");
-        }
-        if (StrUtil.isEmptyIfStr(password)) {
-            return R.error("密码不能为空!");
-        }
+    public R loginByPwd(@RequestParam(value = "name", required = false) String loginName, String password) {
+        Assert.isBlank(loginName, "用户名不能为空!");
+        Assert.isBlank(password, "密码不能为空!");
 
         User loginUser = userService.checkLogin(loginName, password);
         if (loginUser != null) {
@@ -95,6 +91,29 @@ public class UserController {
         }
         return R.error("用户名/密码错误!");
     }
+
+    @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST)
+    public R modifyPwd(String originalPassword, String newPassword) {
+        Assert.isBlank(originalPassword, "请提供原密码(originalPassword)");
+        Assert.isBlank(newPassword, "请提供新密码(newPassword)");
+
+        Long userid = LocalUtil.getLocalUserId();
+
+        User currentUser = userService.getById(userid);
+
+        if (currentUser == null) {
+            return R.error("用户不存在");
+        }
+        if (!userService.checkPassword(userid, originalPassword)) {
+            return R.error("原密码不正确");
+        }
+
+
+        boolean result = userService.modifyNewPassword(userid, newPassword);
+        return result ? R.ok() : R.error("发生错误!");
+    }
+
+    //-----------------------------------------
 
     @Value("${application.api.secret}")
     private String SECRET;
