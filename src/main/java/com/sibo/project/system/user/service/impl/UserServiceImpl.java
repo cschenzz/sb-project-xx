@@ -12,13 +12,11 @@ import com.sibo.project.system.role.entity.Role;
 import com.sibo.project.system.user.dao.UserMapper;
 import com.sibo.project.system.user.dao.UserRoleMapper;
 import com.sibo.project.system.user.entity.User;
-import com.sibo.project.system.user.entity.UserRole;
 import com.sibo.project.system.user.service.IUserService;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public User selectUserByLoginName(String userName) {
         Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
-                .eq(User::getLoginName, userName);
+                .eq(User::getName, userName);
         return super.getOne(wrapper);
     }
 
@@ -65,7 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public User selectUserByPhoneNumber(String phoneNumber) {
         Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
-                .eq(User::getPhonenumber, phoneNumber);
+                .eq(User::getMobile, phoneNumber);
         return super.getOne(wrapper);
     }
 
@@ -91,7 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public User selectUserById(Long userId) {
         Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
-                .eq(User::getUserId, userId);
+                .eq(User::getId, userId);
         return super.getOne(wrapper);
     }
 
@@ -117,11 +115,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean deleteUserByIds(String ids) throws Exception {
         Long[] userIds = Convert.toLongArray(ids);
-        for (Long userId : userIds) {
-            if (User.isAdmin(userId)) {
-                throw new Exception("不允许删除超级管理员用户");
-            }
-        }
         return super.removeByIds(Arrays.asList(userIds));
     }
 
@@ -134,11 +127,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean insertUser(User user) {
         user.randomSalt();
-        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
+        user.setPassword(passwordService.encryptPassword(user.getName(), user.getPassword(), user.getSalt()));
         // 新增用户信息
         boolean result = super.save(user);
-        // 新增用户与角色管理
-        insertUserRole(user);
         return result;
     }
 
@@ -150,11 +141,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public boolean updateUser(User user) {
-        Long userId = user.getUserId();
+        Long userId = user.getId();
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
-        // 新增用户与角色管理
-        insertUserRole(user);
         return super.updateById(user);
     }
 
@@ -178,28 +167,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean resetUserPwd(User user) {
         user.randomSalt();
-        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
+        user.setPassword(passwordService.encryptPassword(user.getName(), user.getPassword(), user.getSalt()));
         return updateUserInfo(user);
     }
 
-    /**
-     * 新增用户角色信息
-     *
-     * @param user 用户对象
-     */
-    public void insertUserRole(User user) {
-        // 新增用户与角色管理
-        List<UserRole> list = new ArrayList<UserRole>();
-        for (Long roleId : user.getRoleIds()) {
-            UserRole ur = new UserRole();
-            ur.setUserId(user.getUserId());
-            ur.setRoleId(roleId);
-            list.add(ur);
-        }
-        if (list.size() > 0) {
-            userRoleMapper.batchUserRole(list);
-        }
-    }
 
     /**
      * 校验用户名称是否唯一
@@ -210,7 +181,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public String checkLoginNameUnique(String loginName) {
         Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
-                .eq(User::getLoginName, loginName);
+                .eq(User::getName, loginName);
         int count = super.count(wrapper);
 
         if (count > 0) {
@@ -227,13 +198,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public String checkPhoneUnique(User user) {
-        Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
+        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
 
         Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
-                .eq(User::getPhonenumber, user.getPhonenumber());
+                .eq(User::getMobile, user.getMobile());
         User info = super.getOne(wrapper);
 
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
+        if (StringUtils.isNotNull(info) && info.getId().longValue() != userId.longValue()) {
             return UserConstants.USER_PHONE_NOT_UNIQUE;
         }
         return UserConstants.USER_PHONE_UNIQUE;
@@ -247,12 +218,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public String checkEmailUnique(User user) {
-        Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
+        Long userId = StringUtils.isNull(user.getId()) ? -1L : user.getId();
         Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
                 .eq(User::getEmail, user.getEmail());
         User info = super.getOne(wrapper);
 
-        if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
+        if (StringUtils.isNotNull(info) && info.getId().longValue() != userId.longValue()) {
             return UserConstants.USER_EMAIL_NOT_UNIQUE;
         }
         return UserConstants.USER_EMAIL_UNIQUE;
@@ -305,7 +276,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User loginUser = selectUserById(userid);
         if (loginUser != null) {
             //使用salt进行md5加密后验证密码
-            String encryptPwd = passwordService.encryptPassword(loginUser.getLoginName(), password, loginUser.getSalt());
+            String encryptPwd = passwordService.encryptPassword(loginUser.getName(), password, loginUser.getSalt());
             if (encryptPwd.equals(loginUser.getPassword())) {
                 return true;
             }
@@ -329,11 +300,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (loginUser != null) {
             //使用salt进行md5加密后验证密码
             String salt = randomSalt();
-            String encryptPwd = passwordService.encryptPassword(loginUser.getLoginName(), newPasswod, salt);
+            String encryptPwd = passwordService.encryptPassword(loginUser.getName(), newPasswod, salt);
 
 
             User u = new User();
-            u.setUserId(userid);
+            u.setId(userid);
             u.setSalt(salt);
             u.setPassword(encryptPwd);
 
@@ -349,10 +320,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public void registerUser(String name, String password, String email, String mobile, String address, String realname) {
         User u = new User();
-        u.setUserName("sibo");
-        u.setLoginName(name);
+        u.setName(name);
         u.setEmail(email);
-        u.setPhonenumber(mobile);
+        u.setMobile(mobile);
         String salt = randomSalt();
         String encryptPwd = passwordService.encryptPassword(name, password, salt);
         u.setSalt(salt);

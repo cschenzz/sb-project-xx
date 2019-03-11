@@ -1,77 +1,41 @@
 package com.sibo.project.system.user.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sibo.framework.aspectj.lang.annotation.Excel;
-import com.sibo.project.system.role.entity.Role;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+//-----------------------------------
 
 /**
- * 用户对象 sys_user
+ * 用户表 sys_user
  *
  * @author chenzz
+ * @date 2019-03-11
  */
 @TableName("sys_user")
-public class User {
+public class User implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
      */
-    @Excel(name = "用户序号")
-    @TableId("id")
-    private Long userId;
+    @TableId
+    private Long id;
 
     /**
-     * 登录名称
+     * 登录账号
      */
-    @Excel(name = "登录名称")
-    @TableField("name")
-    private String loginName;
-
-    /**
-     * 用户名称
-     */
-    @Excel(name = "用户名称")
-    @TableField("realname")
-    private String userName;
-
-    /**
-     * 用户邮箱
-     */
-    @Excel(name = "用户邮箱")
-    private String email;
-
-    /**
-     * 手机号码
-     */
-    @Excel(name = "手机号码")
-    @TableField("mobile")
-    private String phonenumber;
-
-    /**
-     * 用户性别
-     */
-    @Excel(name = "用户性别")
-    private String sex;
-
-    /**
-     * 用户头像
-     */
-    private String avatar;
+    private String name;
 
     /**
      * 密码
      */
     private String password;
-
-    private Date regtime;
 
     /**
      * 盐加密
@@ -79,123 +43,111 @@ public class User {
     private String salt;
 
     /**
-     * 帐号状态（0正常 1停用）
+     * 用户邮箱
      */
-    @Excel(name = "帐号状态")
-    private String status;
+    private String email;
+
+    /**
+     * 手机号码
+     */
+    private String mobile;
+
+    /**
+     * 省
+     */
+    private Integer province;
+
+    /**
+     * 市
+     */
+    private Integer city;
+
+    /**
+     * 县
+     */
+    private Integer area;
+
+    /**
+     * 地址
+     */
+    private String address;
+
+    /**
+     * 用户性别（0男 1女 2未知）
+     */
+    private Integer sex;
+
+    /**
+     * 真实姓名
+     */
+    private String realname;
+
+    /**
+     * 用户级别
+     */
+    private Integer userrank;
+
+    /**
+     * 注册时间
+     */
+    private Date regtime;
+
+    /**
+     * 最后登录时间
+     */
+    private Date lastLogintime;
 
     /**
      * 最后登陆IP
      */
-    @Excel(name = "最后登陆IP")
-    @TableField("last_login_ip")
-    private String loginIp;
+    private String lastLoginIp;
 
     /**
-     * 最后登陆时间
+     * 头像路径
      */
-    @Excel(name = "最后登陆时间")
-    @TableField("last_logintime")
-    private Date loginDate;
+    private String avatar;
 
     /**
-     * 角色集合
+     * 帐号状态（0正常 1停用）
      */
-    @TableField(exist = false)
-    private List<Role> roles;
+    private Integer status;
 
     /**
-     * 角色组
+     * 备注
      */
-    @TableField(exist = false)
-    private Long[] roleIds;
+    private String remark;
 
-    public Long getUserId() {
-        return userId;
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public Long getId() {
+        return id;
     }
 
-    public boolean isAdmin() {
-        return isAdmin(this.userId);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static boolean isAdmin(Long userId) {
-        return userId != null && 1L == userId;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getSalt() {
-        return salt;
+    public String getPassword() {
+        return password;
     }
 
     public void setSalt(String salt) {
         this.salt = salt;
     }
 
-    public Date getRegtime() {
-        return regtime;
-    }
-
-    public void setRegtime(Date regtime) {
-        this.regtime = regtime;
+    public String getSalt() {
+        return salt;
     }
 
     /**
@@ -208,61 +160,149 @@ public class User {
         setSalt(hex);
     }
 
-    public String getStatus() {
-        return status;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setStatus(String status) {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setProvince(Integer province) {
+        this.province = province;
+    }
+
+    public Integer getProvince() {
+        return province;
+    }
+
+    public void setCity(Integer city) {
+        this.city = city;
+    }
+
+    public Integer getCity() {
+        return city;
+    }
+
+    public void setArea(Integer area) {
+        this.area = area;
+    }
+
+    public Integer getArea() {
+        return area;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setUserrank(Integer userrank) {
+        this.userrank = userrank;
+    }
+
+    public Integer getUserrank() {
+        return userrank;
+    }
+
+    public void setRegtime(Date regtime) {
+        this.regtime = regtime;
+    }
+
+    public Date getRegtime() {
+        return regtime;
+    }
+
+    public void setLastLogintime(Date lastLogintime) {
+        this.lastLogintime = lastLogintime;
+    }
+
+    public Date getLastLogintime() {
+        return lastLogintime;
+    }
+
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp;
+    }
+
+    public String getLastLoginIp() {
+        return lastLoginIp;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public String getLoginIp() {
-        return loginIp;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setLoginIp(String loginIp) {
-        this.loginIp = loginIp;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
-    public Date getLoginDate() {
-        return loginDate;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setLoginDate(Date loginDate) {
-        this.loginDate = loginDate;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Long[] getRoleIds() {
-        return roleIds;
-    }
-
-    public void setRoleIds(Long[] roleIds) {
-        this.roleIds = roleIds;
-    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("userId", getUserId())
-                .append("loginName", getLoginName())
-                .append("userName", getUserName())
-                .append("email", getEmail())
-                .append("phonenumber", getPhonenumber())
-                .append("sex", getSex())
-                .append("avatar", getAvatar())
+                .append("id", getId())
+                .append("name", getName())
                 .append("password", getPassword())
                 .append("salt", getSalt())
+                .append("email", getEmail())
+                .append("mobile", getMobile())
+                .append("province", getProvince())
+                .append("city", getCity())
+                .append("area", getArea())
+                .append("address", getAddress())
+                .append("sex", getSex())
+                .append("realname", getRealname())
+                .append("userrank", getUserrank())
+                .append("regtime", getRegtime())
+                .append("lastLogintime", getLastLogintime())
+                .append("lastLoginIp", getLastLoginIp())
+                .append("avatar", getAvatar())
                 .append("status", getStatus())
-                .append("loginIp", getLoginIp())
-                .append("loginDate", getLoginDate())
+                .append("remark", getRemark())
                 .toString();
     }
 }

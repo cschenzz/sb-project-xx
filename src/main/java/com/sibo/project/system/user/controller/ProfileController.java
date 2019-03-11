@@ -42,9 +42,8 @@ public class ProfileController extends BaseController {
     @GetMapping()
     public String profile(ModelMap mmap) {
         User user = getUser();
-        user.setSex(dict.getLabel("sys_user_sex", user.getSex()));
         mmap.put("user", user);
-        mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
+        mmap.put("roleGroup", userService.selectUserRoleGroup(user.getId()));
         return prefix + "/profile";
     }
 
@@ -52,7 +51,7 @@ public class ProfileController extends BaseController {
     @ResponseBody
     public boolean checkPassword(String password) {
         User user = getUser();
-        String encrypt = new Md5Hash(user.getLoginName() + password + user.getSalt()).toHex().toString();
+        String encrypt = new Md5Hash(user.getName() + password + user.getSalt()).toHex().toString();
         if (user.getPassword().equals(encrypt)) {
             return true;
         }
@@ -71,7 +70,7 @@ public class ProfileController extends BaseController {
     public R resetPwd(User user) {
         boolean result = userService.resetUserPwd(user);
         if (result) {
-            setUser(userService.selectUserById(user.getUserId()));
+            setUser(userService.selectUserById(user.getId()));
             return success();
         }
         return error();
@@ -103,7 +102,7 @@ public class ProfileController extends BaseController {
     @ResponseBody
     public R update(User user) {
         if (userService.updateUserInfo(user)) {
-            setUser(userService.selectUserById(user.getUserId()));
+            setUser(userService.selectUserById(user.getId()));
             return success();
         }
         return error();
@@ -121,7 +120,7 @@ public class ProfileController extends BaseController {
                 String avatar = FileUploadUtils.upload(SbConfig.getAvatarPath(), file);
                 user.setAvatar(avatar);
                 if (userService.updateUserInfo(user)) {
-                    setUser(userService.selectUserById(user.getUserId()));
+                    setUser(userService.selectUserById(user.getId()));
                     return success();
                 }
             }

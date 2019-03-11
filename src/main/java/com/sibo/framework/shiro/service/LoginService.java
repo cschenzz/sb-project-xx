@@ -104,8 +104,8 @@ public class LoginService {
      * 记录登录信息
      */
     public void recordLoginInfo(User user) {
-        user.setLoginIp(ShiroUtils.getIp());
-        user.setLoginDate(DateUtils.getNowDate());
+        user.setLastLoginIp(ShiroUtils.getIp());
+        user.setLastLogintime(DateUtils.getNowDate());
         userService.updateUserInfo(user);
     }
 

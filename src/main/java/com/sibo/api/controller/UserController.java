@@ -60,20 +60,20 @@ public class UserController {
             Map<String, Object> map = new HashMap<>(5);
 
             map.put("user", Dict.create()
-                    .set("name", loginUser.getLoginName())
+                    .set("name", loginUser.getName())
                     .set("email", loginUser.getEmail())
-                    .set("mobile", loginUser.getPhonenumber())
-                    .set("id", loginUser.getUserId())
+                    .set("mobile", loginUser.getMobile())
+                    .set("id", loginUser.getId())
                     .set("realname", "陈先生")
                     .set("userrank", 1)
                     .set("address", "广东深圳龙岗区")
                     .set("logintime", DateTime.now())
             );
             List<Menu> menus = menuService.selectMenusByUser(loginUser);
-            Set<String> perms = menuService.selectPermsByUserId(loginUser.getUserId());
+            Set<String> perms = menuService.selectPermsByUserId(loginUser.getId());
             // map.put("menus", menus);
             // map.put("perms", perms);
-            map.put("isAdmin", loginUser.isAdmin());
+            map.put("isAdmin", loginUser.getId() == 1);
 
             //---------------------
             StringBuilder permsSbStr = new StringBuilder();
@@ -126,7 +126,7 @@ public class UserController {
 
         //验证唯一性,name,email,mobile
         Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
-                .eq(User::getLoginName, name);
+                .eq(User::getName, name);
         Integer rowCount = userService.count(wrapper);
         if (rowCount > 0) return R.error("已存在的name:" + name);
 
@@ -136,7 +136,7 @@ public class UserController {
         if (rowCount > 0) return R.error("已存在的email:" + email);
 
         Wrapper<User> wrapper3 = new LambdaQueryWrapper<User>()
-                .eq(User::getPhonenumber, mobile);
+                .eq(User::getMobile, mobile);
         rowCount = userService.count(wrapper3);
         if (rowCount > 0) return R.error("已存在的手机号:" + mobile);
         //--------------------------------
@@ -165,14 +165,14 @@ public class UserController {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-        JwtBuilder builder = Jwts.builder().setId(String.valueOf(user.getUserId()))
+        JwtBuilder builder = Jwts.builder().setId(String.valueOf(user.getId()))
                 .setIssuedAt(now)
                 .setExpiration(Date.from(LocalDateTime.now().plusDays(10).atZone(ZoneId.systemDefault()).toInstant()))
                 //--------Custom Claims--------
                 //-----------------------------
-                .claim("loginName", user.getLoginName())
+                .claim("loginName", user.getName())
                 //-----------------------------
-                .claim("isAdmin", user.isAdmin())
+                .claim("isAdmin", user.getId() == 1)
                 .claim("permsStr", permsStr)
                 .signWith(signingKey, signatureAlgorithm);
 

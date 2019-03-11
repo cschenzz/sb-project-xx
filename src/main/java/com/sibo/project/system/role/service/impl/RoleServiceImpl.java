@@ -4,7 +4,6 @@ import com.sibo.common.constant.UserConstants;
 import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
-import com.sibo.framework.aspectj.lang.annotation.DataScope;
 import com.sibo.project.system.role.dao.RoleDeptMapper;
 import com.sibo.project.system.role.dao.RoleMapper;
 import com.sibo.project.system.role.dao.RoleMenuMapper;
@@ -45,7 +44,6 @@ public class RoleServiceImpl implements IRoleService {
      * @return 角色数据集合信息
      */
     @Override
-    @DataScope(tableAlias = "u")
     public List<Role> selectRoleList(Role role) {
         return roleMapper.selectRoleList(role);
     }

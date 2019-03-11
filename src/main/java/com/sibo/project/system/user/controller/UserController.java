@@ -2,7 +2,6 @@ package com.sibo.project.system.user.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sibo.common.utils.StringUtils;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
@@ -75,9 +74,6 @@ public class UserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public R addSave(User user) {
-        if (StringUtils.isNotNull(user.getUserId()) && User.isAdmin(user.getUserId())) {
-            return error("不允许修改超级管理员用户");
-        }
         userService.insertUser(user);
         return R.ok();
     }
@@ -101,9 +97,6 @@ public class UserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public R editSave(User user) {
-        if (StringUtils.isNotNull(user.getUserId()) && User.isAdmin(user.getUserId())) {
-            return error("不允许修改超级管理员用户");
-        }
         userService.updateUser(user);
         return R.ok();
     }
@@ -142,7 +135,7 @@ public class UserController extends BaseController {
     @PostMapping("/checkLoginNameUnique")
     @ResponseBody
     public String checkLoginNameUnique(User user) {
-        return userService.checkLoginNameUnique(user.getLoginName());
+        return userService.checkLoginNameUnique(user.getName());
     }
 
     /**

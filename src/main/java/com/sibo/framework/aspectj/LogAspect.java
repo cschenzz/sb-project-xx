@@ -80,7 +80,7 @@ public class LogAspect {
 
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null) {
-                operLog.setOperName(currentUser.getLoginName());
+                operLog.setOperName(currentUser.getName());
                 operLog.setDeptName("无部门");
             }
 

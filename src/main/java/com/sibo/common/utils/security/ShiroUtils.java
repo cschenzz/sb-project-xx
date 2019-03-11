@@ -72,11 +72,11 @@ public class ShiroUtils {
     }
 
     public static Long getUserId() {
-        return getUser().getUserId().longValue();
+        return getUser().getId().longValue();
     }
 
     public static String getLoginName() {
-        return getUser().getLoginName();
+        return getUser().getName();
     }
 
     public static String getIp() {

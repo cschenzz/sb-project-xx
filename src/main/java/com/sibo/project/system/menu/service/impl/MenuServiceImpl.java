@@ -23,7 +23,7 @@ import java.util.*;
  */
 @Service
 public class MenuServiceImpl implements IMenuService {
-    public static final String PREMISSION_STRING = "perms[\"{0}\"]" ;
+    public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
     @Autowired
     private MenuMapper menuMapper;
@@ -41,10 +41,10 @@ public class MenuServiceImpl implements IMenuService {
     public List<Menu> selectMenusByUser(User user) {
         List<Menu> menus = new LinkedList<Menu>();
         // 管理员显示所有菜单信息
-        if (user.isAdmin()) {
+        if (user.getId() == 1) {
             menus = menuMapper.selectMenuNormalAll();
         } else {
-            menus = menuMapper.selectMenusByUserId(user.getUserId());
+            menus = menuMapper.selectMenusByUserId(user.getId());
         }
         return TreeUtils.getChildPerms(menus, 0);
     }
@@ -200,7 +200,7 @@ public class MenuServiceImpl implements IMenuService {
     /**
      * 查询子菜单数量
      *
-     * @param menuId 菜单ID
+     * @param parentId 菜单ID
      * @return 结果
      */
     @Override

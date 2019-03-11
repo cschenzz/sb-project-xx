@@ -51,12 +51,12 @@ public class UserRealm extends AuthorizingRealm {
         Set<String> menus = new HashSet<String>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 管理员拥有所有权限
-        if (user.isAdmin()) {
+        if (user.getId() == 1) {
             info.addRole("admin");
             info.addStringPermission("*:*:*");
         } else {
-            roles = roleService.selectRoleKeys(user.getUserId());
-            menus = menuService.selectPermsByUserId(user.getUserId());
+            roles = roleService.selectRoleKeys(user.getId());
+            menus = menuService.selectPermsByUserId(user.getId());
             // 角色加入AuthorizationInfo认证对象
             info.setRoles(roles);
             // 权限加入AuthorizationInfo认证对象
