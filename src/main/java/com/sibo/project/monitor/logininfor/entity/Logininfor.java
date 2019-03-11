@@ -1,7 +1,9 @@
 package com.sibo.project.monitor.logininfor.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.aspectj.lang.annotation.Excel;
-import com.sibo.framework.web.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,28 +14,38 @@ import java.util.Date;
  *
  * @author chenzz
  */
-public class Logininfor extends BaseEntity {
+@TableName("sys_log_login")
+public class Logininfor {
     private static final long serialVersionUID = 1L;
     /**
      * ID
      */
     @Excel(name = "序号")
+    @TableId("id")
     private Long infoId;
+
+    @TableId("userid")
+    private Long userid;
+
     /**
      * 用户账号
      */
     @Excel(name = "用户账号")
+    @TableField("login_name")
     private String loginName;
     /**
      * 登录状态 0成功 1失败
      */
     @Excel(name = "登录状态")
+    @TableField("login_result")
     private String status;
     /**
      * 登录IP地址
      */
     @Excel(name = "登录地址")
+    @TableField("login_ip")
     private String ipaddr;
+
     /**
      * 登录地点
      */
@@ -53,6 +65,7 @@ public class Logininfor extends BaseEntity {
      * 提示消息
      */
     @Excel(name = "提示消息")
+    @TableField("message")
     private String msg;
     /**
      * 访问时间

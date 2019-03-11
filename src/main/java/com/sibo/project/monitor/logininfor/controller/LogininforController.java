@@ -1,8 +1,5 @@
 package com.sibo.project.monitor.logininfor.controller;
 
-import com.sibo.common.utils.poi.ExcelUtil;
-import com.sibo.framework.aspectj.lang.annotation.Log;
-import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
 import com.sibo.project.monitor.logininfor.entity.Logininfor;
@@ -40,37 +37,8 @@ public class LogininforController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public R list(Logininfor logininfor) {
-        startPage();
-        List<Logininfor> list = logininforService.selectLogininforList(logininfor);
+        List<Logininfor> list = logininforService.list();
         return getDataTable(list);
-    }
-
-    @Log(title = "登陆日志", businessType = BusinessType.EXPORT)
-    @RequiresPermissions("monitor:logininfor:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public R export(Logininfor logininfor) {
-        List<Logininfor> list = logininforService.selectLogininforList(logininfor);
-        ExcelUtil<Logininfor> util = new ExcelUtil<Logininfor>(Logininfor.class);
-        return util.exportExcel(list, "logininfor");
-    }
-
-    @RequiresPermissions("monitor:logininfor:remove")
-    @Log(title = "登陆日志", businessType = BusinessType.DELETE)
-    @PostMapping("/remove")
-    @ResponseBody
-    public R remove(String ids) {
-        return toAjax(logininforService.deleteLogininforByIds(ids));
-    }
-
-    @RequiresPermissions("monitor:logininfor:remove")
-    @Log(title = "登陆日志", businessType = BusinessType.CLEAN)
-    @PostMapping("/clean")
-    @ResponseBody
-    public R clean()
-    {
-        logininforService.cleanLogininfor();
-        return success();
     }
 
 }

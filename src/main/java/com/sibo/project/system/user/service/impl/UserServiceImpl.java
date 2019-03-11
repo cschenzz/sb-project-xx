@@ -1,10 +1,11 @@
 package com.sibo.project.system.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sibo.common.constant.UserConstants;
 import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
-import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.aspectj.lang.annotation.DataScope;
 import com.sibo.framework.shiro.service.PasswordService;
 import com.sibo.project.system.role.dao.RoleMapper;
@@ -63,7 +64,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public User selectUserByLoginName(String userName) {
-        return userMapper.selectUserByLoginName(userName);
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getLoginName, userName);
+        return super.getOne(wrapper);
     }
 
     /**
@@ -74,7 +77,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public User selectUserByPhoneNumber(String phoneNumber) {
-        return userMapper.selectUserByPhoneNumber(phoneNumber);
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getPhonenumber, phoneNumber);
+        return super.getOne(wrapper);
     }
 
     /**
@@ -85,7 +90,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public User selectUserByEmail(String email) {
-        return userMapper.selectUserByEmail(email);
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getEmail, email);
+        return super.getOne(wrapper);
     }
 
     /**
@@ -96,7 +103,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public User selectUserById(Long userId) {
-        return userMapper.selectUserById(userId);
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getUserId, userId);
+        return super.getOne(wrapper);
     }
 
     /**
@@ -139,7 +148,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public int insertUser(User user) {
         user.randomSalt();
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
-        user.setCreateBy(ShiroUtils.getLoginName());
         // 新增用户信息
         int rows = userMapper.insertUser(user);
         // 新增用户与角色管理
@@ -156,7 +164,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public int updateUser(User user) {
         Long userId = user.getUserId();
-        user.setUpdateBy(ShiroUtils.getLoginName());
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
@@ -171,8 +178,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return 结果
      */
     @Override
-    public int updateUserInfo(User user) {
-        return userMapper.updateUser(user);
+    public boolean updateUserInfo(User user) {
+        return updateById(user);
     }
 
     /**
@@ -182,7 +189,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return 结果
      */
     @Override
-    public int resetUserPwd(User user) {
+    public boolean resetUserPwd(User user) {
         user.randomSalt();
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         return updateUserInfo(user);
@@ -282,6 +289,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public User checkLogin(String loginName, String password) {
+
         User loginUser = selectUserByLoginName(loginName);
         if (loginUser != null) {
             //使用salt进行md5加密后验证密码
@@ -352,7 +360,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String encryptPwd = passwordService.encryptPassword(name, password, salt);
         u.setSalt(salt);
         u.setPassword(encryptPwd);
-        u.setCreateTime(new Date());
+        u.setRegtime(new Date());
 
         this.save(u);
 

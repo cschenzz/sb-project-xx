@@ -74,14 +74,9 @@ public class LoginService {
             throw new UserNotExistsException();
         }
 
-        if (UserStatus.DELETED.getCode().equals(user.getDelFlag())) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.delete")));
-            throw new UserDeleteException();
-        }
-
         if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.blocked", user.getRemark())));
-            throw new UserBlockedException(user.getRemark());
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.blocked", "其他")));
+            throw new UserBlockedException("其他");
         }
 
         passwordService.validate(user, password);

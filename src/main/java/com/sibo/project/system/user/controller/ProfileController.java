@@ -69,8 +69,8 @@ public class ProfileController extends BaseController {
     @PostMapping("/resetPwd")
     @ResponseBody
     public R resetPwd(User user) {
-        int rows = userService.resetUserPwd(user);
-        if (rows > 0) {
+        boolean result = userService.resetUserPwd(user);
+        if (result) {
             setUser(userService.selectUserById(user.getUserId()));
             return success();
         }
@@ -102,7 +102,7 @@ public class ProfileController extends BaseController {
     @PostMapping("/update")
     @ResponseBody
     public R update(User user) {
-        if (userService.updateUserInfo(user) > 0) {
+        if (userService.updateUserInfo(user)) {
             setUser(userService.selectUserById(user.getUserId()));
             return success();
         }
@@ -120,7 +120,7 @@ public class ProfileController extends BaseController {
             if (!file.isEmpty()) {
                 String avatar = FileUploadUtils.upload(SbConfig.getAvatarPath(), file);
                 user.setAvatar(avatar);
-                if (userService.updateUserInfo(user) > 0) {
+                if (userService.updateUserInfo(user)) {
                     setUser(userService.selectUserById(user.getUserId()));
                     return success();
                 }

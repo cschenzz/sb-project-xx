@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.aspectj.lang.annotation.Excel;
-import com.sibo.framework.web.entity.BaseEntity;
 import com.sibo.project.system.role.entity.Role;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -19,37 +18,28 @@ import java.util.List;
  * @author chenzz
  */
 @TableName("sys_user")
-public class User extends BaseEntity {
+public class User {
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
      */
     @Excel(name = "用户序号")
-    @TableId
+    @TableId("id")
     private Long userId;
-
-    /**
-     * 部门ID
-     */
-    private Long deptId;
-
-    /**
-     * 部门父ID
-     */
-    @TableField(exist = false)
-    private Long parentId;
 
     /**
      * 登录名称
      */
     @Excel(name = "登录名称")
+    @TableField("name")
     private String loginName;
 
     /**
      * 用户名称
      */
     @Excel(name = "用户名称")
+    @TableField("realname")
     private String userName;
 
     /**
@@ -62,6 +52,7 @@ public class User extends BaseEntity {
      * 手机号码
      */
     @Excel(name = "手机号码")
+    @TableField("mobile")
     private String phonenumber;
 
     /**
@@ -80,6 +71,8 @@ public class User extends BaseEntity {
      */
     private String password;
 
+    private Date regtime;
+
     /**
      * 盐加密
      */
@@ -92,20 +85,17 @@ public class User extends BaseEntity {
     private String status;
 
     /**
-     * 删除标志（0代表存在 2代表删除）
-     */
-    private String delFlag;
-
-    /**
      * 最后登陆IP
      */
     @Excel(name = "最后登陆IP")
+    @TableField("last_login_ip")
     private String loginIp;
 
     /**
      * 最后登陆时间
      */
     @Excel(name = "最后登陆时间")
+    @TableField("last_logintime")
     private Date loginDate;
 
     /**
@@ -119,12 +109,6 @@ public class User extends BaseEntity {
      */
     @TableField(exist = false)
     private Long[] roleIds;
-
-    /**
-     * 岗位组
-     */
-    @TableField(exist = false)
-    private Long[] postIds;
 
     public Long getUserId() {
         return userId;
@@ -140,22 +124,6 @@ public class User extends BaseEntity {
 
     public static boolean isAdmin(Long userId) {
         return userId != null && 1L == userId;
-    }
-
-    public Long getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
     }
 
     public String getLoginName() {
@@ -222,6 +190,14 @@ public class User extends BaseEntity {
         this.salt = salt;
     }
 
+    public Date getRegtime() {
+        return regtime;
+    }
+
+    public void setRegtime(Date regtime) {
+        this.regtime = regtime;
+    }
+
     /**
      * 生成随机盐
      */
@@ -238,14 +214,6 @@ public class User extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
     }
 
     public String getLoginIp() {
@@ -280,19 +248,10 @@ public class User extends BaseEntity {
         this.roleIds = roleIds;
     }
 
-    public Long[] getPostIds() {
-        return postIds;
-    }
-
-    public void setPostIds(Long[] postIds) {
-        this.postIds = postIds;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("userId", getUserId())
-                .append("deptId", getDeptId())
                 .append("loginName", getLoginName())
                 .append("userName", getUserName())
                 .append("email", getEmail())
@@ -302,14 +261,8 @@ public class User extends BaseEntity {
                 .append("password", getPassword())
                 .append("salt", getSalt())
                 .append("status", getStatus())
-                .append("delFlag", getDelFlag())
                 .append("loginIp", getLoginIp())
                 .append("loginDate", getLoginDate())
-                .append("createBy", getCreateBy())
-                .append("createTime", getCreateTime())
-                .append("updateBy", getUpdateBy())
-                .append("updateTime", getUpdateTime())
-                .append("remark", getRemark())
                 .toString();
     }
 }

@@ -1,11 +1,14 @@
 package com.sibo.project.system.user.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.common.utils.StringUtils;
-import com.sibo.common.utils.poi.ExcelUtil;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
+import com.sibo.framework.web.page.PageDomain;
+import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.role.service.IRoleService;
 import com.sibo.project.system.user.entity.User;
 import com.sibo.project.system.user.service.IUserService;
@@ -15,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 用户信息
@@ -45,19 +46,12 @@ public class UserController extends BaseController {
     @PostMapping("/list")
     @ResponseBody
     public R list(User user) {
-        startPage();
-        List<User> list = userService.selectUserList(user);
-        return getDataTable(list);
-    }
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
 
-    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
-    @RequiresPermissions("system:user:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public R export(User user) {
-        List<User> list = userService.selectUserList(user);
-        ExcelUtil<User> util = new ExcelUtil<User>(User.class);
-        return util.exportExcel(list, "user");
+        IPage<User> pageList = userService.page(new Page<>(pageNum, pageSize), null);
+        return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
     }
 
     /**
@@ -122,7 +116,7 @@ public class UserController extends BaseController {
     @PostMapping("/resetPwd")
     @ResponseBody
     public R resetPwd(User user) {
-        return toAjax(userService.resetUserPwd(user));
+        return userService.resetUserPwd(user) ? success() : error();
     }
 
     @RequiresPermissions("system:user:remove")
