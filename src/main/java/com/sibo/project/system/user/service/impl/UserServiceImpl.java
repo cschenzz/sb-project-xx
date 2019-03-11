@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sibo.common.constant.UserConstants;
 import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
-import com.sibo.framework.aspectj.lang.annotation.DataScope;
 import com.sibo.framework.shiro.service.PasswordService;
 import com.sibo.project.system.role.dao.RoleMapper;
 import com.sibo.project.system.role.entity.Role;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -42,19 +42,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private PasswordService passwordService;
-
-    /**
-     * 根据条件分页查询用户对象
-     *
-     * @param user 用户信息
-     * @return 用户信息集合信息
-     */
-    @Override
-    @DataScope(tableAlias = "u")
-    public List<User> selectUserList(User user) {
-        // 生成数据权限过滤条件
-        return userMapper.selectUserList(user);
-    }
 
     /**
      * 通过用户名查询用户
@@ -115,10 +102,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return 结果
      */
     @Override
-    public int deleteUserById(Long userId) {
+    public boolean deleteUserById(Long userId) {
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
-        return userMapper.deleteUserById(userId);
+        return super.removeById(userId);
     }
 
     /**
@@ -128,14 +115,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return 结果
      */
     @Override
-    public int deleteUserByIds(String ids) throws Exception {
+    public boolean deleteUserByIds(String ids) throws Exception {
         Long[] userIds = Convert.toLongArray(ids);
         for (Long userId : userIds) {
             if (User.isAdmin(userId)) {
                 throw new Exception("不允许删除超级管理员用户");
             }
         }
-        return userMapper.deleteUserByIds(userIds);
+        return super.removeByIds(Arrays.asList(userIds));
     }
 
     /**
@@ -145,14 +132,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return 结果
      */
     @Override
-    public int insertUser(User user) {
+    public boolean insertUser(User user) {
         user.randomSalt();
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         // 新增用户信息
-        int rows = userMapper.insertUser(user);
+        boolean result = super.save(user);
         // 新增用户与角色管理
         insertUserRole(user);
-        return rows;
+        return result;
     }
 
     /**
@@ -162,13 +149,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return 结果
      */
     @Override
-    public int updateUser(User user) {
+    public boolean updateUser(User user) {
         Long userId = user.getUserId();
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
         insertUserRole(user);
-        return userMapper.updateUser(user);
+        return super.updateById(user);
     }
 
     /**
@@ -222,7 +209,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public String checkLoginNameUnique(String loginName) {
-        int count = userMapper.checkLoginNameUnique(loginName);
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getLoginName, loginName);
+        int count = super.count(wrapper);
+
         if (count > 0) {
             return UserConstants.USER_NAME_NOT_UNIQUE;
         }
@@ -238,7 +228,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public String checkPhoneUnique(User user) {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        User info = userMapper.checkPhoneUnique(user.getPhonenumber());
+
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getPhonenumber, user.getPhonenumber());
+        User info = super.getOne(wrapper);
+
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
             return UserConstants.USER_PHONE_NOT_UNIQUE;
         }
@@ -254,7 +248,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public String checkEmailUnique(User user) {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        User info = userMapper.checkEmailUnique(user.getEmail());
+        Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(User::getEmail, user.getEmail());
+        User info = super.getOne(wrapper);
+
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue()) {
             return UserConstants.USER_EMAIL_NOT_UNIQUE;
         }

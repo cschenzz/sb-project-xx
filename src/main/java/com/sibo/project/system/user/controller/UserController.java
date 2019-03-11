@@ -19,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 用户信息
  *
@@ -75,7 +78,8 @@ public class UserController extends BaseController {
         if (StringUtils.isNotNull(user.getUserId()) && User.isAdmin(user.getUserId())) {
             return error("不允许修改超级管理员用户");
         }
-        return toAjax(userService.insertUser(user));
+        userService.insertUser(user);
+        return R.ok();
     }
 
     /**
@@ -100,7 +104,8 @@ public class UserController extends BaseController {
         if (StringUtils.isNotNull(user.getUserId()) && User.isAdmin(user.getUserId())) {
             return error("不允许修改超级管理员用户");
         }
-        return toAjax(userService.updateUser(user));
+        userService.updateUser(user);
+        return R.ok();
     }
 
     @RequiresPermissions("system:user:resetPwd")
@@ -124,11 +129,11 @@ public class UserController extends BaseController {
     @PostMapping("/remove")
     @ResponseBody
     public R remove(String ids) {
-        try {
-            return toAjax(userService.deleteUserByIds(ids));
-        } catch (Exception e) {
-            return error(e.getMessage());
-        }
+        List<String> idList = Arrays.asList(ids.split(","));
+        boolean result = userService.removeByIds(idList);
+        if (result) return R.ok();
+
+        return R.error();
     }
 
     /**

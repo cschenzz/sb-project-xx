@@ -13,14 +13,6 @@ import java.util.List;
 public interface IUserService extends IService<User> {
 
     /**
-     * 根据条件分页查询用户对象
-     *
-     * @param user 用户信息
-     * @return 用户信息集合信息
-     */
-    List<User> selectUserList(User user);
-
-    /**
      * 通过用户名查询用户
      *
      * @param userName 用户名
@@ -58,7 +50,7 @@ public interface IUserService extends IService<User> {
      * @param userId 用户ID
      * @return 结果
      */
-    int deleteUserById(Long userId);
+    boolean deleteUserById(Long userId);
 
     /**
      * 批量删除用户信息
@@ -67,7 +59,7 @@ public interface IUserService extends IService<User> {
      * @return 结果
      * @throws Exception 异常
      */
-    int deleteUserByIds(String ids) throws Exception;
+    boolean deleteUserByIds(String ids) throws Exception;
 
     /**
      * 保存用户信息
@@ -75,7 +67,7 @@ public interface IUserService extends IService<User> {
      * @param user 用户信息
      * @return 结果
      */
-    int insertUser(User user);
+    boolean insertUser(User user);
 
     /**
      * 保存用户信息
@@ -83,7 +75,7 @@ public interface IUserService extends IService<User> {
      * @param user 用户信息
      * @return 结果
      */
-    int updateUser(User user);
+    boolean updateUser(User user);
 
     /**
      * 修改用户详细信息
