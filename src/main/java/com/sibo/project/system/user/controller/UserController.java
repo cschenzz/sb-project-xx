@@ -140,31 +140,6 @@ public class UserController extends BaseController {
         return result ? R.ok() : R.error();
     }
 
-    //--------------olddddd---------------
-
-    /**
-     * 删除单个项目,注意id字段类型是Integer还是Long
-     */
-    @GetMapping("/remove/{id}")
-    @ResponseBody
-    @RequiresPermissions("system:user:remove")
-    public R remove(@PathVariable("id") Long id) {
-        if (userService.removeById(id)) {
-            return R.ok();
-        }
-        return R.error();
-    }
-
-    /**
-     * 批量删除项目
-     */
-    @PostMapping("/batchRemove")
-    @ResponseBody
-    @RequiresPermissions("system:user:remove")
-    public R remove(@RequestParam("ids[]") Long[] ids) {
-        boolean result = userService.removeByIds(Arrays.asList(ids));
-        return result ? R.ok() : R.error();
-    }
     //-------------------
 
 }
