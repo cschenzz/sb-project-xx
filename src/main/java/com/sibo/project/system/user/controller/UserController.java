@@ -8,13 +8,11 @@ import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
 import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
-import com.sibo.project.system.role.service.IRoleService;
 import com.sibo.project.system.user.entity.User;
 import com.sibo.project.system.user.service.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,16 +25,17 @@ import java.util.List;
  * @author chenzz
  */
 @Controller
-@RequestMapping("/system/user")
+@RequestMapping("system/user")
 public class UserController extends BaseController {
+
     private String prefix = "system/user";
 
     @Autowired
     private IUserService userService;
 
-    @Autowired
-    private IRoleService roleService;
-
+    /**
+     * 用户列表
+     */
     @RequiresPermissions("system:user:view")
     @GetMapping()
     public String user(ModelMap mmap) {
@@ -44,115 +43,128 @@ public class UserController extends BaseController {
         return prefix + "/user";
     }
 
-    @RequiresPermissions("system:user:list")
-    @PostMapping("/list")
+    /**
+     * 新增用户
+     */
+    @GetMapping("/add")
+    public String add() {
+        return prefix + "/add";
+    }
+
+    /**
+     * 修改用户
+     */
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, ModelMap mmap) {
+        User user = userService.getById(id);
+        mmap.put("user", user);
+        return prefix + "/edit";
+    }
+
+    /**
+     * 详情页面
+     */
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") Integer id, ModelMap mmap) {
+        User user = userService.getById(id);
+        mmap.put("user", user);
+        return prefix + "/detail";
+    }
+
+    //-----------------json----------------
+
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
     @ResponseBody
-    public R list(User user) {
+    @RequiresPermissions("system:user:list")
+    public R listPage(User user) {
+        //-----------------------
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
 
         IPage<User> pageList = userService.page(new Page<>(pageNum, pageSize), null);
         return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
+        //----------------------------------------------
     }
 
     /**
-     * 新增用户
+     * 信息
      */
-    @GetMapping("/add")
-    public String add(ModelMap mmap) {
-        mmap.put("roles", roleService.selectRoleAll());
-        return prefix + "/add";
+    @RequestMapping("/info/{id}")
+    @ResponseBody
+    @RequiresPermissions("system:user:info")
+    public R info(@PathVariable("id") Integer id) {
+        User user = userService.getById(id);
+        //return R.ok().data(user);
+        return R.ok().put("user", user);
     }
 
     /**
      * 新增保存用户
      */
     @RequiresPermissions("system:user:add")
-    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @Log(title = "用户", businessType = BusinessType.INSERT)
     @PostMapping("/add")
-    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public R addSave(User user) {
-        userService.insertUser(user);
+        userService.save(user);
         return R.ok();
-    }
-
-    /**
-     * 修改用户
-     */
-    @GetMapping("/edit/{userId}")
-    public String edit(@PathVariable("userId") Long userId, ModelMap mmap) {
-        mmap.put("user", userService.selectUserById(userId));
-        mmap.put("roles", roleService.selectRolesByUserId(userId));
-        return prefix + "/edit";
     }
 
     /**
      * 修改保存用户
      */
     @RequiresPermissions("system:user:edit")
-    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @Log(title = "用户", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
-    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public R editSave(User user) {
-        userService.updateUser(user);
+        userService.updateById(user);
         return R.ok();
     }
 
-    @RequiresPermissions("system:user:resetPwd")
-    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-    @GetMapping("/resetPwd/{userId}")
-    public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
-        mmap.put("user", userService.selectUserById(userId));
-        return prefix + "/resetPwd";
-    }
-
-    @RequiresPermissions("system:user:resetPwd")
-    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-    @PostMapping("/resetPwd")
-    @ResponseBody
-    public R resetPwd(User user) {
-        return userService.resetUserPwd(user) ? success() : error();
-    }
-
+    /**
+     * 删除用户
+     */
     @RequiresPermissions("system:user:remove")
-    @Log(title = "用户管理", businessType = BusinessType.DELETE)
+    @Log(title = "用户", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public R remove(String ids) {
         List<String> idList = Arrays.asList(ids.split(","));
         boolean result = userService.removeByIds(idList);
-        if (result) return R.ok();
+        return result ? R.ok() : R.error();
+    }
 
+    //--------------olddddd---------------
+
+    /**
+     * 删除单个项目,注意id字段类型是Integer还是Long
+     */
+    @GetMapping("/remove/{id}")
+    @ResponseBody
+    @RequiresPermissions("system:user:remove")
+    public R remove(@PathVariable("id") Long id) {
+        if (userService.removeById(id)) {
+            return R.ok();
+        }
         return R.error();
     }
 
     /**
-     * 校验用户名
+     * 批量删除项目
      */
-    @PostMapping("/checkLoginNameUnique")
+    @PostMapping("/batchRemove")
     @ResponseBody
-    public String checkLoginNameUnique(User user) {
-        return userService.checkLoginNameUnique(user.getName());
+    @RequiresPermissions("system:user:remove")
+    public R remove(@RequestParam("ids[]") Long[] ids) {
+        boolean result = userService.removeByIds(Arrays.asList(ids));
+        return result ? R.ok() : R.error();
     }
+    //-------------------
 
-    /**
-     * 校验手机号码
-     */
-    @PostMapping("/checkPhoneUnique")
-    @ResponseBody
-    public String checkPhoneUnique(User user) {
-        return userService.checkPhoneUnique(user);
-    }
-
-    /**
-     * 校验email邮箱
-     */
-    @PostMapping("/checkEmailUnique")
-    @ResponseBody
-    public String checkEmailUnique(User user) {
-        return userService.checkEmailUnique(user);
-    }
 }
