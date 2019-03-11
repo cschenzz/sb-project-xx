@@ -81,10 +81,7 @@ public class LogAspect {
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null) {
                 operLog.setOperName(currentUser.getLoginName());
-                if (StringUtils.isNotNull(currentUser.getDept())
-                        && StringUtils.isNotEmpty(currentUser.getDept().getDeptName())) {
-                    operLog.setDeptName(currentUser.getDept().getDeptName());
-                }
+                operLog.setDeptName("无部门");
             }
 
             if (e != null) {
@@ -110,7 +107,7 @@ public class LogAspect {
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
      *
-     * @param joinPoint 切点
+     * @param log 切点
      * @return 方法描述
      * @throws Exception
      */
@@ -132,7 +129,6 @@ public class LogAspect {
      * 获取请求的参数，放到log中
      *
      * @param operLog
-     * @param request
      */
     private void setRequestValue(OperLog operLog) {
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();

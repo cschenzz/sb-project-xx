@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.aspectj.lang.annotation.Excel;
 import com.sibo.framework.web.entity.BaseEntity;
-import com.sibo.project.system.dept.entity.Dept;
 import com.sibo.project.system.role.entity.Role;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -108,12 +107,6 @@ public class User extends BaseEntity {
      */
     @Excel(name = "最后登陆时间")
     private Date loginDate;
-
-    /**
-     * 部门对象
-     */
-    @TableField(exist = false)
-    private Dept dept;
 
     /**
      * 角色集合
@@ -269,14 +262,6 @@ public class User extends BaseEntity {
 
     public void setLoginDate(Date loginDate) {
         this.loginDate = loginDate;
-    }
-
-    public Dept getDept() {
-        return dept;
-    }
-
-    public void setDept(Dept dept) {
-        this.dept = dept;
     }
 
     public List<Role> getRoles() {

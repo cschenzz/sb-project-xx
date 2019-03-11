@@ -6,7 +6,6 @@ import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
-import com.sibo.project.system.post.service.IPostService;
 import com.sibo.project.system.role.service.IRoleService;
 import com.sibo.project.system.user.entity.User;
 import com.sibo.project.system.user.service.IUserService;
@@ -34,9 +33,6 @@ public class UserController extends BaseController {
 
     @Autowired
     private IRoleService roleService;
-
-    @Autowired
-    private IPostService postService;
 
     @RequiresPermissions("system:user:view")
     @GetMapping()
@@ -70,7 +66,6 @@ public class UserController extends BaseController {
     @GetMapping("/add")
     public String add(ModelMap mmap) {
         mmap.put("roles", roleService.selectRoleAll());
-        mmap.put("posts", postService.selectPostAll());
         return prefix + "/add";
     }
 
@@ -96,7 +91,6 @@ public class UserController extends BaseController {
     public String edit(@PathVariable("userId") Long userId, ModelMap mmap) {
         mmap.put("user", userService.selectUserById(userId));
         mmap.put("roles", roleService.selectRolesByUserId(userId));
-        mmap.put("posts", postService.selectPostsByUserId(userId));
         return prefix + "/edit";
     }
 

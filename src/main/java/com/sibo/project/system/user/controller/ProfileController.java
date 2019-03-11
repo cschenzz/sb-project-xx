@@ -45,7 +45,6 @@ public class ProfileController extends BaseController {
         user.setSex(dict.getLabel("sys_user_sex", user.getSex()));
         mmap.put("user", user);
         mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
-        mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
         return prefix + "/profile";
     }
 

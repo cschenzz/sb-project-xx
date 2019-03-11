@@ -7,15 +7,11 @@ import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.aspectj.lang.annotation.DataScope;
 import com.sibo.framework.shiro.service.PasswordService;
-import com.sibo.project.system.post.dao.PostMapper;
-import com.sibo.project.system.post.entity.Post;
 import com.sibo.project.system.role.dao.RoleMapper;
 import com.sibo.project.system.role.entity.Role;
 import com.sibo.project.system.user.dao.UserMapper;
-import com.sibo.project.system.user.dao.UserPostMapper;
 import com.sibo.project.system.user.dao.UserRoleMapper;
 import com.sibo.project.system.user.entity.User;
-import com.sibo.project.system.user.entity.UserPost;
 import com.sibo.project.system.user.entity.UserRole;
 import com.sibo.project.system.user.service.IUserService;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -39,12 +35,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private RoleMapper roleMapper;
-
-    @Autowired
-    private PostMapper postMapper;
-
-    @Autowired
-    private UserPostMapper userPostMapper;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -119,8 +109,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public int deleteUserById(Long userId) {
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
-        // 删除用户与岗位表
-        userPostMapper.deleteUserPostByUserId(userId);
         return userMapper.deleteUserById(userId);
     }
 
@@ -154,8 +142,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setCreateBy(ShiroUtils.getLoginName());
         // 新增用户信息
         int rows = userMapper.insertUser(user);
-        // 新增用户岗位关联
-        insertUserPost(user);
         // 新增用户与角色管理
         insertUserRole(user);
         return rows;
@@ -175,10 +161,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
         insertUserRole(user);
-        // 删除用户与岗位关联
-        userPostMapper.deleteUserPostByUserId(userId);
-        // 新增用户与岗位管理
-        insertUserPost(user);
         return userMapper.updateUser(user);
     }
 
@@ -222,25 +204,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         if (list.size() > 0) {
             userRoleMapper.batchUserRole(list);
-        }
-    }
-
-    /**
-     * 新增用户岗位信息
-     *
-     * @param user 用户对象
-     */
-    public void insertUserPost(User user) {
-        // 新增用户与岗位管理
-        List<UserPost> list = new ArrayList<UserPost>();
-        for (Long postId : user.getPostIds()) {
-            UserPost up = new UserPost();
-            up.setUserId(user.getUserId());
-            up.setPostId(postId);
-            list.add(up);
-        }
-        if (list.size() > 0) {
-            userPostMapper.batchUserPost(list);
         }
     }
 
@@ -303,25 +266,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         StringBuffer idsStr = new StringBuffer();
         for (Role role : list) {
             idsStr.append(role.getRoleName()).append(",");
-        }
-        if (StringUtils.isNotEmpty(idsStr.toString())) {
-            return idsStr.substring(0, idsStr.length() - 1);
-        }
-        return idsStr.toString();
-    }
-
-    /**
-     * 查询用户所属岗位组
-     *
-     * @param userId 用户ID
-     * @return 结果
-     */
-    @Override
-    public String selectUserPostGroup(Long userId) {
-        List<Post> list = postMapper.selectPostsByUserId(userId);
-        StringBuffer idsStr = new StringBuffer();
-        for (Post post : list) {
-            idsStr.append(post.getPostName()).append(",");
         }
         if (StringUtils.isNotEmpty(idsStr.toString())) {
             return idsStr.substring(0, idsStr.length() - 1);
