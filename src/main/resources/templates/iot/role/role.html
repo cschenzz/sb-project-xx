@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="include_moltran :: header"></head>
+
+<body class="fixed-left">
+<div id="wrapper">
+    <div th:include="include_moltran :: topbar"></div>
+    <div th:include="include_moltran :: leftsidebar"></div>
+    <div class="content-page">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="pull-left page-title"></h4>
+                        <ol class="breadcrumb pull-right">
+                            <li><a href="/">管理中心</a></li>
+                            <li class="active">角色管理</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <!--start内容start-->
+
+                        <div class="wrapper wrapper-content ui-layout-center">
+
+                            <!-- ============================================================== -->
+
+                            <div class="container-div">
+                                <!-- panel-搜索栏 -->
+                                <div class="col-sm-12 search-collapse panel panel-success">
+                                    <div class="panel-body">
+
+                                        <form id="formId" class="form-inline" role="form">
+                                            <div class="form-group">
+                                                <label class="sr-only" for="key_word">搜索关键字</label>
+                                                <input type="text" class="form-control" id="key_word" name="key_word" placeholder="搜索关键字">
+                                            </div>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                                        </form>
+                                    </div> <!-- panel-body -->
+                                </div>
+
+	                        	<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+	                        		<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="iot:role:add">
+	                        			<i class="fa fa-plus"></i> 添加
+	                        		</a>
+	                        		<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="iot:role:edit">
+	                                    <i class="fa fa-edit"></i> 修改
+	                                </a>
+	                        		<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="iot:role:remove">
+	                        			<i class="fa fa-remove"></i> 删除
+	                        		</a>
+	                        	</div>
+
+                                <div class="col-sm-12 select-table table-striped panel panel-default">
+                                    <div class="panel-body">
+                                        <table id="bootstrap-table" class="bootstrap-table" data-mobile-responsive="true">
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- ============================================================== -->
+
+
+                        </div>
+                        <!--end内容end-->
+
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+
+        </div>
+        <div th:include="include_moltran :: bottom"></div>
+    </div>
+
+    <div th:include="include_moltran :: footer"></div>
+</div>
+
+<!-- ============================================================== -->
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('iot:role:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('iot:role:remove')}]];
+    var prefix = ctx + "iot/role";
+
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            modalName: "角色",
+            search: false,
+            showSearch: true,
+            showExport: false,
+            columns: [{
+                checkbox: true
+            },
+            {
+                field : 'roleId',
+                title : '#',
+                visible: true
+            },
+            {
+                field : 'roleName',
+                title : '角色名称',
+                sortable: true
+            },
+            {
+                field : 'roleKey',
+                title : '角色权限字符串',
+                sortable: true
+            },
+            {
+                field : 'roleSort',
+                title : '显示顺序',
+                sortable: true
+            },
+            {
+                field : 'status',
+                title : '角色状态（0正常 1停用）',
+                sortable: true
+            },
+            {
+                field : 'remark',
+                title : '备注',
+                sortable: true
+            },
+            {
+                title: '操作',
+                align: 'center',
+                formatter: function(value, row, index) {
+                    var actions = [];
+                    actions.push('<a class="btn btn-primary btn-sm" href="#" onclick="__detail(\'' + row.roleId + '\')"><i class="fa fa-rocket"></i>详情</a> ');
+                    //----------------------------
+                    actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.roleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                    actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.roleId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                    return actions.join('');
+                }
+            }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>
