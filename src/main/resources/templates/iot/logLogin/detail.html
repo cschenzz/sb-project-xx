@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="container">
+    <!--=====================-->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>详细信息</h5>
+
+        </div>
+        <div class="ibox-content">
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                登陆用户id：
+                <span th:text="${logLogin.userid}">登陆用户id</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                登录账号：
+                <span th:text="${logLogin.loginName}">登录账号</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                登录IP地址：
+                <span th:text="${logLogin.loginIp}">登录IP地址</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                登录状态（0成功 1失败）：
+                <span th:text="${logLogin.loginResult}">登录状态（0成功 1失败）</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                提示消息：
+                <span th:text="${logLogin.message}">提示消息</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                访问时间：
+                <span th:text="${logLogin.loginTime}">访问时间</span>
+            </p>
+        </div>
+    </div>
+    <!--=====================-->
+
+    <hr/>
+    <br/>
+    <div class="row">
+        <label class="col-xs-2 control-label">登陆用户id：</label>
+        <div class="col-xs-10" th:text="${logLogin.userid}">
+            登陆用户id
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">登录账号：</label>
+        <div class="col-xs-10" th:text="${logLogin.loginName}">
+            登录账号
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">登录IP地址：</label>
+        <div class="col-xs-10" th:text="${logLogin.loginIp}">
+            登录IP地址
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">登录状态（0成功 1失败）：</label>
+        <div class="col-xs-10" th:text="${logLogin.loginResult}">
+            登录状态（0成功 1失败）
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">提示消息：</label>
+        <div class="col-xs-10" th:text="${logLogin.message}">
+            提示消息
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">访问时间：</label>
+        <div class="col-xs-10" th:text="${logLogin.loginTime}">
+            访问时间
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+
+</body>
+</html>
