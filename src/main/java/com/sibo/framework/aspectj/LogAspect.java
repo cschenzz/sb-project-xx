@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.sibo.common.utils.ServletUtils;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
+import com.sibo.common.utils.spring.SpringUtils;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessStatus;
-import com.sibo.framework.manager.AsyncManager;
-import com.sibo.framework.manager.factory.AsyncFactory;
-import com.sibo.project.monitor.operlog.entity.OperLog;
+import com.sibo.project.iot.logOper.entity.LogOperEntity;
+import com.sibo.project.iot.logOper.service.ILogOperService;
 import com.sibo.project.system.user.entity.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -72,7 +73,7 @@ public class LogAspect {
             User currentUser = ShiroUtils.getUser();
 
             // *========数据库日志=========*//
-            OperLog operLog = new OperLog();
+            LogOperEntity operLog = new LogOperEntity();
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
             // 请求的地址
             String ip = ShiroUtils.getIp();
@@ -80,8 +81,7 @@ public class LogAspect {
 
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null) {
-                operLog.setOperName(currentUser.getName());
-                operLog.setDeptName("无部门");
+                operLog.setUserId(currentUser.getId());
             }
 
             if (e != null) {
@@ -94,8 +94,10 @@ public class LogAspect {
             operLog.setMethod(className + "." + methodName + "()");
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
+            operLog.setOperTime(new Date());
+            SpringUtils.getBean(ILogOperService.class).save(operLog);
             // 保存数据库
-            AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+            // AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("==前置通知异常==");
@@ -111,13 +113,11 @@ public class LogAspect {
      * @return 方法描述
      * @throws Exception
      */
-    public void getControllerMethodDescription(Log log, OperLog operLog) throws Exception {
+    public void getControllerMethodDescription(Log log, LogOperEntity operLog) throws Exception {
         // 设置action动作
         operLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
         operLog.setTitle(log.title());
-        // 设置操作人类别
-        operLog.setOperatorType(log.operatorType().ordinal());
         // 是否需要保存request，参数和值
         if (log.isSaveRequestData()) {
             // 获取参数的信息，传入到数据库中。
@@ -130,7 +130,7 @@ public class LogAspect {
      *
      * @param operLog
      */
-    private void setRequestValue(OperLog operLog) {
+    private void setRequestValue(LogOperEntity operLog) {
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
         String params = JSONObject.toJSONString(map);
         operLog.setOperParam(StringUtils.substring(params, 0, 255));
