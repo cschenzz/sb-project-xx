@@ -25,9 +25,14 @@ public class PageDomain {
      */
     private String isAsc;
 
+    /**
+     * 搜索关键字
+     */
+    private String searchKeyWord;
+
     public String getOrderBy() {
         if (StringUtils.isEmpty(orderByColumn)) {
-            return "" ;
+            return "";
         }
         return StringUtils.toUnderScoreCase(orderByColumn) + " " + isAsc;
     }
@@ -62,6 +67,14 @@ public class PageDomain {
 
     public void setIsAsc(String isAsc) {
         this.isAsc = isAsc;
+    }
+
+    public String getSearchKeyWord() {
+        return searchKeyWord;
+    }
+
+    public void setSearchKeyWord(String searchKeyWord) {
+        this.searchKeyWord = searchKeyWord;
     }
 
 }

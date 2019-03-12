@@ -1,5 +1,7 @@
 package com.sibo.project.system.user.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.framework.aspectj.lang.annotation.Log;
@@ -10,6 +12,7 @@ import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.user.entity.User;
 import com.sibo.project.system.user.service.IUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -85,6 +88,20 @@ public class UserController extends BaseController {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
+        String keyWord = pageDomain.getSearchKeyWord();
+
+        if (!StringUtils.isEmpty(keyWord)) {
+            //-----------------------
+            Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                    .like(User::getName, keyWord)
+                    .or().like(User::getMobile, keyWord)
+                    .orderByDesc(User::getId);
+
+            //---------------------------
+            IPage<User> pageList = userService.page(new Page<>(pageNum, pageSize), wrapper);
+            return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
+            //-----------
+        }
 
         IPage<User> pageList = userService.page(new Page<>(pageNum, pageSize), null);
         return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
