@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-iotProjects-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目id,程序生成,唯一：</label>
+				<div class="col-sm-8">
+					<input id="projectId" name="projectId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目名称：</label>
+				<div class="col-sm-8">
+					<input id="projectName" name="projectName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">访问地址：</label>
+				<div class="col-sm-8">
+					<input id="projectUrl" name="projectUrl" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">绑定域名：</label>
+				<div class="col-sm-8">
+					<input id="projectDomain" name="projectDomain" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目TOKEN：</label>
+				<div class="col-sm-8">
+					<input id="token" name="token" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目LOGO：</label>
+				<div class="col-sm-8">
+					<input id="projectLogo" name="projectLogo" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目说明：</label>
+				<div class="col-sm-8">
+					<input id="projectDescription" name="projectDescription" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">负责人：</label>
+				<div class="col-sm-8">
+					<input id="projectCharge" name="projectCharge" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">负责人电话：</label>
+				<div class="col-sm-8">
+					<input id="chargetel" name="chargetel" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label"> 负责人邮箱：</label>
+				<div class="col-sm-8">
+					<input id="chargeemail" name="chargeemail" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目状态：</label>
+				<div class="col-sm-8">
+					<input id="projectStatus" name="projectStatus" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">所属用户：</label>
+				<div class="col-sm-8">
+					<input id="userid" name="userid" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "iot/iotProjects";
+		$("#form-iotProjects-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-iotProjects-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

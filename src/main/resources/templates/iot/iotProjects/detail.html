@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="container">
+    <!--=====================-->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>详细信息</h5>
+
+        </div>
+        <div class="ibox-content">
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                项目id,程序生成,唯一：
+                <span th:text="${iotProjects.projectId}">项目id,程序生成,唯一</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                项目名称：
+                <span th:text="${iotProjects.projectName}">项目名称</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                访问地址：
+                <span th:text="${iotProjects.projectUrl}">访问地址</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                绑定域名：
+                <span th:text="${iotProjects.projectDomain}">绑定域名</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                项目TOKEN：
+                <span th:text="${iotProjects.token}">项目TOKEN</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                项目LOGO：
+                <span th:text="${iotProjects.projectLogo}">项目LOGO</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                项目说明：
+                <span th:text="${iotProjects.projectDescription}">项目说明</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                负责人：
+                <span th:text="${iotProjects.projectCharge}">负责人</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                负责人电话：
+                <span th:text="${iotProjects.chargetel}">负责人电话</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                 负责人邮箱：
+                <span th:text="${iotProjects.chargeemail}"> 负责人邮箱</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                项目状态：
+                <span th:text="${iotProjects.projectStatus}">项目状态</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                所属用户：
+                <span th:text="${iotProjects.userid}">所属用户</span>
+            </p>
+        </div>
+    </div>
+    <!--=====================-->
+
+    <hr/>
+    <br/>
+    <div class="row">
+        <label class="col-xs-2 control-label">项目id,程序生成,唯一：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectId}">
+            项目id,程序生成,唯一
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">项目名称：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectName}">
+            项目名称
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">访问地址：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectUrl}">
+            访问地址
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">绑定域名：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectDomain}">
+            绑定域名
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">项目TOKEN：</label>
+        <div class="col-xs-10" th:text="${iotProjects.token}">
+            项目TOKEN
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">项目LOGO：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectLogo}">
+            项目LOGO
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">项目说明：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectDescription}">
+            项目说明
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">负责人：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectCharge}">
+            负责人
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">负责人电话：</label>
+        <div class="col-xs-10" th:text="${iotProjects.chargetel}">
+            负责人电话
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label"> 负责人邮箱：</label>
+        <div class="col-xs-10" th:text="${iotProjects.chargeemail}">
+             负责人邮箱
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">项目状态：</label>
+        <div class="col-xs-10" th:text="${iotProjects.projectStatus}">
+            项目状态
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">所属用户：</label>
+        <div class="col-xs-10" th:text="${iotProjects.userid}">
+            所属用户
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+
+</body>
+</html>

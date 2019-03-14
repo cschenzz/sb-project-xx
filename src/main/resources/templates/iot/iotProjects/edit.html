@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-iotProjects-edit" th:object="${iotProjects}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目id,程序生成,唯一：</label>
+				<div class="col-sm-8">
+					<input id="projectId" name="projectId" th:field="*{projectId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目名称：</label>
+				<div class="col-sm-8">
+					<input id="projectName" name="projectName" th:field="*{projectName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">访问地址：</label>
+				<div class="col-sm-8">
+					<input id="projectUrl" name="projectUrl" th:field="*{projectUrl}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">绑定域名：</label>
+				<div class="col-sm-8">
+					<input id="projectDomain" name="projectDomain" th:field="*{projectDomain}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目TOKEN：</label>
+				<div class="col-sm-8">
+					<input id="token" name="token" th:field="*{token}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目LOGO：</label>
+				<div class="col-sm-8">
+					<input id="projectLogo" name="projectLogo" th:field="*{projectLogo}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目说明：</label>
+				<div class="col-sm-8">
+					<input id="projectDescription" name="projectDescription" th:field="*{projectDescription}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">负责人：</label>
+				<div class="col-sm-8">
+					<input id="projectCharge" name="projectCharge" th:field="*{projectCharge}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">负责人电话：</label>
+				<div class="col-sm-8">
+					<input id="chargetel" name="chargetel" th:field="*{chargetel}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label"> 负责人邮箱：</label>
+				<div class="col-sm-8">
+					<input id="chargeemail" name="chargeemail" th:field="*{chargeemail}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">项目状态：</label>
+				<div class="col-sm-8">
+					<input id="projectStatus" name="projectStatus" th:field="*{projectStatus}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">所属用户：</label>
+				<div class="col-sm-8">
+					<input id="userid" name="userid" th:field="*{userid}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "iot/iotProjects";
+		$("#form-iotProjects-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-iotProjects-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

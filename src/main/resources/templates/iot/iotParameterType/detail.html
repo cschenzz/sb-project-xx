@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="container">
+    <!--=====================-->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>详细信息</h5>
+
+        </div>
+        <div class="ibox-content">
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                名称：
+                <span th:text="${iotParameterType.typeName}">名称</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                添加时间：
+                <span th:text="${iotParameterType.createTime}">添加时间</span>
+            </p>
+        </div>
+    </div>
+    <!--=====================-->
+
+    <hr/>
+    <br/>
+    <div class="row">
+        <label class="col-xs-2 control-label">名称：</label>
+        <div class="col-xs-10" th:text="${iotParameterType.typeName}">
+            名称
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">添加时间：</label>
+        <div class="col-xs-10" th:text="${iotParameterType.createTime}">
+            添加时间
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-iotModelRule-edit" th:object="${iotModelRule}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">模型id：</label>
+				<div class="col-sm-8">
+					<input id="modelId" name="modelId" th:field="*{modelId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">执行顺序：</label>
+				<div class="col-sm-8">
+					<input id="ruleExecuteOrder" name="ruleExecuteOrder" th:field="*{ruleExecuteOrder}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">规则名称：</label>
+				<div class="col-sm-8">
+					<input id="ruleName" name="ruleName" th:field="*{ruleName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">规则条件：</label>
+				<div class="col-sm-8">
+					<input id="ruleCondition" name="ruleCondition" th:field="*{ruleCondition}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">执行动作：</label>
+				<div class="col-sm-8">
+					<input id="ruleDo" name="ruleDo" th:field="*{ruleDo}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">规则说明：</label>
+				<div class="col-sm-8">
+					<input id="ruleDescription" name="ruleDescription" th:field="*{ruleDescription}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">添加,修改时间：</label>
+				<div class="col-sm-8">
+					<input id="ruleModitime" name="ruleModitime" th:field="*{ruleModitime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核状态：</label>
+				<div class="col-sm-8">
+					<input id="approvalStatus" name="approvalStatus" th:field="*{approvalStatus}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">审核时间：</label>
+				<div class="col-sm-8">
+					<input id="approvalTime" name="approvalTime" th:field="*{approvalTime}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "iot/iotModelRule";
+		$("#form-iotModelRule-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			}
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-iotModelRule-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

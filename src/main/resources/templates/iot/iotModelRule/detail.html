@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="container">
+    <!--=====================-->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>详细信息</h5>
+
+        </div>
+        <div class="ibox-content">
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                模型id：
+                <span th:text="${iotModelRule.modelId}">模型id</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                执行顺序：
+                <span th:text="${iotModelRule.ruleExecuteOrder}">执行顺序</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                规则名称：
+                <span th:text="${iotModelRule.ruleName}">规则名称</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                规则条件：
+                <span th:text="${iotModelRule.ruleCondition}">规则条件</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                执行动作：
+                <span th:text="${iotModelRule.ruleDo}">执行动作</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                规则说明：
+                <span th:text="${iotModelRule.ruleDescription}">规则说明</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                添加,修改时间：
+                <span th:text="${iotModelRule.ruleModitime}">添加,修改时间</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                审核状态：
+                <span th:text="${iotModelRule.approvalStatus}">审核状态</span>
+            </p>
+            <p><i class="fa fa-send-o"></i> &nbsp;
+                审核时间：
+                <span th:text="${iotModelRule.approvalTime}">审核时间</span>
+            </p>
+        </div>
+    </div>
+    <!--=====================-->
+
+    <hr/>
+    <br/>
+    <div class="row">
+        <label class="col-xs-2 control-label">模型id：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.modelId}">
+            模型id
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">执行顺序：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.ruleExecuteOrder}">
+            执行顺序
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">规则名称：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.ruleName}">
+            规则名称
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">规则条件：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.ruleCondition}">
+            规则条件
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">执行动作：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.ruleDo}">
+            执行动作
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">规则说明：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.ruleDescription}">
+            规则说明
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">添加,修改时间：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.ruleModitime}">
+            添加,修改时间
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">审核状态：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.approvalStatus}">
+            审核状态
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-xs-2 control-label">审核时间：</label>
+        <div class="col-xs-10" th:text="${iotModelRule.approvalTime}">
+            审核时间
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+
+</body>
+</html>
