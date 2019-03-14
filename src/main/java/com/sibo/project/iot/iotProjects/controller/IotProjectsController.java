@@ -99,7 +99,7 @@ public class IotProjectsController extends BaseController {
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotProjectsEntity> wrapper = new LambdaQueryWrapper<IotProjectsEntity>()
-                    //.like(IotProjectsEntity::getTitle, keyWord)
+                    .like(IotProjectsEntity::getProjectName, keyWord)
                     //.or().like(IotProjectsEntity::getSummary, keyWord)
                     .orderByDesc(IotProjectsEntity::getId);
 

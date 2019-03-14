@@ -99,7 +99,7 @@ public class IotProtocolController extends BaseController {
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotProtocolEntity> wrapper = new LambdaQueryWrapper<IotProtocolEntity>()
-                    //.like(IotProtocolEntity::getTitle, keyWord)
+                    .like(IotProtocolEntity::getProtocol, keyWord)
                     //.or().like(IotProtocolEntity::getSummary, keyWord)
                     .orderByDesc(IotProtocolEntity::getId);
 

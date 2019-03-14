@@ -99,7 +99,7 @@ public class IotParameterTypeController extends BaseController {
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotParameterTypeEntity> wrapper = new LambdaQueryWrapper<IotParameterTypeEntity>()
-                    //.like(IotParameterTypeEntity::getTitle, keyWord)
+                    .like(IotParameterTypeEntity::getTypeName, keyWord)
                     //.or().like(IotParameterTypeEntity::getSummary, keyWord)
                     .orderByDesc(IotParameterTypeEntity::getId);
 

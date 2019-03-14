@@ -99,7 +99,7 @@ public class IotModelRuleController extends BaseController {
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotModelRuleEntity> wrapper = new LambdaQueryWrapper<IotModelRuleEntity>()
-                    //.like(IotModelRuleEntity::getTitle, keyWord)
+                    .like(IotModelRuleEntity::getRuleName, keyWord)
                     //.or().like(IotModelRuleEntity::getSummary, keyWord)
                     .orderByDesc(IotModelRuleEntity::getId);
 
