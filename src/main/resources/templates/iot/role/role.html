@@ -91,7 +91,7 @@
     var editFlag = [[${@permission.hasPermi('iot:role:edit')}]];
     var removeFlag = [[${@permission.hasPermi('iot:role:remove')}]];
     var prefix = ctx + "iot/role";
-
+    var datas = [[${@dict.getType('sys_job_status')}]];
 
     $(function() {
         var options = {
@@ -128,8 +128,10 @@
             },
             {
                 field : 'status',
-                title : '角色状态（0正常 1停用）',
-                sortable: true
+                title : '角色状态',
+                formatter: function(value, row, index) {
+                    return $.table.selectDictLabel(datas, value);
+                }
             },
             {
                 field : 'remark',

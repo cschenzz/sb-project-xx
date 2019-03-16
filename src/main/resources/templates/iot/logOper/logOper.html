@@ -85,7 +85,7 @@
     var editFlag = [[${@permission.hasPermi('iot:logOper:edit')}]];
     var removeFlag = [[${@permission.hasPermi('iot:logOper:remove')}]];
     var prefix = ctx + "iot/logOper";
-
+    var datas = [[${@dict.getType('sys_common_status')}]];
 
     $(function() {
         var options = {
@@ -132,8 +132,10 @@
             },
             {
                 field : 'status',
-                title : '操作状态（0正常 1异常）',
-                sortable: true
+                title : '操作状态',
+                formatter: function(value, row, index) {
+                    return $.table.selectDictLabel(datas, value);
+                }
             },
             {
                 field : 'operTime',

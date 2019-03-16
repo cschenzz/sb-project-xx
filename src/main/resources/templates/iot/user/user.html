@@ -91,7 +91,7 @@
     var editFlag = [[${@permission.hasPermi('iot:user:edit')}]];
     var removeFlag = [[${@permission.hasPermi('iot:user:remove')}]];
     var prefix = ctx + "iot/user";
-
+    var datas = [[${@dict.getType('sys_user_sex')}]];
 
     $(function() {
         var options = {
@@ -128,8 +128,11 @@
             },
             {
                 field : 'sex',
-                title : '用户性别（0男 1女 2未知）',
-                sortable: true
+                title : '用户性别',
+                align: 'center',
+                formatter: function(value, row, index) {
+                    return $.table.selectDictLabel(datas, value);
+                }
             },
             {
                 field : 'realname',
