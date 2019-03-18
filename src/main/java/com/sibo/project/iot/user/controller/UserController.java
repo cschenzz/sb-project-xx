@@ -132,7 +132,7 @@ public class UserController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public R addSave(UserEntity user) {
-        userService.save(user);
+        userService.addSave(user);
         return R.ok();
     }
 
@@ -144,7 +144,7 @@ public class UserController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public R editSave(UserEntity user) {
-        userService.updateById(user);
+        userService.editSave(user);
         return R.ok();
     }
 
