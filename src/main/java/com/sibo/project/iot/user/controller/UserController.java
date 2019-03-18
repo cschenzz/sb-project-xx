@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sibo.common.validator.Assert;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
@@ -132,6 +133,8 @@ public class UserController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public R addSave(UserEntity user) {
+        verifyForm(user);
+
         userService.addSave(user);
         return R.ok();
     }
@@ -144,6 +147,7 @@ public class UserController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public R editSave(UserEntity user) {
+        // verifyForm(user);
         userService.editSave(user);
         return R.ok();
     }
@@ -162,4 +166,14 @@ public class UserController extends BaseController {
     }
     //-------------------
 
+    private void verifyForm(UserEntity user) {
+        Assert.isBlank(user.getName(), "登录名不能为空");
+        Assert.isBlank(user.getEmail(), "email不能为空");
+        Assert.isBlank(user.getMobile(), "手机号不能为空");
+        Assert.isBlank(user.getPassword(), "密码不能为空");
+
+        Assert.isNull(user.getProvince(), "省不能为空");
+        Assert.isNull(user.getCity(), "市不能为空");
+        Assert.isNull(user.getArea(), "县不能为空");
+    }
 }
