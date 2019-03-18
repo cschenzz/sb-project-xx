@@ -1,11 +1,12 @@
-package com.sibo.project.iot.user.dao;
+package com.sibo.project.system.user.dao;
 
-import com.sibo.project.iot.user.entity.UserEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.sibo.project.system.user.entity.UserEntity;
+
 
 /**
  * 用户 数据dao层
- * 
+ *
  * @author chenzz
  * @date 2019-03-12
  */

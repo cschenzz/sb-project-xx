@@ -9,7 +9,7 @@ import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessStatus;
 import com.sibo.project.iot.logOper.entity.LogOperEntity;
 import com.sibo.project.iot.logOper.service.ILogOperService;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -70,7 +70,7 @@ public class LogAspect {
             }
 
             // 获取当前的用户
-            User currentUser = ShiroUtils.getUser();
+            UserEntity currentUser = ShiroUtils.getUser();
 
             // *========数据库日志=========*//
             LogOperEntity operLog = new LogOperEntity();

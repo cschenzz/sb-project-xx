@@ -3,7 +3,7 @@ package com.sibo.common.utils.security;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.bean.BeanUtils;
 import com.sibo.framework.shiro.realm.UserRealm;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.mgt.RealmSecurityManager;
@@ -46,17 +46,17 @@ public class ShiroUtils {
         getSubjct().logout();
     }
 
-    public static User getUser() {
-        User user = null;
+    public static UserEntity getUser() {
+        UserEntity user = null;
         Object obj = getSubjct().getPrincipal();
         if (StringUtils.isNotNull(obj)) {
-            user = new User();
+            user = new UserEntity();
             BeanUtils.copyBeanProp(user, obj);
         }
         return user;
     }
 
-    public static void setUser(User user) {
+    public static void setUser(UserEntity user) {
         Subject subject = getSubjct();
         PrincipalCollection principalCollection = subject.getPrincipals();
         String realmName = principalCollection.getRealmNames().iterator().next();

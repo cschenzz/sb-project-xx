@@ -8,7 +8,7 @@ import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.shiro.service.LoginService;
 import com.sibo.project.system.menu.service.IMenuService;
 import com.sibo.project.system.role.service.IRoleService;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -44,7 +44,7 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
-        User user = ShiroUtils.getUser();
+        UserEntity user = ShiroUtils.getUser();
         // 角色列表
         Set<String> roles = new HashSet<String>();
         // 功能列表
@@ -77,7 +77,7 @@ public class UserRealm extends AuthorizingRealm {
             password = new String(upToken.getPassword());
         }
 
-        User user = null;
+        UserEntity user = null;
         try {
             user = loginService.login(username, password);
         } catch (UserNotExistsException e) {

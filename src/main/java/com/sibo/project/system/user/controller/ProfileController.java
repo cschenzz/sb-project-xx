@@ -7,7 +7,7 @@ import com.sibo.framework.config.SbConfig;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
 import com.sibo.framework.web.service.DictService;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import com.sibo.project.system.user.service.IUserService;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
@@ -41,16 +41,15 @@ public class ProfileController extends BaseController {
      */
     @GetMapping()
     public String profile(ModelMap mmap) {
-        User user = getUser();
+        UserEntity user = getUser();
         mmap.put("user", user);
-        mmap.put("roleGroup", userService.selectUserRoleGroup(user.getId()));
         return prefix + "/profile";
     }
 
     @GetMapping("/checkPassword")
     @ResponseBody
     public boolean checkPassword(String password) {
-        User user = getUser();
+        UserEntity user = getUser();
         String encrypt = new Md5Hash(user.getName() + password + user.getSalt()).toHex().toString();
         if (user.getPassword().equals(encrypt)) {
             return true;
@@ -62,18 +61,6 @@ public class ProfileController extends BaseController {
     public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
         mmap.put("user", userService.selectUserById(userId));
         return prefix + "/resetPwd";
-    }
-
-    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
-    @PostMapping("/resetPwd")
-    @ResponseBody
-    public R resetPwd(User user) {
-        boolean result = userService.resetUserPwd(user);
-        if (result) {
-            setUser(userService.selectUserById(user.getId()));
-            return success();
-        }
-        return error();
     }
 
     /**
@@ -100,7 +87,7 @@ public class ProfileController extends BaseController {
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
     @ResponseBody
-    public R update(User user) {
+    public R update(UserEntity user) {
         if (userService.updateUserInfo(user)) {
             setUser(userService.selectUserById(user.getId()));
             return success();
@@ -114,7 +101,7 @@ public class ProfileController extends BaseController {
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PostMapping("/updateAvatar")
     @ResponseBody
-    public R updateAvatar(User user, @RequestParam("avatarfile") MultipartFile file) {
+    public R updateAvatar(UserEntity user, @RequestParam("avatarfile") MultipartFile file) {
         try {
             if (!file.isEmpty()) {
                 String avatar = FileUploadUtils.upload(SbConfig.getAvatarPath(), file);

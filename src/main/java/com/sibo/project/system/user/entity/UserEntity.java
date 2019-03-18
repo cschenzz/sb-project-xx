@@ -2,9 +2,9 @@ package com.sibo.project.system.user.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.sibo.framework.web.entity.BaseXEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,10 +14,10 @@ import java.util.Date;
  * 用户表 sys_user
  *
  * @author chenzz
- * @date 2019-03-11
+ * @date 2019-03-12
  */
 @TableName("sys_user")
-public class User implements Serializable {
+public class UserEntity extends BaseXEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -148,16 +148,6 @@ public class User implements Serializable {
 
     public String getSalt() {
         return salt;
-    }
-
-    /**
-     * 生成随机盐
-     */
-    public void randomSalt() {
-        // 一个Byte占两个字节，此处生成的3字节，字符串长度为6
-        SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
-        String hex = secureRandom.nextBytes(3).toHex();
-        setSalt(hex);
     }
 
     public void setEmail(String email) {

@@ -2,11 +2,10 @@ package com.sibo.framework.shiro.service;
 
 import com.sibo.common.constant.Constants;
 import com.sibo.common.exception.user.UserPasswordNotMatchException;
-import com.sibo.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.sibo.common.utils.MessageUtils;
 import com.sibo.framework.manager.AsyncManager;
 import com.sibo.framework.manager.factory.AsyncFactory;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -38,7 +37,7 @@ public class PasswordService {
         loginRecordCache = cacheManager.getCache("loginRecordCache");
     }
 
-    public void validate(User user, String password) {
+    public void validate(UserEntity user, String password) {
         String loginName = user.getName();
 
         AtomicInteger retryCount = loginRecordCache.get(loginName);
@@ -61,7 +60,7 @@ public class PasswordService {
         }
     }
 
-    public boolean matches(User user, String newPassword) {
+    public boolean matches(UserEntity user, String newPassword) {
         return user.getPassword().equals(encryptPassword(user.getName(), newPassword, user.getSalt()));
     }
 

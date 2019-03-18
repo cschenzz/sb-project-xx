@@ -6,7 +6,7 @@ import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.manager.AsyncManager;
 import com.sibo.framework.manager.factory.AsyncFactory;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class LogoutFilter extends org.apache.shiro.web.filter.authc.LogoutFilter
             Subject subject = getSubject(request, response);
             String redirectUrl = getRedirectUrl(request, response, subject);
             try {
-                User user = ShiroUtils.getUser();
+                UserEntity user = ShiroUtils.getUser();
                 if (StringUtils.isNotNull(user)) {
                     String loginName = user.getName();
                     // 记录用户退出日志

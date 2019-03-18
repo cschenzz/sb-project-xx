@@ -10,7 +10,7 @@ import com.sibo.common.utils.ServletUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.manager.AsyncManager;
 import com.sibo.framework.manager.factory.AsyncFactory;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import com.sibo.project.system.user.entity.UserStatus;
 import com.sibo.project.system.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class LoginService {
     /**
      * 登录
      */
-    public User login(String username, String password) {
+    public UserEntity login(String username, String password) {
         // 验证码校验
         if (!StringUtils.isEmpty(ServletUtils.getRequest().getAttribute(ShiroConstants.CURRENT_CAPTCHA))) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error")));
@@ -59,7 +59,7 @@ public class LoginService {
         }
 
         // 查询用户信息
-        User user = userService.selectUserByLoginName(username);
+        UserEntity user = userService.selectUserByLoginName(username);
 
         if (user == null && maybeMobilePhoneNumber(username)) {
             user = userService.selectUserByPhoneNumber(username);
@@ -103,7 +103,7 @@ public class LoginService {
     /**
      * 记录登录信息
      */
-    public void recordLoginInfo(User user) {
+    public void recordLoginInfo(UserEntity user) {
         user.setLastLoginIp(ShiroUtils.getIp());
         user.setLastLogintime(DateUtils.getNowDate());
         userService.updateUserInfo(user);

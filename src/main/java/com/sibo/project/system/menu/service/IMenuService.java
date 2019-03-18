@@ -2,7 +2,7 @@ package com.sibo.project.system.menu.service;
 
 import com.sibo.project.system.menu.entity.Menu;
 import com.sibo.project.system.role.entity.Role;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ public interface IMenuService {
      * @param user 用户信息
      * @return 菜单列表
      */
-    public List<Menu> selectMenusByUser(User user);
+    public List<Menu> selectMenusByUser(UserEntity user);
 
     /**
      * 查询系统菜单列表

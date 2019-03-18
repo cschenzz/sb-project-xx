@@ -9,7 +9,7 @@ import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.menu.entity.Menu;
 import com.sibo.project.system.menu.service.IMenuService;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 
@@ -41,7 +41,7 @@ public class BaseController {
 
     protected void putBaseModelMap(ModelMap mmap, String annotationValue) {
         // 取身份信息
-        User user = getUser();
+        UserEntity user = getUser();
         // 根据用户id取出菜单
         List<Menu> menus = menuService.selectMenusByUser(user);
         mmap.put("menus", menus);
@@ -128,11 +128,11 @@ public class BaseController {
         return StringUtils.format("redirect:{}", url);
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return ShiroUtils.getUser();
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         ShiroUtils.setUser(user);
     }
 

@@ -9,7 +9,7 @@ import com.sibo.project.system.menu.entity.Menu;
 import com.sibo.project.system.menu.service.IMenuService;
 import com.sibo.project.system.role.dao.RoleMenuMapper;
 import com.sibo.project.system.role.entity.Role;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +34,11 @@ public class MenuServiceImpl implements IMenuService {
     /**
      * 根据用户查询菜单
      *
-     * @param userId 用户信息
+     * @param user 用户信息
      * @return 菜单列表
      */
     @Override
-    public List<Menu> selectMenusByUser(User user) {
+    public List<Menu> selectMenusByUser(UserEntity user) {
         List<Menu> menus = new LinkedList<Menu>();
         // 管理员显示所有菜单信息
         if (user.getId() == 1) {

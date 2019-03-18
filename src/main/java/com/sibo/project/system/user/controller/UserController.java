@@ -4,13 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sibo.common.validator.Assert;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
 import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
-import com.sibo.project.system.user.entity.User;
+import com.sibo.project.system.user.entity.UserEntity;
 import com.sibo.project.system.user.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -59,7 +60,7 @@ public class UserController extends BaseController {
      */
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, ModelMap mmap) {
-        User user = userService.getById(id);
+        UserEntity user = userService.getById(id);
         mmap.put("user", user);
         return prefix + "/edit";
     }
@@ -69,7 +70,7 @@ public class UserController extends BaseController {
      */
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Integer id, ModelMap mmap) {
-        User user = userService.getById(id);
+        UserEntity user = userService.getById(id);
         mmap.put("user", user);
         return prefix + "/detail";
     }
@@ -83,7 +84,7 @@ public class UserController extends BaseController {
     @RequestMapping("/list")
     @ResponseBody
     @RequiresPermissions("system:user:list")
-    public R listPage(User user) {
+    public R listPage(UserEntity user) {
         //-----------------------
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
@@ -92,18 +93,18 @@ public class UserController extends BaseController {
 
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
-            Wrapper<User> wrapper = new LambdaQueryWrapper<User>()
-                    .like(User::getName, keyWord)
-                    .or().like(User::getMobile, keyWord)
-                    .orderByDesc(User::getId);
+            Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
+                    .like(UserEntity::getName, keyWord)
+                    .or().like(UserEntity::getMobile, keyWord)
+                    .orderByDesc(UserEntity::getId);
 
             //---------------------------
-            IPage<User> pageList = userService.page(new Page<>(pageNum, pageSize), wrapper);
+            IPage<UserEntity> pageList = userService.page(new Page<>(pageNum, pageSize), wrapper);
             return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
             //-----------
         }
 
-        IPage<User> pageList = userService.page(new Page<>(pageNum, pageSize), null);
+        IPage<UserEntity> pageList = userService.page(new Page<>(pageNum, pageSize), null);
         return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
         //----------------------------------------------
     }
@@ -115,7 +116,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequiresPermissions("system:user:info")
     public R info(@PathVariable("id") Integer id) {
-        User user = userService.getById(id);
+        UserEntity user = userService.getById(id);
         //return R.ok().data(user);
         return R.ok().put("user", user);
     }
@@ -123,24 +124,27 @@ public class UserController extends BaseController {
     /**
      * 新增保存用户
      */
-    @RequiresPermissions("system:user:add")
+    @RequiresPermissions("iot:user:add")
     @Log(title = "用户", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public R addSave(User user) {
-        userService.save(user);
+    public R addSave(UserEntity user) {
+        verifyForm(user);
+
+        userService.addSave(user);
         return R.ok();
     }
 
     /**
      * 修改保存用户
      */
-    @RequiresPermissions("system:user:edit")
+    @RequiresPermissions("iot:user:edit")
     @Log(title = "用户", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
-    public R editSave(User user) {
-        userService.updateById(user);
+    public R editSave(UserEntity user) {
+        // verifyForm(user);
+        userService.editSave(user);
         return R.ok();
     }
 
@@ -159,4 +163,14 @@ public class UserController extends BaseController {
 
     //-------------------
 
+    private void verifyForm(UserEntity user) {
+        Assert.isBlank(user.getName(), "登录名不能为空");
+        Assert.isBlank(user.getEmail(), "email不能为空");
+        Assert.isBlank(user.getMobile(), "手机号不能为空");
+        Assert.isBlank(user.getPassword(), "密码不能为空");
+
+        Assert.isNull(user.getProvince(), "省不能为空");
+        Assert.isNull(user.getCity(), "市不能为空");
+        Assert.isNull(user.getArea(), "县不能为空");
+    }
 }
