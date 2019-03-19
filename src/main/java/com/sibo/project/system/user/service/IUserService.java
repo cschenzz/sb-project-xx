@@ -56,4 +56,13 @@ public interface IUserService extends IService<UserEntity> {
      */
     boolean updateUserInfo(UserEntity user);
 
+    /**
+     * 修改用户密码信息
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    boolean resetUserPwd(UserEntity user);
+
+
 }

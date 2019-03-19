@@ -4,11 +4,13 @@ import com.sibo.common.utils.file.FileUploadUtils;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.config.SbConfig;
+import com.sibo.framework.shiro.service.PasswordService;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
 import com.sibo.framework.web.service.DictService;
 import com.sibo.project.system.user.entity.UserEntity;
 import com.sibo.project.system.user.service.IUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,9 @@ public class ProfileController extends BaseController {
     private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     private String prefix = "system/user/profile";
+
+    @Autowired
+    private PasswordService passwordService;
 
     @Autowired
     private IUserService userService;
@@ -61,6 +66,24 @@ public class ProfileController extends BaseController {
     public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
         mmap.put("user", userService.selectUserById(userId));
         return prefix + "/resetPwd";
+    }
+
+    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+    @PostMapping("/resetPwd")
+    @ResponseBody
+    public R resetPwd(String oldPassword, String newPassword) {
+        UserEntity user = getUser();
+        if (StringUtils.isNotEmpty(newPassword) && passwordService.matches(user, oldPassword)) {
+            user.setPassword(newPassword);
+            if (userService.resetUserPwd(user)) {
+                setUser(userService.selectUserById(user.getId()));
+                return success();
+            }
+            return error();
+        } else {
+            return error("修改密码失败，旧密码错误");
+        }
+
     }
 
     /**

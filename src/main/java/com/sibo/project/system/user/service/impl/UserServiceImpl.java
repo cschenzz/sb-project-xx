@@ -111,4 +111,18 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         return updateById(user);
     }
 
+    /**
+     * 修改用户密码
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    @Override
+    public boolean resetUserPwd(UserEntity user) {
+        String salt = randomSalt();
+        user.setSalt(salt);
+        user.setPassword(passwordService.encryptPassword(user.getName(), user.getPassword(), salt));
+        return updateUserInfo(user);
+    }
+
 }
