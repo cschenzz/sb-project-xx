@@ -209,14 +209,13 @@
         var userId = [[${user.id}]];
 
         function repwd() {
-            // layer_show("修改密码", url, 800, 350);
             var url = ctx + 'system/user/profile/resetPwd/' + userId;
-            openNoTitleLayer(url, '800', '500');
+            openNoTitleLayer(url, '800', '400');
         }
 
         function getinfo() {
             var url = ctx + "system/user/profile";
-            openNoTitleLayer( url, '600', '400');
+            openNoTitleLayer( url, '600', '350');
         }
 
         function open_url_autofit(url) {
