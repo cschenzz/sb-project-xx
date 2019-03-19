@@ -106,10 +106,19 @@
                 $.ajax({
                     type: "post",
                     url: ctx + "system/user/profile/resetPwd",
-                    data: $('#form-content-edit').serialize(),
+                    data: {
+                        "oldPassword": $("#oldPassword").val(),
+                        "newPassword": $("#password").val()
+                    },
                     success: function(r) {
                         if (r.code == 200) {
                             layer.msg("修改成功");
+                            //0.6s后关闭本layer
+                            setTimeout(function(){
+                                //-----------------------
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 600);
                         } else {
                             layer.msg(r.msg);
                         }
