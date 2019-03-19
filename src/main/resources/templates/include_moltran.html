@@ -119,7 +119,7 @@
                         <ul class="list-unstyled">
 
                             <li th:id="'m2_'+${cmenu.menuId}" th:each="cmenu : ${menu.children}">
-                                <a th:if="${cmenu.menuId lt 0}" href="#" th:data-id="${cmenu.menuId}" th:data-url="${cmenu.url}" onclick="open_url(this.getAttribute('data-url'))" th:text="${cmenu.menuName}">二级菜单</a>
+                                <a th:if="${cmenu.menuId lt 0}" href="#" th:data-id="${cmenu.menuId}" th:data-url="${cmenu.url}" onclick="open_url_autofit(this.getAttribute('data-url'))" th:text="${cmenu.menuName}">二级菜单</a>
                                 <a th:unless="${cmenu.menuId lt 0}" href="#" th:utext="${cmenu.menuName}" th:href="@{${cmenu.url}}" target="_self">二级菜单</a>
                             </li>
                         </ul>
@@ -211,22 +211,26 @@
         function repwd() {
             // layer_show("修改密码", url, 800, 350);
             var url = ctx + 'system/user/profile/resetPwd/' + userId;
-            $.modal.open("重置密码", url, '800', '500');
+            openNoTitleLayer(url, '800', '500');
         }
 
         function getinfo() {
             var url = ctx + "system/user/profile";
-            $.modal.open("个人资料", url);
+            openNoTitleLayer( url, '600', '400');
         }
 
-        function open_url(url) {
+        function open_url_autofit(url) {
             var width = ($(window).width() - 150);
             var height = ($(window).height() - 100);
+            openNoTitleLayer(url,width,height);
+        }
+
+        function openNoTitleLayer(url, width, height) {
+            //如果是移动端，就使用自适应大小弹窗
             layer.open({
                 type: 2,
                 title: false, //不显示标题栏
                 closeBtn: false,
-                //area: ['1200px', '650px'],
                 area: [width + 'px', height + 'px'],
                 shade: 0.8,
                 id: 'layui_app',
