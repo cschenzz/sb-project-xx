@@ -36,7 +36,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     public void addSave(UserEntity user) {
         String salt = randomSalt();
         user.setSalt(salt);
-        user.setPassword(passwordService.encryptPassword(user.getName(), user.getPassword(), salt));
+        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), salt));
 
         user.setRegtime(new Date());
         baseMapper.insert(user);
@@ -57,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     @Override
     public UserEntity selectUserByLoginName(String userName) {
         Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
-                .eq(UserEntity::getName, userName);
+                .eq(UserEntity::getLoginName, userName);
         return super.getOne(wrapper);
     }
 
@@ -70,7 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     @Override
     public UserEntity selectUserByPhoneNumber(String phoneNumber) {
         Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
-                .eq(UserEntity::getMobile, phoneNumber);
+                .eq(UserEntity::getPhonenumber, phoneNumber);
         return super.getOne(wrapper);
     }
 
@@ -96,7 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     @Override
     public UserEntity selectUserById(Long userId) {
         Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
-                .eq(UserEntity::getId, userId);
+                .eq(UserEntity::getUserId, userId);
         return super.getOne(wrapper);
     }
 
@@ -121,7 +121,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     public boolean resetUserPwd(UserEntity user) {
         String salt = randomSalt();
         user.setSalt(salt);
-        user.setPassword(passwordService.encryptPassword(user.getName(), user.getPassword(), salt));
+        user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), salt));
         return updateUserInfo(user);
     }
 

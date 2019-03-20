@@ -137,11 +137,11 @@ public class BaseController {
     }
 
     public Long getUserId() {
-        return getUser().getId();
+        return getUser().getUserId();
     }
 
     public String getLoginName() {
-        return getUser().getName();
+        return getUser().getLoginName();
     }
 
 }

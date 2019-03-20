@@ -81,7 +81,7 @@ public class LogAspect {
 
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null) {
-                operLog.setUserId(currentUser.getId());
+                operLog.setUserId(currentUser.getUserId());
             }
 
             if (e != null) {

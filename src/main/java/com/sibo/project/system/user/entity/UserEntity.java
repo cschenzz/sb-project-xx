@@ -1,5 +1,6 @@
 package com.sibo.project.system.user.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.web.entity.BaseXEntity;
@@ -24,13 +25,14 @@ public class UserEntity extends BaseXEntity implements Serializable {
     /**
      * 用户ID
      */
-    @TableId
-    private Long id;
+    @TableId("id")
+    private Long userId;
 
     /**
      * 登录账号
      */
-    private String name;
+    @TableField("name")
+    private String loginName;
 
     /**
      * 密码
@@ -50,7 +52,8 @@ public class UserEntity extends BaseXEntity implements Serializable {
     /**
      * 手机号码
      */
-    private String mobile;
+    @TableField("mobile")
+    private String phonenumber;
 
     /**
      * 省
@@ -108,7 +111,7 @@ public class UserEntity extends BaseXEntity implements Serializable {
     private String avatar;
 
     /**
-     * 帐号状态（0正常 1停用）
+     * 帐号状态（1正常 0停用）
      */
     private Integer status;
 
@@ -117,21 +120,20 @@ public class UserEntity extends BaseXEntity implements Serializable {
      */
     private String remark;
 
-
-    public void setId(Long id) {
-        this.id = id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public Long getId() {
-        return id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public String getName() {
-        return name;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public void setPassword(String password) {
@@ -158,12 +160,12 @@ public class UserEntity extends BaseXEntity implements Serializable {
         return email;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public String getPhonenumber() {
+        return phonenumber;
     }
 
-    public String getMobile() {
-        return mobile;
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
     public void setProvince(Integer province) {
@@ -274,12 +276,12 @@ public class UserEntity extends BaseXEntity implements Serializable {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
-                .append("name", getName())
+                .append("userId", getUserId())
+                .append("loginName", getLoginName())
                 .append("password", getPassword())
                 .append("salt", getSalt())
                 .append("email", getEmail())
-                .append("mobile", getMobile())
+                .append("phonenumber", getPhonenumber())
                 .append("province", getProvince())
                 .append("city", getCity())
                 .append("area", getArea())

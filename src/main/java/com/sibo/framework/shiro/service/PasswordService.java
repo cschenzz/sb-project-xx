@@ -38,7 +38,7 @@ public class PasswordService {
     }
 
     public void validate(UserEntity user, String password) {
-        String loginName = user.getName();
+        String loginName = user.getLoginName();
 
         AtomicInteger retryCount = loginRecordCache.get(loginName);
 
@@ -61,7 +61,7 @@ public class PasswordService {
     }
 
     public boolean matches(UserEntity user, String newPassword) {
-        return user.getPassword().equals(encryptPassword(user.getName(), newPassword, user.getSalt()));
+        return user.getPassword().equals(encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
     }
 
     public void clearLoginRecordCache(String username) {

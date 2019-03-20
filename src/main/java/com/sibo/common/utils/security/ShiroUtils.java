@@ -22,7 +22,7 @@ public class ShiroUtils {
     /**
      * 加密算法
      */
-    public final static String hashAlgorithmName = "SHA-256" ;
+    public final static String hashAlgorithmName = "SHA-256";
     /**
      * 循环次数
      */
@@ -72,11 +72,11 @@ public class ShiroUtils {
     }
 
     public static Long getUserId() {
-        return getUser().getId().longValue();
+        return getUser().getUserId().longValue();
     }
 
     public static String getLoginName() {
-        return getUser().getName();
+        return getUser().getLoginName();
     }
 
     public static String getIp() {

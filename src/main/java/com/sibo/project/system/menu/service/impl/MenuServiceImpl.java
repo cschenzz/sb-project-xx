@@ -41,10 +41,10 @@ public class MenuServiceImpl implements IMenuService {
     public List<Menu> selectMenusByUser(UserEntity user) {
         List<Menu> menus = new LinkedList<Menu>();
         // 管理员显示所有菜单信息
-        if (user.getId() == 1) {
+        if (user.getUserId() == 1) {
             menus = menuMapper.selectMenuNormalAll();
         } else {
-            menus = menuMapper.selectMenusByUserId(user.getId());
+            menus = menuMapper.selectMenusByUserId(user.getUserId());
         }
         return TreeUtils.getChildPerms(menus, 0);
     }

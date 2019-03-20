@@ -94,9 +94,9 @@ public class UserController extends BaseController {
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
-                    .like(UserEntity::getName, keyWord)
-                    .or().like(UserEntity::getMobile, keyWord)
-                    .orderByDesc(UserEntity::getId);
+                    .like(UserEntity::getLoginName, keyWord)
+                    .or().like(UserEntity::getPhonenumber, keyWord)
+                    .orderByDesc(UserEntity::getUserId);
 
             //---------------------------
             IPage<UserEntity> pageList = userService.page(new Page<>(pageNum, pageSize), wrapper);
@@ -164,9 +164,9 @@ public class UserController extends BaseController {
     //-------------------
 
     private void verifyForm(UserEntity user) {
-        Assert.isBlank(user.getName(), "登录名不能为空");
+        Assert.isBlank(user.getLoginName(), "登录名不能为空");
         Assert.isBlank(user.getEmail(), "email不能为空");
-        Assert.isBlank(user.getMobile(), "手机号不能为空");
+        Assert.isBlank(user.getPhonenumber(), "手机号不能为空");
         Assert.isBlank(user.getPassword(), "密码不能为空");
 
         Assert.isNull(user.getProvince(), "省不能为空");

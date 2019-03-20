@@ -55,7 +55,7 @@ public class ProfileController extends BaseController {
     @ResponseBody
     public boolean checkPassword(String password) {
         UserEntity user = getUser();
-        String encrypt = new Md5Hash(user.getName() + password + user.getSalt()).toHex().toString();
+        String encrypt = new Md5Hash(user.getLoginName() + password + user.getSalt()).toHex().toString();
         if (user.getPassword().equals(encrypt)) {
             return true;
         }
@@ -76,7 +76,7 @@ public class ProfileController extends BaseController {
         if (StringUtils.isNotEmpty(newPassword) && passwordService.matches(user, oldPassword)) {
             user.setPassword(newPassword);
             if (userService.resetUserPwd(user)) {
-                setUser(userService.selectUserById(user.getId()));
+                setUser(userService.selectUserById(user.getUserId()));
                 return success();
             }
             return error();
@@ -112,7 +112,7 @@ public class ProfileController extends BaseController {
     @ResponseBody
     public R update(UserEntity user) {
         if (userService.updateUserInfo(user)) {
-            setUser(userService.selectUserById(user.getId()));
+            setUser(userService.selectUserById(user.getUserId()));
             return success();
         }
         return error();
@@ -130,7 +130,7 @@ public class ProfileController extends BaseController {
                 String avatar = FileUploadUtils.upload(SbConfig.getAvatarPath(), file);
                 user.setAvatar(avatar);
                 if (userService.updateUserInfo(user)) {
-                    setUser(userService.selectUserById(user.getId()));
+                    setUser(userService.selectUserById(user.getUserId()));
                     return success();
                 }
             }
