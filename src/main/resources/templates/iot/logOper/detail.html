@@ -23,8 +23,8 @@
                 <span th:text="${logOper.method}">方法名称</span>
             </p>
             <p><i class="fa fa-send-o"></i> &nbsp;
-                操作人员：
-                <span th:text="${logOper.userId}">操作人员</span>
+                操作用户id：
+                <span th:text="${logOper.userId}">操作用户id</span>
             </p>
             <p><i class="fa fa-send-o"></i> &nbsp;
                 请求URL：
@@ -58,74 +58,6 @@
     </div>
     <!--=====================-->
 
-    <hr/>
-    <br/>
-    <div class="row">
-        <label class="col-xs-2 control-label">模块标题：</label>
-        <div class="col-xs-10" th:text="${logOper.title}">
-            模块标题
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">业务类型（0其它 1新增 2修改 3删除）：</label>
-        <div class="col-xs-10" th:text="${logOper.businessType}">
-            业务类型（0其它 1新增 2修改 3删除）
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">方法名称：</label>
-        <div class="col-xs-10" th:text="${logOper.method}">
-            方法名称
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">操作人员：</label>
-        <div class="col-xs-10" th:text="${logOper.userId}">
-            操作人员
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">请求URL：</label>
-        <div class="col-xs-10" th:text="${logOper.operUrl}">
-            请求URL
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">主机地址：</label>
-        <div class="col-xs-10" th:text="${logOper.operIp}">
-            主机地址
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">操作地点：</label>
-        <div class="col-xs-10" th:text="${logOper.operLocation}">
-            操作地点
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">请求参数：</label>
-        <div class="col-xs-10" th:text="${logOper.operParam}">
-            请求参数
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">操作状态（0正常 1异常）：</label>
-        <div class="col-xs-10" th:text="${logOper.status}">
-            操作状态（0正常 1异常）
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">错误消息：</label>
-        <div class="col-xs-10" th:text="${logOper.errorMsg}">
-            错误消息
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">操作时间：</label>
-        <div class="col-xs-10" th:text="${logOper.operTime}">
-            操作时间
-        </div>
-    </div>
 </div>
 <div th:include="include::footer"></div>
 

@@ -106,8 +106,11 @@ public class LogOperController extends BaseController {
             return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
             //-----------
         }
+        //------------------------------
+        Wrapper<LogOperEntity> wrapperx = new LambdaQueryWrapper<LogOperEntity>()
+                .orderByDesc(LogOperEntity::getId);
 
-        IPage<LogOperEntity> pageList = logOperService.page(new Page<>(pageNum, pageSize), null);
+        IPage<LogOperEntity> pageList = logOperService.page(new Page<>(pageNum, pageSize), wrapperx);
         return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
         //----------------------------------------------
     }
