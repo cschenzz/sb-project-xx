@@ -72,7 +72,7 @@
 				<label class="col-sm-3 control-label">帐号状态：</label>
 				<div class="col-sm-8">
 					<div class="onoffswitch">
-						<input type="checkbox" th:checked="${user.status == 1 ? true : false}" class="onoffswitch-checkbox" name="status" id="status">
+						<input type="checkbox" th:checked="${user.status == 1 ? true : false}" class="onoffswitch-checkbox" id="status">
 						<label class="onoffswitch-label" for="status">
 							<span class="onoffswitch-inner"></span>
 							<span class="onoffswitch-switch"></span>
@@ -101,9 +101,11 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
+                var data = $("#form-user-edit").serializeArray();
                 var status = $("input[id='status']").is(':checked') == true ? 1 : 0;
-                $("#status").val(status);
-	            $.operate.save(prefix + "/edit", $('#form-user-edit').serialize());
+                data.push({"name": "status", "value": status});
+
+	            $.operate.save(prefix + "/edit", data);
 	        }
 	    }
 	</script>
