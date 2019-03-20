@@ -10,22 +10,15 @@
 
         </div>
         <div class="ibox-content">
-            <p><i class="fa fa-send-o"></i> &nbsp;
-                协议名称：
-                <span th:text="${iotProtocol.protocol}">协议名称</span>
-            </p>
+            <div class="row">
+                <label class="col-xs-2 control-label"><i class="fa fa-send-o"></i> &nbsp;协议名称：</label>
+                <div class="col-xs-10" th:text="${iotProtocol.protocol}">
+                    协议名称
+                </div>
+            </div>
         </div>
     </div>
     <!--=====================-->
-
-    <hr/>
-    <br/>
-    <div class="row">
-        <label class="col-xs-2 control-label">协议名称：</label>
-        <div class="col-xs-10" th:text="${iotProtocol.protocol}">
-            协议名称
-        </div>
-    </div>
 </div>
 <div th:include="include::footer"></div>
 
