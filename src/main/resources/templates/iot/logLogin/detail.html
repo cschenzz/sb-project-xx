@@ -23,8 +23,8 @@
                 <span th:text="${logLogin.loginIp}">登录IP地址</span>
             </p>
             <p><i class="fa fa-send-o"></i> &nbsp;
-                登录状态（0成功 1失败）：
-                <span th:text="${logLogin.loginResult}">登录状态（0成功 1失败）</span>
+                登录状态（1成功 0失败）：
+                <span th:text="${logLogin.loginResult}">登录状态</span>
             </p>
             <p><i class="fa fa-send-o"></i> &nbsp;
                 提示消息：
@@ -38,44 +38,6 @@
     </div>
     <!--=====================-->
 
-    <hr/>
-    <br/>
-    <div class="row">
-        <label class="col-xs-2 control-label">登陆用户id：</label>
-        <div class="col-xs-10" th:text="${logLogin.userid}">
-            登陆用户id
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">登录账号：</label>
-        <div class="col-xs-10" th:text="${logLogin.loginName}">
-            登录账号
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">登录IP地址：</label>
-        <div class="col-xs-10" th:text="${logLogin.loginIp}">
-            登录IP地址
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">登录状态（0成功 1失败）：</label>
-        <div class="col-xs-10" th:text="${logLogin.loginResult}">
-            登录状态（0成功 1失败）
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">提示消息：</label>
-        <div class="col-xs-10" th:text="${logLogin.message}">
-            提示消息
-        </div>
-    </div>
-    <div class="row">
-        <label class="col-xs-2 control-label">访问时间：</label>
-        <div class="col-xs-10" th:text="${logLogin.loginTime}">
-            访问时间
-        </div>
-    </div>
 </div>
 <div th:include="include::footer"></div>
 

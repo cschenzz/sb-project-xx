@@ -84,6 +84,7 @@
 <script th:inline="javascript">
     var editFlag = [[${@permission.hasPermi('iot:logLogin:edit')}]];
     var removeFlag = [[${@permission.hasPermi('iot:logLogin:remove')}]];
+    var datas = [[${@dict.getType('sys_common_status')}]];
     var prefix = ctx + "iot/logLogin";
 
 
@@ -106,11 +107,6 @@
                 visible: true
             },
             {
-                field : 'userid',
-                title : '登陆用户id',
-                sortable: true
-            },
-            {
                 field : 'loginName',
                 title : '登录账号',
                 sortable: true
@@ -123,11 +119,13 @@
             {
                 field : 'loginResult',
                 title : '登录状态',
-                sortable: true
+                formatter: function(value, row, index) {
+                    return $.table.selectDictLabel(datas, value);
+                }
             },
             {
                 field : 'message',
-                title : '提示消息',
+                title : '消息',
                 sortable: true
             },
             {

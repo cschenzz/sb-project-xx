@@ -107,7 +107,11 @@ public class LogLoginController extends BaseController {
             //-----------
         }
 
-        IPage<LogLoginEntity> pageList = logLoginService.page(new Page<>(pageNum, pageSize), null);
+        //----------------------------------------------
+        Wrapper<LogLoginEntity> wrapperx = new LambdaQueryWrapper<LogLoginEntity>()
+                .orderByDesc(LogLoginEntity::getId);
+
+        IPage<LogLoginEntity> pageList = logLoginService.page(new Page<>(pageNum, pageSize), wrapperx);
         return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
         //----------------------------------------------
     }
