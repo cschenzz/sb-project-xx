@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sibo.common.constant.UserConstants;
 import com.sibo.common.validator.Assert;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
@@ -107,6 +108,22 @@ public class UserController extends BaseController {
         IPage<UserEntity> pageList = userService.page(new Page<>(pageNum, pageSize), null);
         return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
         //----------------------------------------------
+    }
+
+    /**
+     * 校验用户名
+     */
+    @PostMapping("/checkLoginNameUnique")
+    @ResponseBody
+    public String checkLoginNameUnique(UserEntity user) {
+        Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
+                .eq(UserEntity::getLoginName, user.getLoginName());
+
+        int count = userService.count(wrapper);
+        if (count > 0) {
+            return UserConstants.USER_NAME_NOT_UNIQUE;
+        }
+        return UserConstants.USER_NAME_UNIQUE;
     }
 
     /**

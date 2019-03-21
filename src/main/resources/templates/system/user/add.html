@@ -100,17 +100,42 @@
 			rules:{
                 loginName:{
 					required:true,
+                    minlength: 2,
+                    maxlength: 20,
+                    remote: {
+                        url: prefix + "/checkLoginNameUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            name : function() {
+                                return $.common.trim($("#loginName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
 				},
                 password:{
 					required:true,
+                    minlength: 6,
+                    maxlength: 20
 				},
                 phonenumber:{
 					required:true,
+                    isPhone:true,
 				},
                 realname:{
 					required:true,
 				},
-			}
+			},
+
+            messages: {
+                "loginName": {
+                    remote: "用户已经存在"
+                }
+            },
+            focusCleanup: true
 		});
 		
 		function submitHandler() {
