@@ -1,5 +1,6 @@
 package com.sibo.project.system.role.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.common.constant.UserConstants;
 import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
@@ -44,8 +45,8 @@ public class RoleServiceImpl implements IRoleService {
      * @return 角色数据集合信息
      */
     @Override
-    public List<Role> selectRoleList(Role role) {
-        return roleMapper.selectRoleList(role);
+    public List<Role> selectRoleList(Page<?> page, Role role) {
+        return roleMapper.selectRoleList(page, role);
     }
 
     /**
@@ -94,7 +95,7 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public List<Role> selectRoleAll() {
-        return selectRoleList(new Role());
+        return selectRoleList(null, new Role());
     }
 
     /**

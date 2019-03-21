@@ -1,6 +1,6 @@
 package com.sibo.project.system.role.controller;
 
-import com.sibo.common.utils.poi.ExcelUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
@@ -36,14 +36,13 @@ public class RoleController extends BaseController {
         return prefix + "/role";
     }
 
-    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
-    @RequiresPermissions("system:role:export")
-    @PostMapping("/export")
+    @RequiresPermissions("system:role:list")
+    @RequestMapping("/list")
     @ResponseBody
-    public R export(Role role) {
-        List<Role> list = roleService.selectRoleList(role);
-        ExcelUtil<Role> util = new ExcelUtil<Role>(Role.class);
-        return util.exportExcel(list, "role");
+    public R list(Role role) {
+        Page<?> page = buildPage();
+        List<Role> list = roleService.selectRoleList(page, role);
+        return R.ok().dataRows(page.getTotal(), page.getPages(), list);
     }
 
     /**

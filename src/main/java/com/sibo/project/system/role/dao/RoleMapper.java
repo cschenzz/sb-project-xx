@@ -1,5 +1,6 @@
 package com.sibo.project.system.role.dao;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.project.system.role.entity.Role;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface RoleMapper {
      * @param role 角色信息
      * @return 角色数据集合信息
      */
-    public List<Role> selectRoleList(Role role);
+    public List<Role> selectRoleList(Page page, Role role);
 
     /**
      * 根据用户ID查询角色

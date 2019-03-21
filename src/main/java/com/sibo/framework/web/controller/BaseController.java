@@ -1,8 +1,11 @@
 package com.sibo.framework.web.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.web.entity.R;
+import com.sibo.framework.web.page.PageDomain;
+import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.menu.entity.Menu;
 import com.sibo.project.system.menu.service.IMenuService;
 import com.sibo.project.system.user.entity.UserEntity;
@@ -47,6 +50,20 @@ public class BaseController {
             mmap.put("m2", "");
         }
 
+    }
+
+    /**
+     * 获取请求分页对象
+     */
+    protected Page<?> buildPage() {
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+
+        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize)) {
+            return new Page<>(pageNum, pageSize);
+        }
+        return new Page<>(1, 15);
     }
 
     /**
