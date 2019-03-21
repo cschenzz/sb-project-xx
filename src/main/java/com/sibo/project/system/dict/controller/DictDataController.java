@@ -34,15 +34,6 @@ public class DictDataController extends BaseController {
         return prefix + "/data";
     }
 
-    @PostMapping("/list")
-    @RequiresPermissions("system:dict:list")
-    @ResponseBody
-    public R list(DictData dictData) {
-        startPage();
-        List<DictData> list = dictDataService.selectDictDataList(dictData);
-        return getDataTable(list);
-    }
-
     @Log(title = "字典数据", businessType = BusinessType.EXPORT)
     @RequiresPermissions("system:dict:export")
     @PostMapping("/export")

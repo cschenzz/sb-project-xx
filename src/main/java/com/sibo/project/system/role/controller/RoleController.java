@@ -36,15 +36,6 @@ public class RoleController extends BaseController {
         return prefix + "/role";
     }
 
-    @RequiresPermissions("system:role:list")
-    @PostMapping("/list")
-    @ResponseBody
-    public R list(Role role) {
-        startPage();
-        List<Role> list = roleService.selectRoleList(role);
-        return getDataTable(list);
-    }
-
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     @RequiresPermissions("system:role:export")
     @PostMapping("/export")

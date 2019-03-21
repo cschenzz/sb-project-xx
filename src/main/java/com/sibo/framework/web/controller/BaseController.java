@@ -1,12 +1,8 @@
 package com.sibo.framework.web.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.web.entity.R;
-import com.sibo.framework.web.page.PageDomain;
-import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.menu.entity.Menu;
 import com.sibo.project.system.menu.service.IMenuService;
 import com.sibo.project.system.user.entity.UserEntity;
@@ -22,19 +18,6 @@ import java.util.List;
  * @author chenzz
  */
 public class BaseController {
-
-    /**
-     * 设置请求分页数据
-     */
-    protected void startPage() {
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Integer pageNum = pageDomain.getPageNum();
-        Integer pageSize = pageDomain.getPageSize();
-        if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize)) {
-            String orderBy = pageDomain.getOrderBy();
-            PageHelper.startPage(pageNum, pageSize, orderBy);
-        }
-    }
 
     @Autowired
     private IMenuService menuService;
@@ -64,16 +47,6 @@ public class BaseController {
             mmap.put("m2", "");
         }
 
-    }
-
-    /**
-     * 响应请求分页数据
-     */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    protected R getDataTable(List<?> list) {
-        //--------------------------------
-        PageInfo pageInfo = new PageInfo(list);
-        return R.ok().dataRows(pageInfo.getTotal(), pageInfo.getPages(), list);
     }
 
     /**

@@ -34,15 +34,6 @@ public class DictTypeController extends BaseController {
         return prefix + "/type";
     }
 
-    @PostMapping("/list")
-    @RequiresPermissions("system:dict:list")
-    @ResponseBody
-    public R list(DictType dictType) {
-        startPage();
-        List<DictType> list = dictTypeService.selectDictTypeList(dictType);
-        return getDataTable(list);
-    }
-
     @Log(title = "字典类型", businessType = BusinessType.EXPORT)
     @RequiresPermissions("system:dict:export")
     @PostMapping("/export")
