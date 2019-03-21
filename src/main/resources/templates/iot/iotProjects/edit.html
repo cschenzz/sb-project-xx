@@ -77,7 +77,15 @@
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">所属用户：</label>
 				<div class="col-sm-8">
-					<input id="userid" name="userid" th:field="*{userid}" class="form-control" type="text">
+
+					<!--================================-->
+					<div class="input-group" style="width: 100%">
+						<select name="userid" class="form-control m-b" th:with="xuser=${@xxuser.getUsers()}">
+							<option th:each="uu : ${xuser}" th:text="${uu.loginName}" th:value="${uu.userId}" th:field="*{userid}"></option>
+						</select>
+					</div>
+					<!--================================-->
+
 				</div>
 			</div>
 		</form>
