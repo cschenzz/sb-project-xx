@@ -18,8 +18,10 @@
 		var prefix = ctx + "iot/iotProtocol";
 		$("#form-iotProtocol-edit").validate({
 			rules:{
-				xxxx:{
+                protocol:{
 					required:true,
+                    minlength: 1,
+                    maxlength: 15
 				},
 			}
 		});
