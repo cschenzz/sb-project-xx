@@ -68,7 +68,10 @@
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">项目状态：</label>
 				<div class="col-sm-8">
-					<input id="projectStatus" name="projectStatus" th:field="*{projectStatus}" class="form-control" type="text">
+					<div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
+						<input type="radio" th:id="${dict.dictCode}" name="projectStatus" th:value="${dict.dictValue}" th:field="*{projectStatus}">
+						<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">	
@@ -84,9 +87,21 @@
 		var prefix = ctx + "iot/iotProjects";
 		$("#form-iotProjects-edit").validate({
 			rules:{
-				xxxx:{
-					required:true,
-				},
+                projectName:{
+                    required:true,
+                },
+                projectUrl:{
+                    required:true,
+                },
+                token:{
+                    required:true,
+                },
+                projectCharge:{
+                    required:true,
+                },
+                chargetel:{
+                    required:true,
+                },
 			}
 		});
 		

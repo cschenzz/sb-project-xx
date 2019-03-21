@@ -4,17 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-//----------------------------
+import com.sibo.common.validator.ValidatorUtils;
+import com.sibo.common.validator.group.AddGroup;
+import com.sibo.common.validator.group.UpdateGroup;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
 import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
-import com.sibo.common.validator.ValidatorUtils;
-import com.sibo.common.validator.group.AddGroup;
-import com.sibo.common.validator.group.UpdateGroup;
-//-----------------------------
+import com.sibo.project.iot.iotProjects.entity.IotProjectsEntity;
+import com.sibo.project.iot.iotProjects.service.IIotProjectsService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,13 +24,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+
+//----------------------------
+//-----------------------------
 //-----------------------
-import com.sibo.project.iot.iotProjects.entity.IotProjectsEntity;
-import com.sibo.project.iot.iotProjects.service.IIotProjectsService;
 
 /**
  * 项目 信息操作处理
- * 
+ *
  * @author chenzz
  * @date 2019-03-14
  */
@@ -39,44 +40,44 @@ import com.sibo.project.iot.iotProjects.service.IIotProjectsService;
 public class IotProjectsController extends BaseController {
 
     private String prefix = "iot/iotProjects";
-	
-	@Autowired
-	private IIotProjectsService iotProjectsService;
+
+    @Autowired
+    private IIotProjectsService iotProjectsService;
 
     /**
      * 项目列表
      */
-	@RequiresPermissions("iot:iotProjects:view")
-	@GetMapping()
-	public String iotProjects(ModelMap mmap) {
+    @RequiresPermissions("iot:iotProjects:view")
+    @GetMapping()
+    public String iotProjects(ModelMap mmap) {
         putBaseModelMap(mmap, "iot:iotProjects:view");
-	    return prefix + "/iotProjects";
-	}
+        return prefix + "/iotProjects";
+    }
 
-	/**
-	 * 新增项目
-	 */
-	@GetMapping("/add")
-	public String add() {
-	    return prefix + "/add";
-	}
-	
-	/**
-	 * 修改项目
-	 */
-	@GetMapping("/edit/{id}")
-	public String edit(@PathVariable("id") Integer id, ModelMap mmap) {
-		IotProjectsEntity iotProjects = iotProjectsService.getById(id);
-		mmap.put("iotProjects", iotProjects);
-	    return prefix + "/edit";
-	}
+    /**
+     * 新增项目
+     */
+    @GetMapping("/add")
+    public String add() {
+        return prefix + "/add";
+    }
+
+    /**
+     * 修改项目
+     */
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, ModelMap mmap) {
+        IotProjectsEntity iotProjects = iotProjectsService.getById(id);
+        mmap.put("iotProjects", iotProjects);
+        return prefix + "/edit";
+    }
 
     /**
      * 详情页面
      */
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Integer id, ModelMap mmap) {
-		IotProjectsEntity iotProjects = iotProjectsService.getById(id);
+        IotProjectsEntity iotProjects = iotProjectsService.getById(id);
         mmap.put("iotProjects", iotProjects);
         return prefix + "/detail";
     }
@@ -121,7 +122,7 @@ public class IotProjectsController extends BaseController {
     @ResponseBody
     @RequiresPermissions("iot:iotProjects:info")
     public R info(@PathVariable("id") Integer id) {
-		IotProjectsEntity iotProjects = iotProjectsService.getById(id);
+        IotProjectsEntity iotProjects = iotProjectsService.getById(id);
         return R.ok().data(iotProjects);
     }
 
@@ -134,22 +135,23 @@ public class IotProjectsController extends BaseController {
     @ResponseBody
     public R addSave(IotProjectsEntity iotProjects) {
         ValidatorUtils.validateEntity(iotProjects, AddGroup.class);
-		iotProjectsService.save(iotProjects);
+        iotProjects.setProjectId("SO"+System.currentTimeMillis());
+        iotProjectsService.save(iotProjects);
         return R.ok();
     }
 
     /**
-	 * 修改保存项目
-	 */
-	@RequiresPermissions("iot:iotProjects:edit")
-	@Log(title = "项目", businessType = BusinessType.UPDATE)
-	@PostMapping("/edit")
-	@ResponseBody
-	public R editSave(IotProjectsEntity iotProjects) {
+     * 修改保存项目
+     */
+    @RequiresPermissions("iot:iotProjects:edit")
+    @Log(title = "项目", businessType = BusinessType.UPDATE)
+    @PostMapping("/edit")
+    @ResponseBody
+    public R editSave(IotProjectsEntity iotProjects) {
         ValidatorUtils.validateEntity(iotProjects, UpdateGroup.class);
-		iotProjectsService.updateById(iotProjects);
+        iotProjectsService.updateById(iotProjects);
         return R.ok();
-	}
+    }
 
     /**
      * 删除项目(多个id用逗号隔开)
@@ -164,5 +166,5 @@ public class IotProjectsController extends BaseController {
         return result ? R.ok() : R.error();
     }
     //-------------------
-	
+
 }
