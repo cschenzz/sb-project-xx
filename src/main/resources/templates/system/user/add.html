@@ -98,7 +98,16 @@
 		var prefix = ctx + "system/user";
 		$("#form-user-add").validate({
 			rules:{
-				xxxx:{
+                loginName:{
+					required:true,
+				},
+                password:{
+					required:true,
+				},
+                phonenumber:{
+					required:true,
+				},
+                realname:{
 					required:true,
 				},
 			}
