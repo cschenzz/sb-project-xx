@@ -82,9 +82,10 @@ public class IotParameterTypeController extends BaseController {
     @ResponseBody
     @RequiresPermissions("iot:iotParameterType:list")
     public R listPage(IotParameterTypeEntity iotParameterType) {
-        IPage<?> listPage = iotParameterTypeService.listPage();
+        IPage<?> listPage = iotParameterTypeService.listPage(iotParameterType);
         return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
+
 
     /**
      * 信息

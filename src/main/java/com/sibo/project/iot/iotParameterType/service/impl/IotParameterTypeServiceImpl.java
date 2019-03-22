@@ -28,7 +28,7 @@ public class IotParameterTypeServiceImpl extends ServiceImpl<IotParameterTypeDao
      * @return 分页page
      */
     @Override
-    public IPage<?> listPage() {
+    public IPage<?> listPage(IotParameterTypeEntity iotParameterType) {
         //-----------------------
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();

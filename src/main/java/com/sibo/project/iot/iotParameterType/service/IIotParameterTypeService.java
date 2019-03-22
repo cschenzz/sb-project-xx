@@ -17,5 +17,5 @@ public interface IIotParameterTypeService extends IService<IotParameterTypeEntit
      *
      * @return 分页page
      */
-    IPage<?> listPage();
+    IPage<?> listPage(IotParameterTypeEntity iotParameterType);
 }
