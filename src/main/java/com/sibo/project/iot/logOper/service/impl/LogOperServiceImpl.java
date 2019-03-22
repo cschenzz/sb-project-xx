@@ -23,8 +23,7 @@ import org.springframework.util.StringUtils;
 public class LogOperServiceImpl extends ServiceImpl<LogOperDao, LogOperEntity> implements ILogOperService {
 
     @Override
-    public IPage<?> listPage() {
-
+    public IPage<?> listPage(LogOperEntity logOper) {
         //-----------------------
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();

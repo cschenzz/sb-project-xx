@@ -82,7 +82,7 @@ public class LogOperController extends BaseController {
     @ResponseBody
     @RequiresPermissions("iot:logOper:list")
     public R listPage(LogOperEntity logOper) {
-        IPage<?> listPage = logOperService.listPage();
+        IPage<?> listPage = logOperService.listPage(logOper);
         return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
         //----------------------------------------------
     }

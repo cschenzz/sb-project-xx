@@ -11,5 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2019-03-12
  */
 public interface ILogOperService extends IService<LogOperEntity> {
-    IPage<?> listPage();
+    IPage<?> listPage(LogOperEntity logOper);
 }
