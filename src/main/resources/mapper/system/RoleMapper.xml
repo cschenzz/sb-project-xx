@@ -57,10 +57,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${params.dataScope}
 	</select>
 
-	<select id="selectAllRoleList" parameterType="Role" resultMap="RoleResult">
+	<select id="selectRolePageByKey" parameterType="Role" resultMap="RoleResult">
 		<include refid="selectRoleContactVo"/>
 		<if test="keyWord != null and keyWord != ''">
-		where r.role_name like concat('%', #{keyWord}, '%')
+			where r.role_name like concat('%', #{keyWord}, '%')
 		</if>
 	</select>
 

@@ -13,7 +13,7 @@ import java.util.Set;
  *
  * @author chenzz
  */
-public interface IRoleService extends IService<Role> {
+public interface IRoleService {
 
     /**
      * 根据条件分页查询角色数据
@@ -21,7 +21,7 @@ public interface IRoleService extends IService<Role> {
      * @param role 角色信息
      * @return 角色数据集合信息
      */
-    IPage<Role> selectRoleList(Page<?> page, Role role);
+    IPage<Role> selectRolePageByKey(Page<?> page, Role role);
 
     /**
      * 根据用户ID查询角色

@@ -1,6 +1,5 @@
 package com.sibo.project.system.role.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.project.system.role.entity.Role;
@@ -13,7 +12,7 @@ import java.util.List;
  *
  * @author chenzz
  */
-public interface RoleMapper extends BaseMapper<Role> {
+public interface RoleMapper {
 
     /**
      * 根据条件分页查询角色数据
@@ -21,9 +20,9 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param role 角色信息
      * @return 角色数据集合信息
      */
-    IPage<Role> selectRoleList(Page page, @Param("role") Role role);
+    List<Role> selectRoleList(Role role);
 
-    IPage<Role> selectAllRoleList(Page page, @Param("keyWord") String keyWord);
+    IPage<Role> selectRolePageByKey(Page page, @Param("keyWord") String keyWord);
 
     /**
      * 根据用户ID查询角色

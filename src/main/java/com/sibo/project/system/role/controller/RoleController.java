@@ -40,7 +40,7 @@ public class RoleController extends BaseController {
     @ResponseBody
     public R list(Role role) {
         Page<?> page = buildPage();
-        IPage<Role> pageList = roleService.selectRoleList(page, role);
+        IPage<Role> pageList = roleService.selectRolePageByKey(page, role);
         return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
     }
 
