@@ -1,5 +1,6 @@
 package com.sibo.project.iot.logOper.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sibo.project.iot.logOper.entity.LogOperEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2019-03-12
  */
 public interface ILogOperService extends IService<LogOperEntity> {
+    IPage<?> listPage();
 }
