@@ -18,8 +18,10 @@
 		var prefix = ctx + "iot/iotParameterType";
 		$("#form-iotParameterType-edit").validate({
 			rules:{
-				xxxx:{
+                typeName:{
 					required:true,
+                    minlength: 2,
+                    maxlength: 10
 				},
 			}
 		});

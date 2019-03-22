@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 //-----------------------
 import com.sibo.project.iot.iotModels.entity.IotModelsEntity;
@@ -134,6 +135,7 @@ public class IotModelsController extends BaseController {
     @ResponseBody
     public R addSave(IotModelsEntity iotModels) {
         ValidatorUtils.validateEntity(iotModels, AddGroup.class);
+        iotModels.setCreateTime(new Date());
 		iotModelsService.save(iotModels);
         return R.ok();
     }
