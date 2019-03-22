@@ -1,13 +1,15 @@
 package com.sibo.project.iot.iotProjects.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sibo.project.iot.iotProjects.entity.IotProjectsEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * 项目 服务层
- * 
+ *
  * @author chenzz
- * @date 2019-03-14
+ * @date 2019-03-22
  */
 public interface IIotProjectsService extends IService<IotProjectsEntity> {
+    IPage<?> listPage();
 }

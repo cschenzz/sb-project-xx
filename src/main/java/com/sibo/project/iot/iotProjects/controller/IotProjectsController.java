@@ -1,39 +1,33 @@
 package com.sibo.project.iot.iotProjects.controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sibo.common.validator.ValidatorUtils;
-import com.sibo.common.validator.group.AddGroup;
-import com.sibo.common.validator.group.UpdateGroup;
+//----------------------------
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
-import com.sibo.framework.web.page.PageDomain;
-import com.sibo.framework.web.page.TableSupport;
-import com.sibo.project.iot.iotProjects.entity.IotProjectsEntity;
-import com.sibo.project.iot.iotProjects.service.IIotProjectsService;
+import com.sibo.common.validator.ValidatorUtils;
+import com.sibo.common.validator.group.AddGroup;
+import com.sibo.common.validator.group.UpdateGroup;
+//-----------------------------
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
+//import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-
-//----------------------------
-//-----------------------------
 //-----------------------
+import com.sibo.project.iot.iotProjects.entity.IotProjectsEntity;
+import com.sibo.project.iot.iotProjects.service.IIotProjectsService;
 
 /**
  * 项目 信息操作处理
  *
  * @author chenzz
- * @date 2019-03-14
+ * @date 2019-03-22
  */
 @Controller
 @RequestMapping("iot/iotProjects")
@@ -91,28 +85,8 @@ public class IotProjectsController extends BaseController {
     @ResponseBody
     @RequiresPermissions("iot:iotProjects:list")
     public R listPage(IotProjectsEntity iotProjects) {
-        //-----------------------
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Integer pageNum = pageDomain.getPageNum();
-        Integer pageSize = pageDomain.getPageSize();
-        String keyWord = pageDomain.getSearchKeyWord();
-
-        if (!StringUtils.isEmpty(keyWord)) {
-            //-----------------------
-            Wrapper<IotProjectsEntity> wrapper = new LambdaQueryWrapper<IotProjectsEntity>()
-                    .like(IotProjectsEntity::getProjectName, keyWord)
-                    //.or().like(IotProjectsEntity::getSummary, keyWord)
-                    .orderByDesc(IotProjectsEntity::getId);
-
-            //---------------------------
-            IPage<IotProjectsEntity> pageList = iotProjectsService.page(new Page<>(pageNum, pageSize), wrapper);
-            return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
-            //-----------
-        }
-
-        IPage<IotProjectsEntity> pageList = iotProjectsService.page(new Page<>(pageNum, pageSize), null);
-        return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
-        //----------------------------------------------
+        IPage<?> listPage = iotProjectsService.listPage();
+        return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
 
     /**
