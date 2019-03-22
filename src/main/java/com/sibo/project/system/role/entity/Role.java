@@ -1,5 +1,7 @@
 package com.sibo.project.system.role.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.aspectj.lang.annotation.Excel;
 import com.sibo.framework.web.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -10,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author chenzz
  */
+@TableName("sys_role")
 public class Role extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
@@ -17,6 +20,7 @@ public class Role extends BaseEntity {
      * 角色ID
      */
     @Excel(name = "角色序号")
+    @TableId
     private Long roleId;
 
     /**

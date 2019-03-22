@@ -1,5 +1,6 @@
 package com.sibo.project.system.role.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 角色信息
@@ -41,8 +40,8 @@ public class RoleController extends BaseController {
     @ResponseBody
     public R list(Role role) {
         Page<?> page = buildPage();
-        List<Role> list = roleService.selectRoleList(page, role);
-        return R.ok().dataRows(page.getTotal(), page.getPages(), list);
+        IPage<Role> pageList = roleService.selectRoleList(page, role);
+        return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
     }
 
     /**

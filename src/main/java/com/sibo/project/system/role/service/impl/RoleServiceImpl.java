@@ -1,6 +1,8 @@
 package com.sibo.project.system.role.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sibo.common.constant.UserConstants;
 import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
@@ -24,10 +26,10 @@ import java.util.*;
  * @author chenzz
  */
 @Service
-public class RoleServiceImpl implements IRoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
-    @Autowired
-    private RoleMapper roleMapper;
+    // @Autowired
+    // private RoleMapper roleMapper;
 
     @Autowired
     private RoleMenuMapper roleMenuMapper;
@@ -45,8 +47,8 @@ public class RoleServiceImpl implements IRoleService {
      * @return 角色数据集合信息
      */
     @Override
-    public List<Role> selectRoleList(Page<?> page, Role role) {
-        return roleMapper.selectRoleList(page, role);
+    public IPage<Role> selectRoleList(Page<?> page, Role role) {
+        return baseMapper.selectAllRoleList(page, role.getRoleName());
     }
 
     /**
@@ -57,7 +59,7 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public Set<String> selectRoleKeys(Long userId) {
-        List<Role> perms = roleMapper.selectRolesByUserId(userId);
+        List<Role> perms = baseMapper.selectRolesByUserId(userId);
         Set<String> permsSet = new HashSet<>();
         for (Role perm : perms) {
             if (StringUtils.isNotNull(perms)) {
@@ -75,7 +77,7 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public List<Role> selectRolesByUserId(Long userId) {
-        List<Role> userRoles = roleMapper.selectRolesByUserId(userId);
+        List<Role> userRoles = baseMapper.selectRolesByUserId(userId);
         List<Role> roles = selectRoleAll();
         for (Role role : roles) {
             for (Role userRole : userRoles) {
@@ -95,7 +97,7 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public List<Role> selectRoleAll() {
-        return selectRoleList(null, new Role());
+        return this.list();
     }
 
     /**
@@ -106,7 +108,7 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public Role selectRoleById(Long roleId) {
-        return roleMapper.selectRoleById(roleId);
+        return baseMapper.selectRoleById(roleId);
     }
 
     /**
@@ -117,7 +119,7 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public boolean deleteRoleById(Long roleId) {
-        return roleMapper.deleteRoleById(roleId) > 0 ? true : false;
+        return baseMapper.deleteRoleById(roleId) > 0 ? true : false;
     }
 
     /**
@@ -135,7 +137,7 @@ public class RoleServiceImpl implements IRoleService {
                 throw new Exception(String.format("%1$s已分配,不能删除", role.getRoleName()));
             }
         }
-        return roleMapper.deleteRoleByIds(roleIds);
+        return baseMapper.deleteRoleByIds(roleIds);
     }
 
     /**
@@ -148,7 +150,7 @@ public class RoleServiceImpl implements IRoleService {
     public int insertRole(Role role) {
         role.setCreateBy(ShiroUtils.getLoginName());
         // 新增角色信息
-        roleMapper.insertRole(role);
+        baseMapper.insertRole(role);
         ShiroUtils.clearCachedAuthorizationInfo();
         return insertRoleMenu(role);
     }
@@ -163,7 +165,7 @@ public class RoleServiceImpl implements IRoleService {
     public int updateRole(Role role) {
         role.setUpdateBy(ShiroUtils.getLoginName());
         // 修改角色信息
-        roleMapper.updateRole(role);
+        baseMapper.updateRole(role);
         ShiroUtils.clearCachedAuthorizationInfo();
         // 删除角色与菜单关联
         roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
@@ -180,7 +182,7 @@ public class RoleServiceImpl implements IRoleService {
     public int updateRule(Role role) {
         role.setUpdateBy(ShiroUtils.getLoginName());
         // 修改角色信息
-        roleMapper.updateRole(role);
+        baseMapper.updateRole(role);
         // 删除角色与部门关联
         roleDeptMapper.deleteRoleDeptByRoleId(role.getRoleId());
         // 新增角色和部门信息（数据权限）
@@ -238,7 +240,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public String checkRoleNameUnique(Role role) {
         Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
-        Role info = roleMapper.checkRoleNameUnique(role.getRoleName());
+        Role info = baseMapper.checkRoleNameUnique(role.getRoleName());
         if (StringUtils.isNotNull(info) && info.getRoleId().longValue() != roleId.longValue()) {
             return UserConstants.ROLE_NAME_NOT_UNIQUE;
         }
@@ -254,7 +256,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public String checkRoleKeyUnique(Role role) {
         Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
-        Role info = roleMapper.checkRoleKeyUnique(role.getRoleKey());
+        Role info = baseMapper.checkRoleKeyUnique(role.getRoleKey());
         if (StringUtils.isNotNull(info) && info.getRoleId().longValue() != roleId.longValue()) {
             return UserConstants.ROLE_KEY_NOT_UNIQUE;
         }
