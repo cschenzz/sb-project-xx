@@ -1,13 +1,13 @@
 package com.sibo.project.iot.iotParameterType.dao;
 
-import com.sibo.project.iot.iotParameterType.entity.IotParameterTypeEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.sibo.project.iot.iotParameterType.entity.IotParameterTypeEntity;
 
 /**
  * 参数类型 数据dao层
- * 
+ *
  * @author chenzz
- * @date 2019-03-14
+ * @date 2019-03-22
  */
 public interface IotParameterTypeDao extends BaseMapper<IotParameterTypeEntity> {
 }

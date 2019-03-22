@@ -1,9 +1,6 @@
 package com.sibo.project.iot.iotParameterType.controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.common.validator.ValidatorUtils;
 import com.sibo.common.validator.group.AddGroup;
 import com.sibo.common.validator.group.UpdateGroup;
@@ -11,30 +8,23 @@ import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
-import com.sibo.framework.web.page.PageDomain;
-import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.iot.iotParameterType.entity.IotParameterTypeEntity;
 import com.sibo.project.iot.iotParameterType.service.IIotParameterTypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-//----------------------------
-//-----------------------------
-//-----------------------
-
 /**
  * 参数类型 信息操作处理
  *
  * @author chenzz
- * @date 2019-03-14
+ * @date 2019-03-22
  */
 @Controller
 @RequestMapping("iot/iotParameterType")
@@ -92,28 +82,8 @@ public class IotParameterTypeController extends BaseController {
     @ResponseBody
     @RequiresPermissions("iot:iotParameterType:list")
     public R listPage(IotParameterTypeEntity iotParameterType) {
-        //-----------------------
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Integer pageNum = pageDomain.getPageNum();
-        Integer pageSize = pageDomain.getPageSize();
-        String keyWord = pageDomain.getSearchKeyWord();
-
-        if (!StringUtils.isEmpty(keyWord)) {
-            //-----------------------
-            Wrapper<IotParameterTypeEntity> wrapper = new LambdaQueryWrapper<IotParameterTypeEntity>()
-                    .like(IotParameterTypeEntity::getTypeName, keyWord)
-                    //.or().like(IotParameterTypeEntity::getSummary, keyWord)
-                    .orderByDesc(IotParameterTypeEntity::getId);
-
-            //---------------------------
-            IPage<IotParameterTypeEntity> pageList = iotParameterTypeService.page(new Page<>(pageNum, pageSize), wrapper);
-            return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
-            //-----------
-        }
-
-        IPage<IotParameterTypeEntity> pageList = iotParameterTypeService.page(new Page<>(pageNum, pageSize), null);
-        return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
-        //----------------------------------------------
+        IPage<?> listPage = iotParameterTypeService.listPage();
+        return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
 
     /**
