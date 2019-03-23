@@ -31,7 +31,8 @@ public class RoleController extends BaseController {
 
     @RequiresPermissions("system:role:view")
     @GetMapping()
-    public String role() {
+    public String role(ModelMap mmap) {
+        putBaseModelMap(mmap, "system:role:view");
         return prefix + "/role";
     }
 
