@@ -3,18 +3,14 @@ package com.sibo.project.system.user.controller;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sibo.common.constant.UserConstants;
 import com.sibo.common.validator.Assert;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
-import com.sibo.framework.web.page.PageDomain;
-import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.user.entity.UserEntity;
 import com.sibo.project.system.user.service.IUserService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -86,28 +82,8 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequiresPermissions("system:user:list")
     public R listPage(UserEntity user) {
-        //-----------------------
-        PageDomain pageDomain = TableSupport.buildPageRequest();
-        Integer pageNum = pageDomain.getPageNum();
-        Integer pageSize = pageDomain.getPageSize();
-        String keyWord = pageDomain.getSearchKeyWord();
-
-        if (!StringUtils.isEmpty(keyWord)) {
-            //-----------------------
-            Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
-                    .like(UserEntity::getLoginName, keyWord)
-                    .or().like(UserEntity::getPhonenumber, keyWord)
-                    .orderByDesc(UserEntity::getUserId);
-
-            //---------------------------
-            IPage<UserEntity> pageList = userService.page(new Page<>(pageNum, pageSize), wrapper);
-            return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
-            //-----------
-        }
-
-        IPage<UserEntity> pageList = userService.page(new Page<>(pageNum, pageSize), null);
-        return R.ok().dataRows(pageList.getTotal(), pageList.getPages(), pageList.getRecords());
-        //----------------------------------------------
+        IPage<?> listPage = userService.listPage(user);
+        return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
 
     /**

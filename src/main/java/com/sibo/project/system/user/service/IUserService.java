@@ -1,5 +1,6 @@
 package com.sibo.project.system.user.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sibo.project.system.user.entity.UserEntity;
 
@@ -10,6 +11,14 @@ import com.sibo.project.system.user.entity.UserEntity;
  * @author chenzz
  */
 public interface IUserService extends IService<UserEntity> {
+
+    /**
+     * 分页查询:用户
+     *
+     * @return 分页page
+     */
+    IPage<?> listPage(UserEntity user);
+
     void addSave(UserEntity user);
 
     void editSave(UserEntity user);
@@ -63,6 +72,5 @@ public interface IUserService extends IService<UserEntity> {
      * @return 结果
      */
     boolean resetUserPwd(UserEntity user);
-
 
 }

@@ -2,14 +2,19 @@ package com.sibo.project.system.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sibo.framework.shiro.service.PasswordService;
+import com.sibo.framework.web.page.PageDomain;
+import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.user.dao.UserDao;
 import com.sibo.project.system.user.entity.UserEntity;
 import com.sibo.project.system.user.service.IUserService;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -23,6 +28,40 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     @Autowired
     private PasswordService passwordService;
+
+    /**
+     * 分页查询:用户
+     *
+     * @return 分页page
+     */
+    @Override
+    public IPage<?> listPage(UserEntity user) {
+        //-----------------------
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        String keyWord = pageDomain.getSearchKeyWord();
+
+        if (!StringUtils.isEmpty(keyWord)) {
+            //-----------------------
+            Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
+                    .like(UserEntity::getLoginName, keyWord)
+                    .or().like(UserEntity::getPhonenumber, keyWord)
+                    .orderByDesc(UserEntity::getUserId);
+
+            //---------------------------
+            IPage<UserEntity> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
+            return pageList;
+            //-----------
+        }
+
+        //---------------------------
+        Wrapper<UserEntity> wrapperSort = new LambdaQueryWrapper<UserEntity>()
+                .orderByDesc(UserEntity::getUserId);
+
+        IPage<UserEntity> pageList = this.page(new Page<>(pageNum, pageSize), wrapperSort);
+        return pageList;
+    }
 
     @Override
     public String randomSalt() {
