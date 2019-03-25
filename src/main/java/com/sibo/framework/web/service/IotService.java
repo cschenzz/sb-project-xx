@@ -69,6 +69,7 @@ public class IotService {
                 .select(IotModelsEntity::getId, IotModelsEntity::getModelName, IotModelsEntity::getModelId, IotModelsEntity::getToken)
                 .orderByDesc(IotModelsEntity::getId);
 
+        //注意,listMaps返回的是数据库对应的字段(id,model_name,model_id,token)
         return modelsService.listMaps(wrapper);
     }
 
