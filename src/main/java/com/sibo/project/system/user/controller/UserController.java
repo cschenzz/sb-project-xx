@@ -150,6 +150,11 @@ public class UserController extends BaseController {
     @ResponseBody
     public R remove(String ids) {
         List<String> idList = Arrays.asList(ids.split(","));
+        for (String userId : idList) {
+            if ("1".equals(userId)) {
+                return R.error("不允许删除超级管理员用户");
+            }
+        }
         boolean result = userService.removeByIds(idList);
         return result ? R.ok() : R.error();
     }
