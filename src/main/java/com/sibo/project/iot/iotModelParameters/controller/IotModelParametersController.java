@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 //-----------------------
 import com.sibo.project.iot.iotModelParameters.entity.IotModelParametersEntity;
@@ -134,6 +135,8 @@ public class IotModelParametersController extends BaseController {
     @ResponseBody
     public R addSave(IotModelParametersEntity iotModelParameters) {
         ValidatorUtils.validateEntity(iotModelParameters, AddGroup.class);
+
+        iotModelParameters.setModifyTime(new Date());
 		iotModelParametersService.save(iotModelParameters);
         return R.ok();
     }
