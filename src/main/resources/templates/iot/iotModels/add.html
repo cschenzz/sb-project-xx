@@ -72,8 +72,15 @@
 		var prefix = ctx + "iot/iotModels";
 		$("#form-iotModels-add").validate({
 			rules:{
-				xxxx:{
+                modelName:{
 					required:true,
+                    minlength: 2,
+                    maxlength: 20
+				},
+                gateWay:{
+					required:true,
+                    minlength: 2,
+                    maxlength: 50
 				},
 			}
 		});
