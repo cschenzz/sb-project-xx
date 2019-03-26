@@ -1,6 +1,8 @@
 package com.sibo.project.monitor.logininfor.entity;
 
-import com.sibo.framework.web.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.sibo.framework.web.entity.BaseXEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,11 +13,13 @@ import java.util.Date;
  *
  * @author chenzz
  */
-public class LogininforEntity extends BaseEntity {
+@TableName("sys_logininfor")
+public class LogininforEntity extends BaseXEntity {
     private static final long serialVersionUID = 1L;
     /**
      * ID
      */
+    @TableId
     private Long infoId;
     /**
      * 用户账号

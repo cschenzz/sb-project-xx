@@ -10,6 +10,7 @@ import com.sibo.project.monitor.logininfor.service.ILogininforService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,8 @@ public class LogininforController extends BaseController {
 
     @RequiresPermissions("monitor:logininfor:view")
     @GetMapping()
-    public String logininfor() {
+    public String logininfor(ModelMap mmap) {
+        putBaseModelMap(mmap, "monitor:logininfor:view");
         return prefix + "/logininfor";
     }
 
