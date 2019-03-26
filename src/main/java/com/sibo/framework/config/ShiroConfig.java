@@ -3,11 +3,19 @@ package com.sibo.framework.config;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.framework.shiro.realm.UserRealm;
+import com.sibo.framework.shiro.session.OnlineSessionDAO;
+import com.sibo.framework.shiro.session.OnlineSessionFactory;
 import com.sibo.framework.shiro.web.filter.LogoutFilter;
 import com.sibo.framework.shiro.web.filter.captcha.CaptchaValidateFilter;
+import com.sibo.framework.shiro.web.filter.online.OnlineSessionFilter;
+import com.sibo.framework.shiro.web.filter.sync.SyncOnlineSessionFilter;
+import com.sibo.framework.shiro.web.session.OnlineWebSessionManager;
 import com.sibo.framework.shiro.web.session.SpringSessionValidationScheduler;
+import org.apache.commons.io.IOUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
+import org.apache.shiro.config.ConfigurationException;
+import org.apache.shiro.io.ResourceUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -20,6 +28,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -39,6 +50,10 @@ public class ShiroConfig {
     // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
     @Value("${shiro.session.validationInterval}")
     private int validationInterval;
+
+    // 验证码开关
+    @Value("${shiro.user.captchaEnabled}")
+    private boolean captchaEnabled;
 
     // 验证码类型
     @Value("${shiro.user.captchaType}")
@@ -76,11 +91,30 @@ public class ShiroConfig {
         net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("sb-admin");
         EhCacheManager em = new EhCacheManager();
         if (StringUtils.isNull(cacheManager)) {
-            em.setCacheManagerConfigFile("classpath:ehcache/ehcache-shiro.xml");
+            em.setCacheManager(new net.sf.ehcache.CacheManager(getCacheManagerConfigFileInputStream()));
             return em;
         } else {
             em.setCacheManager(cacheManager);
             return em;
+        }
+    }
+
+    /**
+     * 返回配置文件流 避免ehcache配置文件一直被占用，无法完全销毁项目重新部署
+     */
+    protected InputStream getCacheManagerConfigFileInputStream() {
+        String configFile = "classpath:ehcache/ehcache-shiro.xml";
+        InputStream inputStream = null;
+        try {
+            inputStream = ResourceUtils.getInputStreamForPath(configFile);
+            byte[] b = IOUtils.toByteArray(inputStream);
+            InputStream in = new ByteArrayInputStream(b);
+            return in;
+        } catch (IOException e) {
+            throw new ConfigurationException(
+                    "Unable to obtain input stream for cacheManagerConfigFile [" + configFile + "]", e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
     }
 
@@ -95,6 +129,24 @@ public class ShiroConfig {
     }
 
     /**
+     * 自定义sessionDAO会话
+     */
+    @Bean
+    public OnlineSessionDAO sessionDAO() {
+        OnlineSessionDAO sessionDAO = new OnlineSessionDAO();
+        return sessionDAO;
+    }
+
+    /**
+     * 自定义sessionFactory会话
+     */
+    @Bean
+    public OnlineSessionFactory sessionFactory() {
+        OnlineSessionFactory sessionFactory = new OnlineSessionFactory();
+        return sessionFactory;
+    }
+
+    /**
      * 自定义sessionFactory调度器
      */
     @Bean
@@ -103,7 +155,56 @@ public class ShiroConfig {
         // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
         sessionValidationScheduler.setSessionValidationInterval(validationInterval * 60 * 1000);
         // 设置会话验证调度器进行会话验证时的会话管理器
+        sessionValidationScheduler.setSessionManager(sessionValidationManager());
         return sessionValidationScheduler;
+    }
+
+    /**
+     * 会话管理器
+     */
+    @Bean
+    public OnlineWebSessionManager sessionValidationManager() {
+        OnlineWebSessionManager manager = new OnlineWebSessionManager();
+        // 加入缓存管理器
+        manager.setCacheManager(getEhCacheManager());
+        // 删除过期的session
+        manager.setDeleteInvalidSessions(true);
+        // 设置全局session超时时间
+        manager.setGlobalSessionTimeout(expireTime * 60 * 1000);
+        // 去掉 JSESSIONID
+        manager.setSessionIdUrlRewritingEnabled(false);
+        // 是否定时检查session
+        manager.setSessionValidationSchedulerEnabled(true);
+        // 自定义SessionDao
+        manager.setSessionDAO(sessionDAO());
+        // 自定义sessionFactory
+        manager.setSessionFactory(sessionFactory());
+        return manager;
+    }
+
+    /**
+     * 会话管理器
+     */
+    @Bean
+    public OnlineWebSessionManager sessionManager() {
+        OnlineWebSessionManager manager = new OnlineWebSessionManager();
+        // 加入缓存管理器
+        manager.setCacheManager(getEhCacheManager());
+        // 删除过期的session
+        manager.setDeleteInvalidSessions(true);
+        // 设置全局session超时时间
+        manager.setGlobalSessionTimeout(expireTime * 60 * 1000);
+        // 去掉 JSESSIONID
+        manager.setSessionIdUrlRewritingEnabled(false);
+        // 定义要使用的无效的Session定时调度器
+        manager.setSessionValidationScheduler(sessionValidationScheduler());
+        // 是否定时检查session
+        manager.setSessionValidationSchedulerEnabled(true);
+        // 自定义SessionDao
+        manager.setSessionDAO(sessionDAO());
+        // 自定义sessionFactory
+        manager.setSessionFactory(sessionFactory());
+        return manager;
     }
 
     /**
@@ -118,6 +219,8 @@ public class ShiroConfig {
         securityManager.setRememberMeManager(rememberMeManager());
         // 注入缓存管理器;
         securityManager.setCacheManager(getEhCacheManager());
+        // session管理器
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 
@@ -152,16 +255,14 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/ajax/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
-        filterChainDefinitionMap.put("/rating/**", "anon");
         filterChainDefinitionMap.put("/sb-ooo/**", "anon");
         filterChainDefinitionMap.put("/druid/**", "anon");
-        filterChainDefinitionMap.put("/assets/**", "anon");
+        filterChainDefinitionMap.put("/profile/**", "anon");
         filterChainDefinitionMap.put("/captcha/captchaImage**", "anon");
 
         //----------------api接口,app/html页面排除在外------------------
         filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/app/html/**", "anon");
-        filterChainDefinitionMap.put("/appstatic/**", "anon");
         filterChainDefinitionMap.put("/html/**", "anon");
         //-------------------------------------------------------------
         // 退出 logout地址，shiro去清除session
@@ -172,16 +273,37 @@ public class ShiroConfig {
         // filterChainDefinitionMap.putAll(SpringUtils.getBean(IMenuService.class).selectPermsAll());
 
         Map<String, Filter> filters = new LinkedHashMap<>();
+        filters.put("onlineSession", onlineSessionFilter());
+        filters.put("syncOnlineSession", syncOnlineSessionFilter());
         filters.put("captchaValidate", captchaValidateFilter());
         // 注销成功，则跳转到指定页面
         filters.put("logout", logoutFilter());
         shiroFilterFactoryBean.setFilters(filters);
 
         // 所有请求需要认证
-        filterChainDefinitionMap.put("/**", "user");
+        filterChainDefinitionMap.put("/**", "user,onlineSession,syncOnlineSession");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;
+    }
+
+    /**
+     * 自定义在线用户处理过滤器
+     */
+    @Bean
+    public OnlineSessionFilter onlineSessionFilter() {
+        OnlineSessionFilter onlineSessionFilter = new OnlineSessionFilter();
+        onlineSessionFilter.setLoginUrl(loginUrl);
+        return onlineSessionFilter;
+    }
+
+    /**
+     * 自定义在线用户同步过滤器
+     */
+    @Bean
+    public SyncOnlineSessionFilter syncOnlineSessionFilter() {
+        SyncOnlineSessionFilter syncOnlineSessionFilter = new SyncOnlineSessionFilter();
+        return syncOnlineSessionFilter;
     }
 
     /**
@@ -190,6 +312,7 @@ public class ShiroConfig {
     @Bean
     public CaptchaValidateFilter captchaValidateFilter() {
         CaptchaValidateFilter captchaValidateFilter = new CaptchaValidateFilter();
+        captchaValidateFilter.setCaptchaEnabled(captchaEnabled);
         captchaValidateFilter.setCaptchaType(captchaType);
         return captchaValidateFilter;
     }

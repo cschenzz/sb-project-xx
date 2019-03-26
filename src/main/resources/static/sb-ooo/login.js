@@ -14,7 +14,7 @@ $.validator.setDefaults({
 });
 
 var errCount = 0;
-var isValidCode = false;
+var isValidCode = true;
 
 function login() {
     $.modal.loading($("#btnSubmit").data("loading"));

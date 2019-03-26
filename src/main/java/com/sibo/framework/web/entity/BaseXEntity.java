@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Entity基类
+ * Entity基类,主要用于查询,不添加多余字段
  *
  * @author chenzz
  */

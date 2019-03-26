@@ -5,7 +5,6 @@ import com.sibo.common.utils.bean.BeanUtils;
 import com.sibo.framework.shiro.realm.UserRealm;
 import com.sibo.project.system.user.entity.UserEntity;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -19,22 +18,7 @@ import org.apache.shiro.subject.Subject;
  */
 public class ShiroUtils {
 
-    /**
-     * 加密算法
-     */
-    public final static String hashAlgorithmName = "SHA-256";
-    /**
-     * 循环次数
-     */
-    public final static int hashIterations = 16;
-
-    public static String sha256(String password, String salt) {
-        return new SimpleHash(hashAlgorithmName, password, salt, hashIterations).toString();
-    }
-
-    //---------------------------------------------
-
-    public static Subject getSubjct() {
+    public static Subject getSubject() {
         return SecurityUtils.getSubject();
     }
 
@@ -43,12 +27,12 @@ public class ShiroUtils {
     }
 
     public static void logout() {
-        getSubjct().logout();
+        getSubject().logout();
     }
 
-    public static UserEntity getUser() {
+    public static UserEntity getSysUser() {
         UserEntity user = null;
-        Object obj = getSubjct().getPrincipal();
+        Object obj = getSubject().getPrincipal();
         if (StringUtils.isNotNull(obj)) {
             user = new UserEntity();
             BeanUtils.copyBeanProp(user, obj);
@@ -56,8 +40,8 @@ public class ShiroUtils {
         return user;
     }
 
-    public static void setUser(UserEntity user) {
-        Subject subject = getSubjct();
+    public static void setSysUser(UserEntity user) {
+        Subject subject = getSubject();
         PrincipalCollection principalCollection = subject.getPrincipals();
         String realmName = principalCollection.getRealmNames().iterator().next();
         PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection(user, realmName);
@@ -72,18 +56,18 @@ public class ShiroUtils {
     }
 
     public static Long getUserId() {
-        return getUser().getUserId().longValue();
+        return getSysUser().getUserId().longValue();
     }
 
     public static String getLoginName() {
-        return getUser().getLoginName();
+        return getSysUser().getLoginName();
     }
 
     public static String getIp() {
-        return getSubjct().getSession().getHost();
+        return getSubject().getSession().getHost();
     }
 
     public static String getSessionId() {
-        return String.valueOf(getSubjct().getSession().getId());
+        return String.valueOf(getSubject().getSession().getId());
     }
 }

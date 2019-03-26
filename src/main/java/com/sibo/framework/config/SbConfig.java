@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author chenzz
  */
 @Component
-@ConfigurationProperties(prefix = "cnsibo")
+@ConfigurationProperties(prefix = "ooooo")
 public class SbConfig {
     /**
      * 项目名称
@@ -73,15 +73,15 @@ public class SbConfig {
     }
 
     public static String getAvatarPath() {
-        return profile + "avatar/" ;
-    }
-
-    public static String getPatientAvatarPath() {
-        return profile + "patientAvatar/" ;
+        return profile + "avatar/";
     }
 
     public static String getDownloadPath() {
-        return profile + "download/" ;
+        return profile + "download/";
     }
 
+    public static String getUploadPath() {
+        return profile + "upload/";
+    }
 }
+

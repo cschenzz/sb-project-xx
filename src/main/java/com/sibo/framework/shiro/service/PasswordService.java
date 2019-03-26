@@ -2,6 +2,7 @@ package com.sibo.framework.shiro.service;
 
 import com.sibo.common.constant.Constants;
 import com.sibo.common.exception.user.UserPasswordNotMatchException;
+import com.sibo.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.sibo.common.utils.MessageUtils;
 import com.sibo.framework.manager.AsyncManager;
 import com.sibo.framework.manager.factory.AsyncFactory;
@@ -48,7 +49,7 @@ public class PasswordService {
         }
         if (retryCount.incrementAndGet() > Integer.valueOf(maxRetryCount).intValue()) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginName, Constants.LOGIN_FAIL, MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount)));
-            //throw new UserPasswordRetryLimitExceedException(Integer.valueOf(maxRetryCount).intValue());
+            throw new UserPasswordRetryLimitExceedException(Integer.valueOf(maxRetryCount).intValue());
         }
 
         if (!matches(user, password)) {

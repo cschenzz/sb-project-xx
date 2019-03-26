@@ -52,7 +52,7 @@ public class MybatisPlusConfig {
      * 性能分析拦截器，不建议生产使用
      */
     @Bean
-    @Profile({"dev"})// 设置 dev 环境开启
+    @Profile({"dev", "test"})// 设置 dev test 环境开启
     public PerformanceInterceptor performanceInterceptor() {
         return new PerformanceInterceptor();
     }

@@ -1,6 +1,7 @@
 package com.sibo.framework.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sibo.common.utils.DateUtils;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.web.entity.R;
@@ -11,8 +12,12 @@ import com.sibo.project.system.menu.service.IMenuService;
 import com.sibo.project.system.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
+import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,6 +71,21 @@ public class BaseController {
         return new Page<>(1, 15);
     }
 
+
+    /**
+     * 将前台传递过来的日期格式的字符串，自动转化为Date类型
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // Date 类型转换
+        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                setValue(DateUtils.parseDate(text));
+            }
+        });
+    }
+
     /**
      * 响应返回结果
      *
@@ -74,6 +94,16 @@ public class BaseController {
      */
     protected R toAjax(int rows) {
         return rows > 0 ? success() : error();
+    }
+
+    /**
+     * 响应返回结果
+     *
+     * @param result 结果
+     * @return 操作结果
+     */
+    protected R toAjax(boolean result) {
+        return result ? success() : error();
     }
 
     /**
@@ -119,11 +149,11 @@ public class BaseController {
     }
 
     public UserEntity getUser() {
-        return ShiroUtils.getUser();
+        return ShiroUtils.getSysUser();
     }
 
     public void setUser(UserEntity user) {
-        ShiroUtils.setUser(user);
+        ShiroUtils.setSysUser(user);
     }
 
     public Long getUserId() {

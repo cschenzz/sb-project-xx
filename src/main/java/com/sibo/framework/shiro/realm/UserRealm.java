@@ -1,9 +1,6 @@
 package com.sibo.framework.shiro.realm;
 
-import com.sibo.common.exception.user.RoleBlockedException;
-import com.sibo.common.exception.user.UserBlockedException;
-import com.sibo.common.exception.user.UserNotExistsException;
-import com.sibo.common.exception.user.UserPasswordNotMatchException;
+import com.sibo.common.exception.user.*;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.shiro.service.LoginService;
 import com.sibo.project.system.menu.service.IMenuService;
@@ -44,14 +41,14 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
-        UserEntity user = ShiroUtils.getUser();
+        UserEntity user = ShiroUtils.getSysUser();
         // 角色列表
         Set<String> roles = new HashSet<String>();
         // 功能列表
         Set<String> menus = new HashSet<String>();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 管理员拥有所有权限
-        if (user.getUserId() == 1) {
+        if (user.isAdmin()) {
             info.addRole("admin");
             info.addStringPermission("*:*:*");
         } else {
@@ -80,10 +77,14 @@ public class UserRealm extends AuthorizingRealm {
         UserEntity user = null;
         try {
             user = loginService.login(username, password);
+        } catch (CaptchaException e) {
+            throw new AuthenticationException(e.getMessage(), e);
         } catch (UserNotExistsException e) {
             throw new UnknownAccountException(e.getMessage(), e);
         } catch (UserPasswordNotMatchException e) {
             throw new IncorrectCredentialsException(e.getMessage(), e);
+        } catch (UserPasswordRetryLimitExceedException e) {
+            throw new ExcessiveAttemptsException(e.getMessage(), e);
         } catch (UserBlockedException e) {
             throw new LockedAccountException(e.getMessage(), e);
         } catch (RoleBlockedException e) {

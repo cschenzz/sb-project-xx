@@ -1,12 +1,14 @@
 package com.sibo.framework.shiro.web.session;
 
+import com.sibo.common.utils.Threads;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.SessionValidationScheduler;
 import org.apache.shiro.session.mgt.ValidatingSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +25,9 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
     /**
      * 定时器，用于处理超时的挂起请求，也用于连接断开时的重连。
      */
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    @Autowired
+    @Qualifier("scheduledExecutorService")
+    private ScheduledExecutorService executorService;
 
     private volatile boolean enabled = false;
 
@@ -63,7 +67,7 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
 
     /**
      * Specifies how frequently (in milliseconds) this Scheduler will call the
-     * {@link org.apache.shiro.session.mgt.ValidatingSessionManager#validateSessions()
+     * {@link ValidatingSessionManager#validateSessions()
      * ValidatingSessionManager#validateSessions()} method.
      *
      * <p>
@@ -117,6 +121,9 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
             log.debug("Stopping Spring Scheduler session validation job...");
         }
 
+        if (this.enabled) {
+            Threads.shutdownAndAwaitTermination(executorService);
+        }
         this.enabled = false;
     }
 }
