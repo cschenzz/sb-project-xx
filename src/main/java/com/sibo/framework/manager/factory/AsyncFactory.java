@@ -17,6 +17,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.TimerTask;
 
 /**
@@ -114,6 +115,7 @@ public class AsyncFactory {
                 } else if (Constants.LOGIN_FAIL.equals(status)) {
                     logininfor.setStatus(Constants.FAIL);
                 }
+                logininfor.setLoginTime(new Date());
                 // 插入数据
                 SpringUtils.getBean(LogininforServiceImpl.class).save(logininfor);
             }
