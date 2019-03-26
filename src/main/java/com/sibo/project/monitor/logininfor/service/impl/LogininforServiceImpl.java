@@ -34,7 +34,7 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
             //-----------------------
             Wrapper<LogininforEntity> wrapper = new LambdaQueryWrapper<LogininforEntity>()
                     .like(LogininforEntity::getLoginName, keyWord)
-                    //.or().like(LogininforEntity::getEmail, keyWord)
+                    .or().like(LogininforEntity::getBrowser, keyWord)
                     .or().like(LogininforEntity::getMsg, keyWord)
                     .orderByDesc(LogininforEntity::getInfoId);
 
