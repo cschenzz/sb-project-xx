@@ -1,60 +1,57 @@
-package com.sibo.project.iot.logOper.entity;
+package com.sibo.project.monitor.operlog.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.sibo.framework.web.entity.BaseXEntity;
+import com.sibo.framework.web.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
 import java.util.Date;
 
-//-----------------------------------
-
 /**
- * 操作日志记录表 sys_log_oper
+ * 操作日志记录 oper_log
  *
  * @author chenzz
- * @date 2019-03-12
  */
-@TableName("sys_log_oper")
-public class LogOperEntity extends BaseXEntity implements Serializable {
-
+public class OperLogEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 日志主键
      */
-    @TableId
-    private Integer id;
+    private Long operId;
 
     /**
-     * 模块标题
+     * 操作模块
      */
     private String title;
 
     /**
-     * 业务类型（0其它 1新增 2修改 3删除）
+     * 操作业务类型
      */
     private Integer businessType;
 
     /**
-     * 方法名称
+     * 请求方法
      */
     private String method;
 
     /**
-     * 操作人员
+     * 操作人类别
      */
-    private Long userId;
+    private Integer operatorType;
 
     /**
-     * 请求URL
+     * 操作人员
+     */
+    private String operName;
+
+
+    /**
+     * 请求url
      */
     private String operUrl;
 
     /**
-     * 主机地址
+     * 操作地址
      */
     private String operIp;
 
@@ -69,7 +66,7 @@ public class LogOperEntity extends BaseXEntity implements Serializable {
     private String operParam;
 
     /**
-     * 操作状态（0正常 1异常）
+     * 状态0正常 1异常
      */
     private Integer status;
 
@@ -83,112 +80,119 @@ public class LogOperEntity extends BaseXEntity implements Serializable {
      */
     private Date operTime;
 
-
-    public void setId(Integer id) {
-        this.id = id;
+    public Long getOperId() {
+        return operId;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setOperId(Long operId) {
+        this.operId = operId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setBusinessType(Integer businessType) {
-        this.businessType = businessType;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getBusinessType() {
         return businessType;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public void setBusinessType(Integer businessType) {
+        this.businessType = businessType;
     }
 
     public String getMethod() {
         return method;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setMethod(String method) {
+        this.method = method;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Integer getOperatorType() {
+        return operatorType;
     }
 
-    public void setOperUrl(String operUrl) {
-        this.operUrl = operUrl;
+    public void setOperatorType(Integer operatorType) {
+        this.operatorType = operatorType;
+    }
+
+    public String getOperName() {
+        return operName;
+    }
+
+    public void setOperName(String operName) {
+        this.operName = operName;
     }
 
     public String getOperUrl() {
         return operUrl;
     }
 
-    public void setOperIp(String operIp) {
-        this.operIp = operIp;
+    public void setOperUrl(String operUrl) {
+        this.operUrl = operUrl;
     }
 
     public String getOperIp() {
         return operIp;
     }
 
-    public void setOperLocation(String operLocation) {
-        this.operLocation = operLocation;
+    public void setOperIp(String operIp) {
+        this.operIp = operIp;
     }
 
     public String getOperLocation() {
         return operLocation;
     }
 
-    public void setOperParam(String operParam) {
-        this.operParam = operParam;
+    public void setOperLocation(String operLocation) {
+        this.operLocation = operLocation;
     }
 
     public String getOperParam() {
         return operParam;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setOperParam(String operParam) {
+        this.operParam = operParam;
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getErrorMsg() {
         return errorMsg;
     }
 
-    public void setOperTime(Date operTime) {
-        this.operTime = operTime;
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
     public Date getOperTime() {
         return operTime;
     }
 
+    public void setOperTime(Date operTime) {
+        this.operTime = operTime;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("id", getId())
+                .append("operId", getOperId())
                 .append("title", getTitle())
                 .append("businessType", getBusinessType())
                 .append("method", getMethod())
-                .append("userId", getUserId())
+                .append("operatorType", getOperatorType())
+                .append("operName", getOperName())
                 .append("operUrl", getOperUrl())
                 .append("operIp", getOperIp())
                 .append("operLocation", getOperLocation())

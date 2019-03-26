@@ -1,6 +1,5 @@
 package com.sibo.project.system.dict.controller;
 
-import com.sibo.common.utils.poi.ExcelUtil;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 数据字典信息
@@ -32,16 +29,6 @@ public class DictTypeController extends BaseController {
     @GetMapping()
     public String dictType() {
         return prefix + "/type";
-    }
-
-    @Log(title = "字典类型", businessType = BusinessType.EXPORT)
-    @RequiresPermissions("system:dict:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public R export(DictType dictType) {
-        List<DictType> list = dictTypeService.selectDictTypeList(dictType);
-        ExcelUtil<DictType> util = new ExcelUtil<DictType>(DictType.class);
-        return util.exportExcel(list, "dictType");
     }
 
     /**

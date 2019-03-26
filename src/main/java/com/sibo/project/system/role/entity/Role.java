@@ -2,7 +2,6 @@ package com.sibo.project.system.role.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sibo.framework.aspectj.lang.annotation.Excel;
 import com.sibo.framework.web.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -19,38 +18,32 @@ public class Role extends BaseEntity {
     /**
      * 角色ID
      */
-    @Excel(name = "角色序号")
     @TableId
     private Long roleId;
 
     /**
      * 角色名称
      */
-    @Excel(name = "角色名称")
     private String roleName;
 
     /**
      * 角色权限
      */
-    @Excel(name = "角色权限")
     private String roleKey;
 
     /**
      * 角色排序
      */
-    @Excel(name = "角色排序")
     private String roleSort;
 
     /**
      * 数据范围（1：所有数据权限；2：自定数据权限）
      */
-    @Excel(name = "数据范围")
     private String dataScope;
 
     /**
      * 角色状态（0正常 1停用）
      */
-    @Excel(name = "角色状态")
     private String status;
 
     /**

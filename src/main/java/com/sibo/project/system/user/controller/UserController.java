@@ -166,9 +166,5 @@ public class UserController extends BaseController {
         Assert.isBlank(user.getEmail(), "email不能为空");
         Assert.isBlank(user.getPhonenumber(), "手机号不能为空");
         Assert.isBlank(user.getPassword(), "密码不能为空");
-
-        Assert.isNull(user.getProvince(), "省不能为空");
-        Assert.isNull(user.getCity(), "市不能为空");
-        Assert.isNull(user.getArea(), "县不能为空");
     }
 }

@@ -7,8 +7,8 @@ import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.common.utils.spring.SpringUtils;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessStatus;
-import com.sibo.project.iot.logOper.entity.LogOperEntity;
-import com.sibo.project.iot.logOper.service.ILogOperService;
+import com.sibo.project.monitor.operlog.entity.OperLogEntity;
+import com.sibo.project.monitor.operlog.service.IOperLogService;
 import com.sibo.project.system.user.entity.UserEntity;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -73,7 +73,7 @@ public class LogAspect {
             UserEntity currentUser = ShiroUtils.getUser();
 
             // *========数据库日志=========*//
-            LogOperEntity operLog = new LogOperEntity();
+            OperLogEntity operLog = new OperLogEntity();
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
             // 请求的地址
             String ip = ShiroUtils.getIp();
@@ -81,7 +81,7 @@ public class LogAspect {
 
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null) {
-                operLog.setUserId(currentUser.getUserId());
+                operLog.setOperName(currentUser.getLoginName());
             }
 
             if (e != null) {
@@ -95,7 +95,7 @@ public class LogAspect {
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
             operLog.setOperTime(new Date());
-            SpringUtils.getBean(ILogOperService.class).save(operLog);
+            SpringUtils.getBean(IOperLogService.class).save(operLog);
             // 保存数据库
             // AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
         } catch (Exception exp) {
@@ -113,7 +113,7 @@ public class LogAspect {
      * @return 方法描述
      * @throws Exception
      */
-    public void getControllerMethodDescription(Log log, LogOperEntity operLog) throws Exception {
+    public void getControllerMethodDescription(Log log, OperLogEntity operLog) throws Exception {
         // 设置action动作
         operLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
@@ -130,7 +130,7 @@ public class LogAspect {
      *
      * @param operLog
      */
-    private void setRequestValue(LogOperEntity operLog) {
+    private void setRequestValue(OperLogEntity operLog) {
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
         String params = JSONObject.toJSONString(map);
         operLog.setOperParam(StringUtils.substring(params, 0, 255));

@@ -1,11 +1,11 @@
 package com.sibo.project.system.user.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sibo.framework.web.entity.BaseXEntity;
+import com.sibo.framework.web.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,21 +18,43 @@ import java.util.Date;
  * @date 2019-03-12
  */
 @TableName("sys_user")
-public class UserEntity extends BaseXEntity implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class UserEntity extends BaseEntity implements Serializable {
 
     /**
      * 用户ID
      */
-    @TableId("id")
+    @TableId
     private Long userId;
 
     /**
-     * 登录账号
+     * 登录名称
      */
-    @TableField("name")
     private String loginName;
+
+    /**
+     * 用户名称
+     */
+    private String userName;
+
+    /**
+     * 用户邮箱
+     */
+    private String email;
+
+    /**
+     * 手机号码
+     */
+    private String phonenumber;
+
+    /**
+     * 用户性别
+     */
+    private String sex;
+
+    /**
+     * 用户头像
+     */
+    private String avatar;
 
     /**
      * 密码
@@ -45,80 +67,24 @@ public class UserEntity extends BaseXEntity implements Serializable {
     private String salt;
 
     /**
-     * 用户邮箱
+     * 帐号状态（0正常 1停用）
      */
-    private String email;
+    private String status;
 
     /**
-     * 手机号码
+     * 删除标志（0代表存在 2代表删除）
      */
-    @TableField("mobile")
-    private String phonenumber;
-
-    /**
-     * 省
-     */
-    private Integer province;
-
-    /**
-     * 市
-     */
-    private Integer city;
-
-    /**
-     * 县
-     */
-    private Integer area;
-
-    /**
-     * 地址
-     */
-    private String address;
-
-    /**
-     * 用户性别（0男 1女 2未知）
-     */
-    private Integer sex;
-
-    /**
-     * 真实姓名
-     */
-    private String realname;
-
-    /**
-     * 用户级别
-     */
-    private Integer userrank;
-
-    /**
-     * 注册时间
-     */
-    private Date regtime;
-
-    /**
-     * 最后登录时间
-     */
-    private Date lastLogintime;
+    private String delFlag;
 
     /**
      * 最后登陆IP
      */
-    private String lastLoginIp;
+    private String loginIp;
 
     /**
-     * 头像路径
+     * 最后登陆时间
      */
-    private String avatar;
-
-    /**
-     * 帐号状态（1正常 0停用）
-     */
-    private Integer status;
-
-    /**
-     * 备注
-     */
-    private String remark;
+    private Date loginDate;
 
     public Long getUserId() {
         return userId;
@@ -126,6 +92,14 @@ public class UserEntity extends BaseXEntity implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin(this.userId);
+    }
+
+    public static boolean isAdmin(Long userId) {
+        return userId != null && 1L == userId;
     }
 
     public String getLoginName() {
@@ -136,28 +110,20 @@ public class UserEntity extends BaseXEntity implements Serializable {
         this.loginName = loginName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhonenumber() {
@@ -168,132 +134,100 @@ public class UserEntity extends BaseXEntity implements Serializable {
         this.phonenumber = phonenumber;
     }
 
-    public void setProvince(Integer province) {
-        this.province = province;
-    }
-
-    public Integer getProvince() {
-        return province;
-    }
-
-    public void setCity(Integer city) {
-        this.city = city;
-    }
-
-    public Integer getCity() {
-        return city;
-    }
-
-    public void setArea(Integer area) {
-        this.area = area;
-    }
-
-    public Integer getArea() {
-        return area;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public Integer getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setRealname(String realname) {
-        this.realname = realname;
-    }
-
-    public String getRealname() {
-        return realname;
-    }
-
-    public void setUserrank(Integer userrank) {
-        this.userrank = userrank;
-    }
-
-    public Integer getUserrank() {
-        return userrank;
-    }
-
-    public void setRegtime(Date regtime) {
-        this.regtime = regtime;
-    }
-
-    public Date getRegtime() {
-        return regtime;
-    }
-
-    public void setLastLogintime(Date lastLogintime) {
-        this.lastLogintime = lastLogintime;
-    }
-
-    public Date getLastLogintime() {
-        return lastLogintime;
-    }
-
-    public void setLastLoginIp(String lastLoginIp) {
-        this.lastLoginIp = lastLoginIp;
-    }
-
-    public String getLastLoginIp() {
-        return lastLoginIp;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getAvatar() {
         return avatar;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-    public Integer getStatus() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    /**
+     * 生成随机盐
+     */
+    public void randomSalt() {
+        // 一个Byte占两个字节，此处生成的3字节，字符串长度为6
+        SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
+        String hex = secureRandom.nextBytes(3).toHex();
+        setSalt(hex);
+    }
+
+    public String getStatus() {
         return status;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getDelFlag() {
+        return delFlag;
     }
 
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getLoginIp() {
+        return loginIp;
+    }
+
+    public void setLoginIp(String loginIp) {
+        this.loginIp = loginIp;
+    }
+
+    public Date getLoginDate() {
+        return loginDate;
+    }
+
+    public void setLoginDate(Date loginDate) {
+        this.loginDate = loginDate;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("userId", getUserId())
                 .append("loginName", getLoginName())
-                .append("password", getPassword())
-                .append("salt", getSalt())
+                .append("userName", getUserName())
                 .append("email", getEmail())
                 .append("phonenumber", getPhonenumber())
-                .append("province", getProvince())
-                .append("city", getCity())
-                .append("area", getArea())
-                .append("address", getAddress())
                 .append("sex", getSex())
-                .append("realname", getRealname())
-                .append("userrank", getUserrank())
-                .append("regtime", getRegtime())
-                .append("lastLogintime", getLastLogintime())
-                .append("lastLoginIp", getLastLoginIp())
                 .append("avatar", getAvatar())
+                .append("password", getPassword())
+                .append("salt", getSalt())
                 .append("status", getStatus())
+                .append("delFlag", getDelFlag())
+                .append("loginIp", getLoginIp())
+                .append("loginDate", getLoginDate())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
                 .append("remark", getRemark())
                 .toString();
     }

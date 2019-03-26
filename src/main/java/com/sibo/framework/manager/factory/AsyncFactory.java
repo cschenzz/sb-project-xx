@@ -6,10 +6,10 @@ import com.sibo.common.utils.LogUtils;
 import com.sibo.common.utils.ServletUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.common.utils.spring.SpringUtils;
-import com.sibo.project.iot.logLogin.entity.LogLoginEntity;
-import com.sibo.project.iot.logLogin.service.ILogLoginService;
-import com.sibo.project.iot.logOper.entity.LogOperEntity;
-import com.sibo.project.iot.logOper.service.ILogOperService;
+import com.sibo.project.monitor.logininfor.entity.LogininforEntity;
+import com.sibo.project.monitor.logininfor.service.impl.LogininforServiceImpl;
+import com.sibo.project.monitor.operlog.entity.OperLogEntity;
+import com.sibo.project.monitor.operlog.service.IOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +30,13 @@ public class AsyncFactory {
      * @param operLog 操作日志信息
      * @return 任务task
      */
-    public static TimerTask recordOper(final LogOperEntity operLog) {
+    public static TimerTask recordOper(final OperLogEntity operLog) {
         return new TimerTask() {
             @Override
             public void run() {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-                SpringUtils.getBean(ILogOperService.class).save(operLog);
+                SpringUtils.getBean(IOperLogService.class).save(operLog);
             }
         };
     }
@@ -69,18 +69,21 @@ public class AsyncFactory {
                 // 获取客户端浏览器
                 String browser = userAgent.getBrowser().getName();
                 // 封装对象
-                LogLoginEntity logininfor = new LogLoginEntity();
+                LogininforEntity logininfor = new LogininforEntity();
                 logininfor.setLoginName(username);
-                logininfor.setLoginIp(ip);
-                logininfor.setMessage(message);
+                logininfor.setIpaddr(ip);
+                logininfor.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
+                logininfor.setBrowser(browser);
+                logininfor.setOs(os);
+                logininfor.setMsg(message);
                 // 日志状态
                 if (Constants.LOGIN_SUCCESS.equals(status) || Constants.LOGOUT.equals(status)) {
-                    logininfor.setLoginResult(0);
+                    logininfor.setStatus(Constants.SUCCESS);
                 } else if (Constants.LOGIN_FAIL.equals(status)) {
-                    logininfor.setLoginResult(1);
+                    logininfor.setStatus(Constants.FAIL);
                 }
                 // 插入数据
-                SpringUtils.getBean(ILogLoginService.class).save(logininfor);
+                SpringUtils.getBean(LogininforServiceImpl.class).save(logininfor);
             }
         };
     }

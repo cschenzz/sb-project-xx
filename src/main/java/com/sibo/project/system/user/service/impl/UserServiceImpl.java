@@ -77,7 +77,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         user.setSalt(salt);
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), salt));
 
-        user.setRegtime(new Date());
+        user.setCreateTime(new Date());
         baseMapper.insert(user);
     }
 

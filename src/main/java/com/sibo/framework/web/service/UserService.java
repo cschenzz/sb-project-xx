@@ -24,7 +24,7 @@ public class UserService {
 
     public List<Map<String, Object>> getUsers() {
         Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
-                .select(UserEntity::getUserId, UserEntity::getLoginName, UserEntity::getPhonenumber, UserEntity::getAddress, UserEntity::getRealname)
+                .select(UserEntity::getUserId, UserEntity::getLoginName, UserEntity::getPhonenumber, UserEntity::getUserName)
                 .gt(UserEntity::getUserId, 0)
                 //--------------------
                 .orderByDesc(UserEntity::getUserId);
