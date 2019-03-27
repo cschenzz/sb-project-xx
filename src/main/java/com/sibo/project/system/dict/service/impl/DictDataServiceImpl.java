@@ -35,11 +35,8 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
-        String keyWord = pageDomain.getSearchKeyWord();
 
-        if (!StringUtils.isEmpty(dictData.getDictType())
-                || !StringUtils.isEmpty(dictData.getDictLabel())
-                || !StringUtils.isEmpty(dictData.getStatus())) {
+        if (!StringUtils.isEmpty(dictData.getDictType())) {
             //-----------------------
             Wrapper<DictData> wrapper = new LambdaQueryWrapper<DictData>()
                     .eq(DictData::getDictType, dictData.getDictType());
