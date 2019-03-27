@@ -1,6 +1,6 @@
 /**
  * 通用js方法封装处理
- * Copyright (c) 2018 chenzz
+ * Copyright (c) 2019 chenzz
  */
 (function ($) {
     $.extend({
@@ -31,6 +31,7 @@
                     showColumns: true,
                     showToggle: true,
                     showExport: false,
+                    clickToSelect: false,
                     fixedColumns: false,
                     fixedNumber: 0,
                     rightFixedColumns: false,
@@ -66,6 +67,7 @@
                     showColumns: options.showColumns,                   // 是否显示隐藏某列下拉框
                     showToggle: options.showToggle,                     // 是否显示详细视图和列表视图的切换按钮
                     showExport: options.showExport,                     // 是否支持导出文件
+                    clickToSelect: options.clickToSelect,				// 是否启用点击选中行
                     fixedColumns: options.fixedColumns,                 // 是否启用冻结列（左侧）
                     fixedNumber: options.fixedNumber,                   // 列冻结的个数（左侧）
                     rightFixedColumns: options.rightFixedColumns,       // 是否启用冻结列（右侧）
@@ -171,7 +173,7 @@
                 $.modal.loading("正在导出数据，请稍后...");
                 $.post($.table._option.exportUrl, $("#" + currentId).serializeArray(), function(result) {
                     if (result.code == web_status.SUCCESS) {
-                        window.location.href = ctx + "common/download?fileName=" + result.msg + "&delete=" + true;
+                        window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
                     } else {
                         $.modal.alertError(result.msg);
                     }
@@ -182,7 +184,7 @@
             importTemplate: function() {
                 $.get($.table._option.importTemplateUrl, function(result) {
                     if (result.code == web_status.SUCCESS) {
-                        window.location.href = ctx + "common/download?fileName=" + result.msg + "&delete=" + true;
+                        window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
                     } else {
                         $.modal.alertError(result.msg);
                     }
@@ -283,6 +285,7 @@
                     id: "bootstrap-tree-table",
                     type: 1, // 0 代表bootstrapTable 1代表bootstrapTreeTable
                     height: 0,
+                    rootIdValue: null,
                     ajaxParams: {},
                     toolbar: "toolbar",
                     striped: false,
@@ -300,6 +303,7 @@
                     type: 'get',                                        // 请求方式（*）
                     url: options.url,                                   // 请求后台的URL（*）
                     ajaxParams: options.ajaxParams,                     // 请求数据的ajax的data属性
+                    rootIdValue: options.rootIdValue,                   // 设置指定根节点id值
                     height: options.height,                             // 表格树的高度
                     expandColumn: options.expandColumn,                 // 在哪一列上面显示展开按钮
                     striped: options.striped,                           // 是否显示行间隔色
@@ -1057,10 +1061,12 @@
             random: function (min, max) {
                 return Math.floor((Math.random() * max) + min);
             },
+            // 判断字符串是否是以start开头
             startWith: function(value, start) {
                 var reg = new RegExp("^" + start);
                 return reg.test(value)
             },
+            // 判断字符串是否是以end结尾
             endWith: function(value, end) {
                 var reg = new RegExp(end + "$");
                 return reg.test(value)

@@ -1,9 +1,8 @@
 /**
  * 通用方法封装处理
- * Copyright (c) 2018 chenzz
+ * Copyright (c) 2019 chenzz
  */
-
-$(function () {
+$(function() {
     // select2复选框事件绑定
     if ($.fn.select2 !== undefined) {
         $("select.form-control:not(.noselect2)").each(function () {
@@ -28,14 +27,14 @@ $(function () {
     }
     // laydate 时间控件绑定
     if ($(".select-time").length > 0) {
-        layui.use('laydate', function () {
+        layui.use('laydate', function() {
             var laydate = layui.laydate;
             var startDate = laydate.render({
                 elem: '#startTime',
                 max: $('#endTime').val(),
                 theme: 'molv',
                 trigger: 'click',
-                done: function (value, date) {
+                done: function(value, date) {
                     // 结束时间大于开始时间
                     if (value !== '') {
                         endDate.config.min.year = date.year;
@@ -53,7 +52,7 @@ $(function () {
                 min: $('#startTime').val(),
                 theme: 'molv',
                 trigger: 'click',
-                done: function (value, date) {
+                done: function(value, date) {
                     // 开始时间小于结束时间
                     if (value !== '') {
                         startDate.config.max.year = date.year;
@@ -66,6 +65,28 @@ $(function () {
                     }
                 }
             });
+        });
+    }
+    // laydate time-input 时间控件绑定
+    if ($(".time-input").length > 0) {
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            var times = $(".time-input");
+            // 控制控件外观
+            var type = times.attr("data-type") || 'date';
+            // 控制回显格式
+            var format = times.attr("data-format") || 'yyyy-MM-dd';
+            for (var i = 0; i < times.length; i++) {
+                var time = times[i];
+                laydate.render({
+                    elem: time,
+                    theme: 'molv',
+                    trigger: 'click',
+                    type: type,
+                    format: format,
+                    done: function(value, date) {}
+                });
+            }
         });
     }
     // tree 关键字搜索绑定
@@ -81,39 +102,60 @@ $(function () {
             $.tree.searchNode(e);
         }).bind("input propertychange", $.tree.searchNode);
     }
-    // 复选框后按钮样式状态变更
-    $("#bootstrap-table").on("check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table", function () {
-        var ids = $("#bootstrap-table").bootstrapTable("getSelections");
-        $('#toolbar .btn-del').toggleClass('disabled', !ids.length);
-        $('#toolbar .btn-edit').toggleClass('disabled', ids.length != 1);
-        ;
-    });
     // tree表格树 展开/折叠
-    var expandFlag = false;
-    $("#expandAllBtn").click(function () {
-        if (expandFlag) {
-            $('#bootstrap-table').bootstrapTreeTable('expandAll');
+    var expandFlag;
+    $("#expandAllBtn").click(function() {
+        var dataExpand = $.common.isEmpty($.table._option.expandAll) ? true : $.table._option.expandAll;
+        expandFlag = $.common.isEmpty(expandFlag) ? dataExpand : expandFlag;
+        if (!expandFlag) {
+            $('#' + $.table._option.id).bootstrapTreeTable('expandAll');
         } else {
-            $('#bootstrap-table').bootstrapTreeTable('collapseAll');
+            $('#' + $.table._option.id).bootstrapTreeTable('collapseAll');
         }
-        expandFlag = expandFlag ? false : true;
+        expandFlag = expandFlag ? false: true;
     })
 });
 
+/** 刷新选项卡 */
+var refreshItem = function(){
+    var topWindow = $(window.parent.document);
+    var currentId = $('.page-tabs-content', topWindow).find('.active').attr('data-id');
+    var target = $('.admin_iframe[data-id="' + currentId + '"]', topWindow);
+    var url = target.attr('src');
+    target.attr('src', url).ready();
+}
+
+/** 关闭选项卡 */
+var closeItem = function(){
+    var topWindow = $(window.parent.document);
+    var panelUrl = window.frameElement.getAttribute('data-panel');
+    $('.page-tabs-content .active i', topWindow).click();
+    if($.common.isNotEmpty(panelUrl)){
+        $('.menuTab[data-id="' + panelUrl + '"]', topWindow).addClass('active').siblings('.menuTab').removeClass('active');
+        $('.mainContent .admin_iframe', topWindow).each(function() {
+            if ($(this).data('id') == panelUrl) {
+                $(this).show().siblings('.admin_iframe').hide();
+                return false;
+            }
+        });
+    }
+}
+
 /** 创建选项卡 */
 function createMenuItem(dataUrl, menuName) {
-    dataIndex = $.common.random(1, 100),
+    var panelUrl = window.frameElement.getAttribute('data-id');
+    dataIndex = $.common.random(1,100),
         flag = true;
     if (dataUrl == undefined || $.trim(dataUrl).length == 0) return false;
     var topWindow = $(window.parent.document);
     // 选项卡菜单已存在
-    $('.menuTab', topWindow).each(function () {
+    $('.menuTab', topWindow).each(function() {
         if ($(this).data('id') == dataUrl) {
             if (!$(this).hasClass('active')) {
                 $(this).addClass('active').siblings('.menuTab').removeClass('active');
-                $('.page-tabs-content').animate({marginLeft: ""}, "fast");
+                $('.page-tabs-content').animate({ marginLeft: ""}, "fast");
                 // 显示tab对应的内容区
-                $('.mainContent .admin_iframe', topWindow).each(function () {
+                $('.mainContent .admin_iframe', topWindow).each(function() {
                     if ($(this).data('id') == dataUrl) {
                         $(this).show().siblings('.admin_iframe').hide();
                         return false;
@@ -126,12 +168,17 @@ function createMenuItem(dataUrl, menuName) {
     });
     // 选项卡菜单不存在
     if (flag) {
-        var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
+        var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '" data-panel="' + panelUrl + '">' + menuName + ' <i class="fa fa-times-circle"></i></a>';
         $('.menuTab', topWindow).removeClass('active');
 
         // 添加选项卡对应的iframe
-        var str1 = '<iframe class="admin_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
+        var str1 = '<iframe class="admin_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" data-panel="' + panelUrl + '" seamless></iframe>';
         $('.mainContent', topWindow).find('iframe.admin_iframe').hide().parents('.mainContent').append(str1);
+
+        window.parent.$.modal.loading("数据加载中，请稍后...");
+        $('.mainContent iframe:visible', topWindow).load(function () {
+            window.parent.$.modal.closeLoading();
+        });
 
         // 添加选项卡
         $('.menuTabs .page-tabs-content', topWindow).append(str);
@@ -139,13 +186,35 @@ function createMenuItem(dataUrl, menuName) {
     return false;
 }
 
-/** 设置全局ajax超时处理 */
+//日志打印封装处理
+var log = {
+    log: function (msg) {
+        console.log(msg);
+    },
+    info: function(msg) {
+        console.info(msg);
+    },
+    warn: function(msg) {
+        console.warn(msg);
+    },
+    error: function(msg) {
+        console.error(msg);
+    }
+};
+
+/** 设置全局ajax处理 */
 $.ajaxSetup({
-    complete: function (XMLHttpRequest, textStatus) {
-        if (textStatus == "parsererror") {
-            $.modal.confirm("登陆超时！请重新登陆！", function () {
-                window.location.href = ctx + "login";
-            })
+    complete: function(XMLHttpRequest, textStatus) {
+        if (textStatus == 'timeout') {
+            $.modal.alertWarning("服务器超时，请稍后再试！");
+            $.modal.closeLoading();
+        } else if (textStatus == "parsererror") {
+            $.modal.alertWarning("服务器错误，请联系管理员！");
+            $.modal.closeLoading();
         }
     }
+});
+layer.config({
+    extend: 'moon/style.css',
+    skin: 'layer-ext-moon'
 });

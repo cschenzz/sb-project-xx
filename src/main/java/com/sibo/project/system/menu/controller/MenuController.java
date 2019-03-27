@@ -32,7 +32,8 @@ public class MenuController extends BaseController {
 
     @RequiresPermissions("system:menu:view")
     @GetMapping()
-    public String menu() {
+    public String menu(ModelMap mmap) {
+        putBaseModelMap(mmap, "system:menu:view");
         return prefix + "/menu" ;
     }
 
