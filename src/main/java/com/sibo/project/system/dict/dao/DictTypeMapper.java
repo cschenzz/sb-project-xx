@@ -1,7 +1,7 @@
 package com.sibo.project.system.dict.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sibo.project.system.dict.entity.DictType;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -10,8 +10,7 @@ import java.util.List;
  *
  * @author chenzz
  */
-@Mapper
-public interface DictTypeMapper {
+public interface DictTypeMapper extends BaseMapper<DictType> {
     /**
      * 根据条件分页查询字典类型
      *

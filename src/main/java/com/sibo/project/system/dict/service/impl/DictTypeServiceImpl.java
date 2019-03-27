@@ -1,9 +1,16 @@
 package com.sibo.project.system.dict.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sibo.common.constant.UserConstants;
 import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
+import com.sibo.framework.web.page.PageDomain;
+import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.dict.dao.DictDataMapper;
 import com.sibo.project.system.dict.dao.DictTypeMapper;
 import com.sibo.project.system.dict.entity.DictType;
@@ -19,12 +26,43 @@ import java.util.List;
  * @author chenzz
  */
 @Service
-public class DictTypeServiceImpl implements IDictTypeService {
+public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements IDictTypeService {
+
     @Autowired
     private DictTypeMapper dictTypeMapper;
 
     @Autowired
     private DictDataMapper dictDataMapper;
+
+
+    @Override
+    public IPage<?> listPage(DictType dictType) {
+        //-----------------------
+        //http://localhost:5000/sys/user/listFuncs?limit=10&page=1&sidx=create_time&asc=desc&_=1534490135367
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        String keyWord = pageDomain.getSearchKeyWord();
+
+        if (!StringUtils.isEmpty(keyWord)) {
+            //-----------------------
+            Wrapper<DictType> wrapper = new LambdaQueryWrapper<DictType>()
+                    .like(DictType::getDictName, keyWord)
+                    .orderByDesc(DictType::getDictId);
+
+            //---------------------------
+            IPage<DictType> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
+            return pageList;
+            //-----------
+        }
+
+        Wrapper<DictType> wrapperSort = new LambdaQueryWrapper<DictType>()
+                .orderByDesc(DictType::getDictId);
+
+        IPage<DictType> pageList = this.page(new Page<>(pageNum, pageSize), wrapperSort);
+        return pageList;
+        //----------------------------------------------
+    }
 
     /**
      * 根据条件分页查询字典类型
@@ -117,7 +155,7 @@ public class DictTypeServiceImpl implements IDictTypeService {
     /**
      * 校验字典类型称是否唯一
      *
-     * @param dictType 字典类型
+     * @param dict 字典类型
      * @return 结果
      */
     @Override

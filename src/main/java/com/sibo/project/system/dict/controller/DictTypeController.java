@@ -1,5 +1,6 @@
 package com.sibo.project.system.dict.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
@@ -27,8 +28,17 @@ public class DictTypeController extends BaseController {
 
     @RequiresPermissions("system:dict:view")
     @GetMapping()
-    public String dictType() {
+    public String dictType(ModelMap mmap) {
+        putBaseModelMap(mmap, "system:dict:view");
         return prefix + "/type";
+    }
+
+    @PostMapping("/list")
+    @RequiresPermissions("system:dict:list")
+    @ResponseBody
+    public R list(DictType dictType) {
+        IPage<?> listPage = dictTypeService.listPage(dictType);
+        return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
 
     /**

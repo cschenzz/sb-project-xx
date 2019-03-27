@@ -27,7 +27,8 @@ public class DictDataController extends BaseController {
 
     @RequiresPermissions("system:dict:view")
     @GetMapping()
-    public String dictData() {
+    public String dictData(ModelMap mmap) {
+        putBaseModelMap(mmap, "system:dict:view");
         return prefix + "/data";
     }
 
