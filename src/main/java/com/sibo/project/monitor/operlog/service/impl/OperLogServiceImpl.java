@@ -52,4 +52,11 @@ public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLogEntity
         //----------------------------------------------
     }
 
+    /**
+     * 清空操作日志
+     */
+    @Override
+    public void cleanOperLog() {
+        baseMapper.cleanOperLog();
+    }
 }

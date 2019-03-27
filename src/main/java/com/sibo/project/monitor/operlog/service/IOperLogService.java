@@ -11,4 +11,9 @@ import com.sibo.project.monitor.operlog.entity.OperLogEntity;
  */
 public interface IOperLogService extends IService<OperLogEntity> {
     IPage<?> listPage(OperLogEntity operLog);
+
+    /**
+     * 清空操作日志
+     */
+    void cleanOperLog();
 }

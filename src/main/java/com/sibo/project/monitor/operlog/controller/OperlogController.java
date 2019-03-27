@@ -1,6 +1,8 @@
 package com.sibo.project.monitor.operlog.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.sibo.framework.aspectj.lang.annotation.Log;
+import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
 import com.sibo.project.monitor.operlog.entity.OperLogEntity;
@@ -58,4 +60,12 @@ public class OperlogController extends BaseController {
         return prefix + "/detail";
     }
 
+    @Log(title = "操作日志", businessType = BusinessType.CLEAN)
+    @RequiresPermissions("monitor:operlog:remove")
+    @PostMapping("/clean")
+    @ResponseBody
+    public R clean() {
+        operLogService.cleanOperLog();
+        return success();
+    }
 }
