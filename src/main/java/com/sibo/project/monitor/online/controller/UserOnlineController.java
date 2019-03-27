@@ -14,6 +14,7 @@ import com.sibo.project.monitor.online.service.IUserOnlineService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,7 +35,8 @@ public class UserOnlineController extends BaseController {
 
     @RequiresPermissions("monitor:online:view")
     @GetMapping()
-    public String online() {
+    public String online(ModelMap mmap) {
+        putBaseModelMap(mmap, "monitor:online:view");
         return prefix + "/online";
     }
 

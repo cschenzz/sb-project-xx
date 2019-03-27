@@ -1,8 +1,9 @@
 package com.sibo.project.monitor.online.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sibo.framework.web.entity.BaseEntity;
+import com.sibo.framework.web.entity.BaseXEntity;
 import com.sibo.project.monitor.online.entity.OnlineSession.OnlineStatus;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -15,12 +16,12 @@ import java.util.Date;
  * @author chenzz
  */
 @TableName("sys_user_online")
-public class UserOnlineEntity extends BaseEntity {
+public class UserOnlineEntity extends BaseXEntity {
     private static final long serialVersionUID = 1L;
     /**
      * 用户会话id
      */
-    @TableId
+    @TableId("sessionId")
     private String sessionId;
 
     /**
@@ -76,6 +77,7 @@ public class UserOnlineEntity extends BaseEntity {
     /**
      * 备份的当前用户会话
      */
+    @TableField(exist = false)
     private OnlineSession session;
 
     public String getSessionId() {
