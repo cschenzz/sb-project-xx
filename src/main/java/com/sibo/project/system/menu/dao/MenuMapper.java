@@ -17,14 +17,14 @@ public interface MenuMapper {
      *
      * @return 菜单列表
      */
-    public List<Menu> selectMenuAll();
+    List<Menu> selectMenuAll();
 
     /**
      * 查询系统正常显示菜单（不含按钮）
      *
      * @return 菜单列表
      */
-    public List<Menu> selectMenuNormalAll();
+    List<Menu> selectMenuNormalAll();
 
     /**
      * 根据用户ID查询菜单
@@ -32,7 +32,7 @@ public interface MenuMapper {
      * @param userId 用户ID
      * @return 菜单列表
      */
-    public List<Menu> selectMenusByUserId(Long userId);
+    List<Menu> selectMenusByUserId(Long userId);
 
     /**
      * 根据用户ID查询权限
@@ -40,7 +40,7 @@ public interface MenuMapper {
      * @param userId 用户ID
      * @return 权限列表
      */
-    public List<String> selectPermsByUserId(Long userId);
+    List<String> selectPermsByUserId(Long userId);
 
     /**
      * 根据角色ID查询菜单
@@ -48,7 +48,7 @@ public interface MenuMapper {
      * @param roleId 角色ID
      * @return 菜单列表
      */
-    public List<String> selectMenuTree(Long roleId);
+    List<String> selectMenuTree(Long roleId);
 
     /**
      * 查询系统菜单列表
@@ -56,7 +56,7 @@ public interface MenuMapper {
      * @param menu 菜单信息
      * @return 菜单列表
      */
-    public List<Menu> selectMenuList(Menu menu);
+    List<Menu> selectMenuList(Menu menu);
 
     /**
      * 删除菜单管理信息
@@ -64,7 +64,7 @@ public interface MenuMapper {
      * @param menuId 菜单ID
      * @return 结果
      */
-    public int deleteMenuById(Long menuId);
+    int deleteMenuById(Long menuId);
 
     /**
      * 根据菜单ID查询信息
@@ -72,7 +72,7 @@ public interface MenuMapper {
      * @param menuId 菜单ID
      * @return 菜单信息
      */
-    public Menu selectMenuById(Long menuId);
+    Menu selectMenuById(Long menuId);
 
     /**
      * 查询菜单数量
@@ -80,7 +80,7 @@ public interface MenuMapper {
      * @param parentId 菜单父ID
      * @return 结果
      */
-    public int selectCountMenuByParentId(Long parentId);
+    int selectCountMenuByParentId(Long parentId);
 
     /**
      * 新增菜单信息
@@ -88,7 +88,7 @@ public interface MenuMapper {
      * @param menu 菜单信息
      * @return 结果
      */
-    public int insertMenu(Menu menu);
+    int insertMenu(Menu menu);
 
     /**
      * 修改菜单信息
@@ -96,7 +96,7 @@ public interface MenuMapper {
      * @param menu 菜单信息
      * @return 结果
      */
-    public int updateMenu(Menu menu);
+    int updateMenu(Menu menu);
 
     /**
      * 校验菜单名称是否唯一
@@ -105,6 +105,6 @@ public interface MenuMapper {
      * @param parentId 父菜单ID
      * @return 结果
      */
-    public Menu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
+    Menu checkMenuNameUnique(@Param("menuName") String menuName, @Param("parentId") Long parentId);
 
 }

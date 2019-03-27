@@ -21,7 +21,7 @@ public interface IMenuService {
      * @param user 用户信息
      * @return 菜单列表
      */
-    public List<Menu> selectMenusByUser(UserEntity user);
+    List<Menu> selectMenusByUser(UserEntity user);
 
     /**
      * 查询系统菜单列表
@@ -29,14 +29,14 @@ public interface IMenuService {
      * @param menu 菜单信息
      * @return 菜单列表
      */
-    public List<Menu> selectMenuList(Menu menu);
+    List<Menu> selectMenuList(Menu menu);
 
     /**
      * 查询菜单集合
      *
      * @return 所有菜单信息
      */
-    public List<Menu> selectMenuAll();
+    List<Menu> selectMenuAll();
 
     /**
      * 根据用户ID查询权限
@@ -44,7 +44,7 @@ public interface IMenuService {
      * @param userId 用户ID
      * @return 权限列表
      */
-    public Set<String> selectPermsByUserId(Long userId);
+    Set<String> selectPermsByUserId(Long userId);
 
     /**
      * 根据角色ID查询菜单
@@ -52,21 +52,21 @@ public interface IMenuService {
      * @param role 角色对象
      * @return 菜单列表
      */
-    public List<Map<String, Object>> roleMenuTreeData(Role role);
+    List<Map<String, Object>> roleMenuTreeData(Role role);
 
     /**
      * 查询所有菜单信息
      *
      * @return 菜单列表
      */
-    public List<Map<String, Object>> menuTreeData();
+    List<Map<String, Object>> menuTreeData();
 
     /**
      * 查询系统所有权限
      *
      * @return 权限列表
      */
-    public Map<String, String> selectPermsAll();
+    Map<String, String> selectPermsAll();
 
     /**
      * 删除菜单管理信息
@@ -74,7 +74,7 @@ public interface IMenuService {
      * @param menuId 菜单ID
      * @return 结果
      */
-    public int deleteMenuById(Long menuId);
+    int deleteMenuById(Long menuId);
 
     /**
      * 根据菜单ID查询信息
@@ -82,7 +82,7 @@ public interface IMenuService {
      * @param menuId 菜单ID
      * @return 菜单信息
      */
-    public Menu selectMenuById(Long menuId);
+    Menu selectMenuById(Long menuId);
 
     /**
      * 查询菜单数量
@@ -90,7 +90,7 @@ public interface IMenuService {
      * @param parentId 菜单父ID
      * @return 结果
      */
-    public int selectCountMenuByParentId(Long parentId);
+    int selectCountMenuByParentId(Long parentId);
 
     /**
      * 查询菜单使用数量
@@ -98,7 +98,7 @@ public interface IMenuService {
      * @param menuId 菜单ID
      * @return 结果
      */
-    public int selectCountRoleMenuByMenuId(Long menuId);
+    int selectCountRoleMenuByMenuId(Long menuId);
 
     /**
      * 新增保存菜单信息
@@ -106,7 +106,7 @@ public interface IMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    public int insertMenu(Menu menu);
+    int insertMenu(Menu menu);
 
     /**
      * 修改保存菜单信息
@@ -114,7 +114,7 @@ public interface IMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    public int updateMenu(Menu menu);
+    int updateMenu(Menu menu);
 
     /**
      * 校验菜单名称是否唯一
@@ -122,6 +122,6 @@ public interface IMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    public String checkMenuNameUnique(Menu menu);
+    String checkMenuNameUnique(Menu menu);
 
 }
