@@ -1,6 +1,8 @@
 package com.sibo.project.monitor.operlog.entity;
 
-import com.sibo.framework.web.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.sibo.framework.web.entity.BaseXEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,12 +13,14 @@ import java.util.Date;
  *
  * @author chenzz
  */
-public class OperLogEntity extends BaseEntity {
+@TableName("sys_oper_log")
+public class OperLogEntity extends BaseXEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 日志主键
      */
+    @TableId
     private Long operId;
 
     /**

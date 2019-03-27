@@ -29,7 +29,8 @@ public class OperlogController extends BaseController {
 
     @RequiresPermissions("monitor:operlog:view")
     @GetMapping()
-    public String operlog() {
+    public String operlog(ModelMap mmap) {
+        putBaseModelMap(mmap, "monitor:operlog:view");
         return prefix + "/operlog";
     }
 

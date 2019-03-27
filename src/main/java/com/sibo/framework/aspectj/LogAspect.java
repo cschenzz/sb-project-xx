@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.sibo.common.utils.ServletUtils;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
-import com.sibo.common.utils.spring.SpringUtils;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessStatus;
+import com.sibo.framework.manager.AsyncManager;
+import com.sibo.framework.manager.factory.AsyncFactory;
 import com.sibo.project.monitor.operlog.entity.OperLogEntity;
-import com.sibo.project.monitor.operlog.service.IOperLogService;
 import com.sibo.project.system.user.entity.UserEntity;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -95,9 +95,8 @@ public class LogAspect {
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
             operLog.setOperTime(new Date());
-            SpringUtils.getBean(IOperLogService.class).save(operLog);
             // 保存数据库
-            // AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+            AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("==前置通知异常==");
