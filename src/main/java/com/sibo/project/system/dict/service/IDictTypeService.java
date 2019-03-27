@@ -21,14 +21,14 @@ public interface IDictTypeService extends IService<DictTypeEntity> {
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
-    public List<DictTypeEntity> selectDictTypeList(DictTypeEntity dictType);
+    List<DictTypeEntity> selectDictTypeList(DictTypeEntity dictType);
 
     /**
      * 根据所有字典类型
      *
      * @return 字典类型集合信息
      */
-    public List<DictTypeEntity> selectDictTypeAll();
+    List<DictTypeEntity> selectDictTypeAll();
 
     /**
      * 根据字典类型ID查询信息
@@ -36,7 +36,7 @@ public interface IDictTypeService extends IService<DictTypeEntity> {
      * @param dictId 字典类型ID
      * @return 字典类型
      */
-    public DictTypeEntity selectDictTypeById(Long dictId);
+    DictTypeEntity selectDictTypeById(Long dictId);
 
     /**
      * 通过字典ID删除字典信息
@@ -44,7 +44,7 @@ public interface IDictTypeService extends IService<DictTypeEntity> {
      * @param dictId 字典ID
      * @return 结果
      */
-    public int deleteDictTypeById(Long dictId);
+    int deleteDictTypeById(Long dictId);
 
     /**
      * 批量删除字典类型
@@ -53,7 +53,7 @@ public interface IDictTypeService extends IService<DictTypeEntity> {
      * @return 结果
      * @throws Exception 异常
      */
-    public int deleteDictTypeByIds(String ids) throws Exception;
+    int deleteDictTypeByIds(String ids) throws Exception;
 
     /**
      * 新增保存字典类型信息
@@ -61,7 +61,7 @@ public interface IDictTypeService extends IService<DictTypeEntity> {
      * @param dictType 字典类型信息
      * @return 结果
      */
-    public int insertDictType(DictTypeEntity dictType);
+    int insertDictType(DictTypeEntity dictType);
 
     /**
      * 修改保存字典类型信息
@@ -69,7 +69,7 @@ public interface IDictTypeService extends IService<DictTypeEntity> {
      * @param dictType 字典类型信息
      * @return 结果
      */
-    public int updateDictType(DictTypeEntity dictType);
+    int updateDictType(DictTypeEntity dictType);
 
     /**
      * 校验字典类型称是否唯一
@@ -77,5 +77,5 @@ public interface IDictTypeService extends IService<DictTypeEntity> {
      * @param dictType 字典类型
      * @return 结果
      */
-    public String checkDictTypeUnique(DictTypeEntity dictType);
+    String checkDictTypeUnique(DictTypeEntity dictType);
 }
