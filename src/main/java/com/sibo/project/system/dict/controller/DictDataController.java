@@ -5,7 +5,8 @@ import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
-import com.sibo.project.system.dict.entity.DictData;
+import com.sibo.project.system.dict.entity.DictDataEntity;
+import com.sibo.project.system.dict.entity.DictDataEntity;
 import com.sibo.project.system.dict.service.IDictDataService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class DictDataController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:dict:list")
     @ResponseBody
-    public R list(DictData dictData) {
+    public R list(DictDataEntity dictData) {
         IPage<?> listPage = dictDataService.listPage(dictData);
         return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
@@ -57,7 +58,7 @@ public class DictDataController extends BaseController {
     @RequiresPermissions("system:dict:add")
     @PostMapping("/add")
     @ResponseBody
-    public R addSave(DictData dict) {
+    public R addSave(DictDataEntity dict) {
         return toAjax(dictDataService.insertDictData(dict));
     }
 
@@ -77,7 +78,7 @@ public class DictDataController extends BaseController {
     @RequiresPermissions("system:dict:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public R editSave(DictData dict) {
+    public R editSave(DictDataEntity dict) {
         return toAjax(dictDataService.updateDictData(dict));
     }
 

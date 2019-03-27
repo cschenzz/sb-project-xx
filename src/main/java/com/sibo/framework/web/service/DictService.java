@@ -1,6 +1,6 @@
 package com.sibo.framework.web.service;
 
-import com.sibo.project.system.dict.entity.DictData;
+import com.sibo.project.system.dict.entity.DictDataEntity;
 import com.sibo.project.system.dict.service.IDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class DictService {
      * @param dictType 字典类型
      * @return 参数键值
      */
-    public List<DictData> getType(String dictType) {
+    public List<DictDataEntity> getType(String dictType) {
         return dictDataService.selectDictDataByType(dictType);
     }
 

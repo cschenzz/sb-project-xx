@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author chenzz
  */
 @TableName("sys_dict_type")
-public class DictType extends BaseEntity {
+public class DictTypeEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**

@@ -1,7 +1,7 @@
 package com.sibo.project.system.dict.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sibo.project.system.dict.entity.DictType;
+import com.sibo.project.system.dict.entity.DictTypeEntity;
 
 import java.util.List;
 
@@ -10,21 +10,21 @@ import java.util.List;
  *
  * @author chenzz
  */
-public interface DictTypeMapper extends BaseMapper<DictType> {
+public interface DictTypeMapper extends BaseMapper<DictTypeEntity> {
     /**
      * 根据条件分页查询字典类型
      *
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
-    public List<DictType> selectDictTypeList(DictType dictType);
+    public List<DictTypeEntity> selectDictTypeList(DictTypeEntity dictType);
 
     /**
      * 根据所有字典类型
      *
      * @return 字典类型集合信息
      */
-    public List<DictType> selectDictTypeAll();
+    public List<DictTypeEntity> selectDictTypeAll();
 
     /**
      * 根据字典类型ID查询信息
@@ -32,7 +32,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      * @param dictId 字典类型ID
      * @return 字典类型
      */
-    public DictType selectDictTypeById(Long dictId);
+    public DictTypeEntity selectDictTypeById(Long dictId);
 
     /**
      * 通过字典ID删除字典信息
@@ -56,7 +56,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      * @param dictType 字典类型信息
      * @return 结果
      */
-    public int insertDictType(DictType dictType);
+    public int insertDictType(DictTypeEntity dictType);
 
     /**
      * 修改字典类型信息
@@ -64,7 +64,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      * @param dictType 字典类型信息
      * @return 结果
      */
-    public int updateDictType(DictType dictType);
+    public int updateDictType(DictTypeEntity dictType);
 
     /**
      * 校验字典类型称是否唯一
@@ -72,5 +72,5 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      * @param dictType 字典类型
      * @return 结果
      */
-    public DictType checkDictTypeUnique(String dictType);
+    public DictTypeEntity checkDictTypeUnique(String dictType);
 }

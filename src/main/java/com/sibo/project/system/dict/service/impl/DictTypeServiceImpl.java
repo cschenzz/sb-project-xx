@@ -13,7 +13,7 @@ import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.dict.dao.DictDataMapper;
 import com.sibo.project.system.dict.dao.DictTypeMapper;
-import com.sibo.project.system.dict.entity.DictType;
+import com.sibo.project.system.dict.entity.DictTypeEntity;
 import com.sibo.project.system.dict.service.IDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.List;
  * @author chenzz
  */
 @Service
-public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements IDictTypeService {
+public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictTypeEntity> implements IDictTypeService {
 
     @Autowired
     private DictTypeMapper dictTypeMapper;
@@ -35,7 +35,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     private DictDataMapper dictDataMapper;
 
     @Override
-    public IPage<?> listPage(DictType dictType) {
+    public IPage<?> listPage(DictTypeEntity dictType) {
         //-----------------------
         //http://localhost:5000/sys/user/listFuncs?limit=10&page=1&sidx=create_time&asc=desc&_=1534490135367
         PageDomain pageDomain = TableSupport.buildPageRequest();
@@ -45,20 +45,20 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
 
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
-            Wrapper<DictType> wrapper = new LambdaQueryWrapper<DictType>()
-                    .like(DictType::getDictName, keyWord)
-                    .orderByDesc(DictType::getDictId);
+            Wrapper<DictTypeEntity> wrapper = new LambdaQueryWrapper<DictTypeEntity>()
+                    .like(DictTypeEntity::getDictName, keyWord)
+                    .orderByDesc(DictTypeEntity::getDictId);
 
             //---------------------------
-            IPage<DictType> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
+            IPage<DictTypeEntity> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
             return pageList;
             //-----------
         }
 
-        Wrapper<DictType> wrapperSort = new LambdaQueryWrapper<DictType>()
-                .orderByDesc(DictType::getDictId);
+        Wrapper<DictTypeEntity> wrapperSort = new LambdaQueryWrapper<DictTypeEntity>()
+                .orderByDesc(DictTypeEntity::getDictId);
 
-        IPage<DictType> pageList = this.page(new Page<>(pageNum, pageSize), wrapperSort);
+        IPage<DictTypeEntity> pageList = this.page(new Page<>(pageNum, pageSize), wrapperSort);
         return pageList;
         //----------------------------------------------
     }
@@ -70,7 +70,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      * @return 字典类型集合信息
      */
     @Override
-    public List<DictType> selectDictTypeList(DictType dictType) {
+    public List<DictTypeEntity> selectDictTypeList(DictTypeEntity dictType) {
         return dictTypeMapper.selectDictTypeList(dictType);
     }
 
@@ -80,7 +80,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      * @return 字典类型集合信息
      */
     @Override
-    public List<DictType> selectDictTypeAll() {
+    public List<DictTypeEntity> selectDictTypeAll() {
         return dictTypeMapper.selectDictTypeAll();
     }
 
@@ -91,7 +91,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      * @return 字典类型
      */
     @Override
-    public DictType selectDictTypeById(Long dictId) {
+    public DictTypeEntity selectDictTypeById(Long dictId) {
         return dictTypeMapper.selectDictTypeById(dictId);
     }
 
@@ -116,7 +116,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     public int deleteDictTypeByIds(String ids) throws Exception {
         Long[] dictIds = Convert.toLongArray(ids);
         for (Long dictId : dictIds) {
-            DictType dictType = selectDictTypeById(dictId);
+            DictTypeEntity dictType = selectDictTypeById(dictId);
             if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0) {
                 throw new Exception(String.format("%1$s已分配,不能删除", dictType.getDictName()));
             }
@@ -132,7 +132,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      * @return 结果
      */
     @Override
-    public int insertDictType(DictType dictType) {
+    public int insertDictType(DictTypeEntity dictType) {
         dictType.setCreateBy(ShiroUtils.getLoginName());
         return dictTypeMapper.insertDictType(dictType);
     }
@@ -144,9 +144,9 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      * @return 结果
      */
     @Override
-    public int updateDictType(DictType dictType) {
+    public int updateDictType(DictTypeEntity dictType) {
         dictType.setUpdateBy(ShiroUtils.getLoginName());
-        DictType oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
+        DictTypeEntity oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
         dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());
         return dictTypeMapper.updateDictType(dictType);
     }
@@ -158,9 +158,9 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      * @return 结果
      */
     @Override
-    public String checkDictTypeUnique(DictType dict) {
+    public String checkDictTypeUnique(DictTypeEntity dict) {
         Long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
-        DictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType());
+        DictTypeEntity dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType());
         if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue()) {
             return UserConstants.DICT_TYPE_NOT_UNIQUE;
         }

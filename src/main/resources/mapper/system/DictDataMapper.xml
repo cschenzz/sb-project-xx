@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sibo.project.system.dict.dao.DictDataMapper">
 	
-	<resultMap type="DictData" id="DictDataResult">
+	<resultMap type="DictDataEntity" id="DictDataResult">
 		<id     property="dictCode"   column="dict_code"   />
 		<result property="dictSort"   column="dict_sort"   />
 		<result property="dictLabel"  column="dict_label"  />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_dict_data
     </sql>
 
-	<select id="selectDictDataList" parameterType="DictData" resultMap="DictDataResult">
+	<select id="selectDictDataList" parameterType="DictDataEntity" resultMap="DictDataResult">
 	    <include refid="selectDictDataVo"/>
 		<where>
 		    <if test="dictType != null and dictType != ''">
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</where>
 	</select>
 	
-	<select id="selectDictDataByType" parameterType="DictData" resultMap="DictDataResult">
+	<select id="selectDictDataByType" parameterType="DictDataEntity" resultMap="DictDataResult">
 		<include refid="selectDictDataVo"/>
 		where dict_type = #{dictType} order by dict_sort asc
 	</select>
@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach> 
  	</delete>
  	
-	<update id="updateDictData" parameterType="DictData">
+	<update id="updateDictData" parameterType="DictDataEntity">
  		update sys_dict_data
  		<set>
  			<if test="dictSort != null and dictSort != ''">dict_sort = #{dictSort},</if>
@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		update sys_dict_data set dict_type = #{newDictType} where dict_type = #{oldDictType}
 	</update>
  	
- 	<insert id="insertDictData" parameterType="DictData">
+ 	<insert id="insertDictData" parameterType="DictDataEntity">
  		insert into sys_dict_data(
  			<if test="dictSort != null and dictSort != ''">dict_sort,</if>
  			<if test="dictLabel != null and dictLabel != ''">dict_label,</if>

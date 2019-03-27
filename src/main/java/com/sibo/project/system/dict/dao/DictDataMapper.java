@@ -1,7 +1,7 @@
 package com.sibo.project.system.dict.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sibo.project.system.dict.entity.DictData;
+import com.sibo.project.system.dict.entity.DictDataEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author chenzz
  */
-public interface DictDataMapper extends BaseMapper<DictData> {
+public interface DictDataMapper extends BaseMapper<DictDataEntity> {
 
     /**
      * 根据条件分页查询字典数据
@@ -19,7 +19,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      * @param dictData 字典数据信息
      * @return 字典数据集合信息
      */
-    public List<DictData> selectDictDataList(DictData dictData);
+    public List<DictDataEntity> selectDictDataList(DictDataEntity dictData);
 
     /**
      * 根据字典类型查询字典数据
@@ -27,7 +27,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      * @param dictType 字典类型
      * @return 字典数据集合信息
      */
-    public List<DictData> selectDictDataByType(String dictType);
+    public List<DictDataEntity> selectDictDataByType(String dictType);
 
     /**
      * 根据字典类型和字典键值查询字典数据信息
@@ -44,7 +44,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      * @param dictCode 字典数据ID
      * @return 字典数据
      */
-    public DictData selectDictDataById(Long dictCode);
+    public DictDataEntity selectDictDataById(Long dictCode);
 
     /**
      * 查询字典数据
@@ -76,7 +76,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      * @param dictData 字典数据信息
      * @return 结果
      */
-    public int insertDictData(DictData dictData);
+    public int insertDictData(DictDataEntity dictData);
 
     /**
      * 修改字典数据信息
@@ -84,7 +84,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      * @param dictData 字典数据信息
      * @return 结果
      */
-    public int updateDictData(DictData dictData);
+    public int updateDictData(DictDataEntity dictData);
 
     /**
      * 同步修改字典类型

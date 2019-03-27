@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author chenzz
  */
 @TableName("sys_dict_data")
-public class DictData extends BaseEntity {
+public class DictDataEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**

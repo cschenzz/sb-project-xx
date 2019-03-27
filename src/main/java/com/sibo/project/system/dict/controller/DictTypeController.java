@@ -5,7 +5,7 @@ import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
-import com.sibo.project.system.dict.entity.DictType;
+import com.sibo.project.system.dict.entity.DictTypeEntity;
 import com.sibo.project.system.dict.service.IDictTypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class DictTypeController extends BaseController {
     @PostMapping("/list")
     @RequiresPermissions("system:dict:list")
     @ResponseBody
-    public R list(DictType dictType) {
+    public R list(DictTypeEntity dictType) {
         IPage<?> listPage = dictTypeService.listPage(dictType);
         return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
@@ -56,7 +56,7 @@ public class DictTypeController extends BaseController {
     @RequiresPermissions("system:dict:add")
     @PostMapping("/add")
     @ResponseBody
-    public R addSave(DictType dict) {
+    public R addSave(DictTypeEntity dict) {
         return toAjax(dictTypeService.insertDictType(dict));
     }
 
@@ -76,7 +76,7 @@ public class DictTypeController extends BaseController {
     @RequiresPermissions("system:dict:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public R editSave(DictType dict) {
+    public R editSave(DictTypeEntity dict) {
         return toAjax(dictTypeService.updateDictType(dict));
     }
 
@@ -108,7 +108,7 @@ public class DictTypeController extends BaseController {
      */
     @PostMapping("/checkDictTypeUnique")
     @ResponseBody
-    public String checkDictTypeUnique(DictType dictType) {
+    public String checkDictTypeUnique(DictTypeEntity dictType) {
         return dictTypeService.checkDictTypeUnique(dictType);
     }
 }

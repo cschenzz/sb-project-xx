@@ -11,7 +11,7 @@ import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.dict.dao.DictDataMapper;
-import com.sibo.project.system.dict.entity.DictData;
+import com.sibo.project.system.dict.entity.DictDataEntity;
 import com.sibo.project.system.dict.service.IDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +24,13 @@ import java.util.List;
  * @author chenzz
  */
 @Service
-public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> implements IDictDataService {
+public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEntity> implements IDictDataService {
 
     @Autowired
     private DictDataMapper dictDataMapper;
 
     @Override
-    public IPage<?> listPage(DictData dictData) {
+    public IPage<?> listPage(DictDataEntity dictData) {
         //-----------------------
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
@@ -38,16 +38,16 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
 
         if (!StringUtils.isEmpty(dictData.getDictType())) {
             //-----------------------
-            Wrapper<DictData> wrapper = new LambdaQueryWrapper<DictData>()
-                    .eq(DictData::getDictType, dictData.getDictType());
+            Wrapper<DictDataEntity> wrapper = new LambdaQueryWrapper<DictDataEntity>()
+                    .eq(DictDataEntity::getDictType, dictData.getDictType());
 
             //---------------------------
-            IPage<DictData> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
+            IPage<DictDataEntity> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
             return pageList;
             //-----------
         }
 
-        IPage<DictData> pageList = this.page(new Page<>(pageNum, pageSize), null);
+        IPage<DictDataEntity> pageList = this.page(new Page<>(pageNum, pageSize), null);
         return pageList;
         //----------------------------------------------
     }
@@ -59,7 +59,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
      * @return 字典数据集合信息
      */
     @Override
-    public List<DictData> selectDictDataList(DictData dictData) {
+    public List<DictDataEntity> selectDictDataList(DictDataEntity dictData) {
         return dictDataMapper.selectDictDataList(dictData);
     }
 
@@ -70,7 +70,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
      * @return 字典数据集合信息
      */
     @Override
-    public List<DictData> selectDictDataByType(String dictType) {
+    public List<DictDataEntity> selectDictDataByType(String dictType) {
         return dictDataMapper.selectDictDataByType(dictType);
     }
 
@@ -93,7 +93,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
      * @return 字典数据
      */
     @Override
-    public DictData selectDictDataById(Long dictCode) {
+    public DictDataEntity selectDictDataById(Long dictCode) {
         return dictDataMapper.selectDictDataById(dictCode);
     }
 
@@ -126,7 +126,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
      * @return 结果
      */
     @Override
-    public int insertDictData(DictData dictData) {
+    public int insertDictData(DictDataEntity dictData) {
         dictData.setCreateBy(ShiroUtils.getLoginName());
         return dictDataMapper.insertDictData(dictData);
     }
@@ -138,7 +138,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
      * @return 结果
      */
     @Override
-    public int updateDictData(DictData dictData) {
+    public int updateDictData(DictDataEntity dictData) {
         dictData.setUpdateBy(ShiroUtils.getLoginName());
         return dictDataMapper.updateDictData(dictData);
     }
