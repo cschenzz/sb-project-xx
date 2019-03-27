@@ -1,5 +1,6 @@
 package com.sibo.project.system.dict.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.web.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author chenzz
  */
+@TableName("sys_dict_data")
 public class DictData extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

@@ -1,5 +1,6 @@
 package com.sibo.project.system.dict.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sibo.project.system.dict.entity.DictData;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author chenzz
  */
-public interface DictDataMapper {
+public interface DictDataMapper extends BaseMapper<DictData> {
 
     /**
      * 根据条件分页查询字典数据

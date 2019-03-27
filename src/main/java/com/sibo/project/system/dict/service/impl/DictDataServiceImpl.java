@@ -1,7 +1,15 @@
 package com.sibo.project.system.dict.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sibo.common.support.Convert;
+import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
+import com.sibo.framework.web.page.PageDomain;
+import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.dict.dao.DictDataMapper;
 import com.sibo.project.system.dict.entity.DictData;
 import com.sibo.project.system.dict.service.IDictDataService;
@@ -16,9 +24,36 @@ import java.util.List;
  * @author chenzz
  */
 @Service
-public class DictDataServiceImpl implements IDictDataService {
+public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> implements IDictDataService {
+
     @Autowired
     private DictDataMapper dictDataMapper;
+
+    @Override
+    public IPage<?> listPage(DictData dictData) {
+        //-----------------------
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        String keyWord = pageDomain.getSearchKeyWord();
+
+        if (!StringUtils.isEmpty(dictData.getDictType())
+                || !StringUtils.isEmpty(dictData.getDictLabel())
+                || !StringUtils.isEmpty(dictData.getStatus())) {
+            //-----------------------
+            Wrapper<DictData> wrapper = new LambdaQueryWrapper<DictData>()
+                    .eq(DictData::getDictType, dictData.getDictType());
+
+            //---------------------------
+            IPage<DictData> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
+            return pageList;
+            //-----------
+        }
+
+        IPage<DictData> pageList = this.page(new Page<>(pageNum, pageSize), null);
+        return pageList;
+        //----------------------------------------------
+    }
 
     /**
      * 根据条件分页查询字典数据

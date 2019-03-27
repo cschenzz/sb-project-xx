@@ -1,5 +1,7 @@
 package com.sibo.project.system.dict.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.sibo.project.system.dict.entity.DictData;
 
 import java.util.List;
@@ -9,7 +11,9 @@ import java.util.List;
  *
  * @author chenzz
  */
-public interface IDictDataService {
+public interface IDictDataService extends IService<DictData> {
+
+    IPage<?> listPage(DictData dictData);
 
     /**
      * 根据条件分页查询字典数据

@@ -1,5 +1,6 @@
 package com.sibo.project.system.dict.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
@@ -32,6 +33,13 @@ public class DictDataController extends BaseController {
         return prefix + "/data";
     }
 
+    @PostMapping("/list")
+    @RequiresPermissions("system:dict:list")
+    @ResponseBody
+    public R list(DictData dictData) {
+        IPage<?> listPage = dictDataService.listPage(dictData);
+        return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
+    }
 
     /**
      * 新增字典类型

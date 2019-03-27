@@ -34,7 +34,6 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     @Autowired
     private DictDataMapper dictDataMapper;
 
-
     @Override
     public IPage<?> listPage(DictType dictType) {
         //-----------------------
