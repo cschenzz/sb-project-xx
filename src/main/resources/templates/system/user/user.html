@@ -90,8 +90,9 @@
 <script th:inline="javascript">
     var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
     var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
+    var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
     var prefix = ctx + "system/user";
-    var datas = [[${@dict.getType('sys_user_sex')}]];
 
     $(function() {
         var options = {
@@ -106,64 +107,65 @@
             columns: [{
                 checkbox: true
             },
-            {
-                field : 'userId',
-                title : '#',
-                visible: true
-            },
-            {
-                field : 'loginName',
-                title : '登录账号',
-                sortable: true
-            },
-            {
-                field : 'email',
-                title : '用户邮箱',
-                sortable: true
-            },
-            {
-                field : 'phonenumber',
-                title : '手机号码',
-                sortable: true
-            },
-            {
-                field : 'sex',
-                title : '用户性别',
-                align: 'center',
-                formatter: function(value, row, index) {
-                    return $.table.selectDictLabel(datas, value);
-                }
-            },
-            {
-                field : 'realname',
-                title : '真实姓名',
-                sortable: true
-            },
-            {
-                field : 'regtime',
-                title : '注册时间',
-                sortable: true
-            },
-            {
-                field : 'lastLogintime',
-                title : '最后登录时间',
-                sortable: true
-            },
-            {
-                title: '操作',
-                align: 'center',
-                formatter: function(value, row, index) {
-                    var actions = [];
-                    actions.push('<a class="btn btn-primary btn-sm" href="#" onclick="__detail(\'' + row.userId + '\')"><i class="fa fa-rocket"></i>详情</a> ');
-                    //----------------------------
-                    actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.userId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                    actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.userId + '\')"><i class="fa fa-remove"></i>删除</a>');
-                    return actions.join('');
-                }
-            }]
+                {
+                    field: 'userId',
+                    title: '#'
+                },
+                {
+                    field: 'loginName',
+                    title: '登录名称',
+                    sortable: true
+                },
+                {
+                    field: 'userName',
+                    title: '用户名称'
+                },
+                {
+                    field: 'dept.deptName',
+                    title: '部门'
+                },
+                {
+                    field: 'email',
+                    title: '邮箱',
+                    visible: false
+                },
+                {
+                    field: 'phonenumber',
+                    title: '手机'
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.userId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.userId + '\')"><i class="fa fa-remove"></i>删除</a> ');
+                        actions.push('<a class="btn btn-info btn-xs ' + resetPwdFlag + '" href="#" onclick="resetPwd(\'' + row.userId + '\')"><i class="fa fa-key"></i>重置</a>');
+                        return actions.join('');
+                    }
+                }]
         };
         $.table.init(options);
     });
+
+    /*用户管理-重置密码*/
+    function resetPwd(userId) {
+        var url = prefix + '/resetPwd/' + userId;
+        $.modal.open("重置密码", url, '800', '300');
+    }
 </script>
 </body>
 </html>
