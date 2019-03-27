@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sibo.common.constant.UserConstants;
 import com.sibo.framework.shiro.service.PasswordService;
 import com.sibo.framework.web.page.PageDomain;
 import com.sibo.framework.web.page.TableSupport;
@@ -164,4 +165,61 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         return updateUserInfo(user);
     }
 
+    /**
+     * 校验用户名称是否唯一
+     *
+     * @param loginName 用户名
+     * @return
+     */
+    @Override
+    public String checkLoginNameUnique(String loginName) {
+        Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
+                .eq(UserEntity::getLoginName, loginName);
+
+        int count = this.count(wrapper);
+        if (count > 0) {
+            return UserConstants.USER_NAME_NOT_UNIQUE;
+        }
+        return UserConstants.USER_NAME_UNIQUE;
+    }
+
+    /**
+     * 校验用户名称是否唯一
+     *
+     * @param user 用户信息
+     * @return
+     */
+    @Override
+    public String checkPhoneUnique(UserEntity user) {
+        Long userId = user.getUserId() == null ? -1L : user.getUserId();
+        Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
+                .eq(UserEntity::getPhonenumber, user.getPhonenumber());
+
+        UserEntity info = this.getOne(wrapper);
+
+        if (info != null && info.getUserId().longValue() != userId.longValue()) {
+            return UserConstants.USER_PHONE_NOT_UNIQUE;
+        }
+        return UserConstants.USER_PHONE_UNIQUE;
+    }
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param user 用户信息
+     * @return
+     */
+    @Override
+    public String checkEmailUnique(UserEntity user) {
+        Long userId = user.getUserId() == null ? -1L : user.getUserId();
+        Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
+                .eq(UserEntity::getEmail, user.getEmail());
+
+        UserEntity info = this.getOne(wrapper);
+
+        if (info != null && info.getUserId().longValue() != userId.longValue()) {
+            return UserConstants.USER_EMAIL_NOT_UNIQUE;
+        }
+        return UserConstants.USER_EMAIL_UNIQUE;
+    }
 }

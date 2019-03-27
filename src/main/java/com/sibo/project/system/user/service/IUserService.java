@@ -73,4 +73,28 @@ public interface IUserService extends IService<UserEntity> {
      */
     boolean resetUserPwd(UserEntity user);
 
+    /**
+     * 校验用户名称是否唯一
+     *
+     * @param loginName 登录名称
+     * @return 结果
+     */
+    String checkLoginNameUnique(String loginName);
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    String checkPhoneUnique(UserEntity user);
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    String checkEmailUnique(UserEntity user);
+
 }

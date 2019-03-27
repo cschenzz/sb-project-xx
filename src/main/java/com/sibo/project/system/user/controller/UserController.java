@@ -1,14 +1,12 @@
 package com.sibo.project.system.user.controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.sibo.common.constant.UserConstants;
-import com.sibo.common.validator.Assert;
+import com.sibo.common.utils.StringUtils;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
+import com.sibo.project.system.role.service.IRoleService;
 import com.sibo.project.system.user.entity.UserEntity;
 import com.sibo.project.system.user.service.IUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,17 +25,17 @@ import java.util.List;
  * @author chenzz
  */
 @Controller
-@RequestMapping("system/user")
+@RequestMapping("/system/user")
 public class UserController extends BaseController {
-
     private String prefix = "system/user";
 
     @Autowired
     private IUserService userService;
 
-    /**
-     * 用户列表
-     */
+    @Autowired
+    private IRoleService roleService;
+
+
     @RequiresPermissions("system:user:view")
     @GetMapping()
     public String user(ModelMap mmap) {
@@ -44,40 +43,6 @@ public class UserController extends BaseController {
         return prefix + "/user";
     }
 
-    /**
-     * 新增用户
-     */
-    @GetMapping("/add")
-    public String add() {
-        return prefix + "/add";
-    }
-
-    /**
-     * 修改用户
-     */
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, ModelMap mmap) {
-        UserEntity user = userService.getById(id);
-        mmap.put("user", user);
-        return prefix + "/edit";
-    }
-
-    /**
-     * 详情页面
-     */
-    @GetMapping("/detail/{id}")
-    public String detail(@PathVariable("id") Integer id, ModelMap mmap) {
-        UserEntity user = userService.getById(id);
-        mmap.put("user", user);
-        return prefix + "/detail";
-    }
-
-    //-----------------json----------------
-
-
-    /**
-     * 列表
-     */
     @RequestMapping("/list")
     @ResponseBody
     @RequiresPermissions("system:user:list")
@@ -87,65 +52,72 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 校验用户名
+     * 新增用户
      */
-    @PostMapping("/checkLoginNameUnique")
-    @ResponseBody
-    public String checkLoginNameUnique(UserEntity user) {
-        Wrapper<UserEntity> wrapper = new LambdaQueryWrapper<UserEntity>()
-                .eq(UserEntity::getLoginName, user.getLoginName());
-
-        int count = userService.count(wrapper);
-        if (count > 0) {
-            return UserConstants.USER_NAME_NOT_UNIQUE;
-        }
-        return UserConstants.USER_NAME_UNIQUE;
-    }
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{id}")
-    @ResponseBody
-    @RequiresPermissions("system:user:info")
-    public R info(@PathVariable("id") Integer id) {
-        UserEntity user = userService.getById(id);
-        //return R.ok().data(user);
-        return R.ok().put("user", user);
+    @GetMapping("/add")
+    public String add(ModelMap mmap) {
+        mmap.put("roles", roleService.selectRoleAll());
+        return prefix + "/add";
     }
 
     /**
      * 新增保存用户
      */
-    @RequiresPermissions("iot:user:add")
-    @Log(title = "用户", businessType = BusinessType.INSERT)
+    @RequiresPermissions("system:user:add")
+    @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public R addSave(UserEntity user) {
-        verifyForm(user);
-
+        if (StringUtils.isNotNull(user.getUserId()) && UserEntity.isAdmin(user.getUserId())) {
+            return error("不允许修改超级管理员用户");
+        }
         userService.addSave(user);
         return R.ok();
     }
 
     /**
+     * 修改用户
+     */
+    @GetMapping("/edit/{userId}")
+    public String edit(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put("user", userService.selectUserById(userId));
+        mmap.put("roles", roleService.selectRolesByUserId(userId));
+        return prefix + "/edit";
+    }
+
+    /**
      * 修改保存用户
      */
-    @RequiresPermissions("iot:user:edit")
-    @Log(title = "用户", businessType = BusinessType.UPDATE)
+    @RequiresPermissions("system:user:edit")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public R editSave(UserEntity user) {
-        // verifyForm(user);
+        if (StringUtils.isNotNull(user.getUserId()) && UserEntity.isAdmin(user.getUserId())) {
+            return error("不允许修改超级管理员用户");
+        }
         userService.editSave(user);
         return R.ok();
     }
 
-    /**
-     * 删除用户
-     */
+    @RequiresPermissions("system:user:resetPwd")
+    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+    @GetMapping("/resetPwd/{userId}")
+    public String resetPwd(@PathVariable("userId") Long userId, ModelMap mmap) {
+        mmap.put("user", userService.selectUserById(userId));
+        return prefix + "/resetPwd";
+    }
+
+    @RequiresPermissions("system:user:resetPwd")
+    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+    @PostMapping("/resetPwd")
+    @ResponseBody
+    public R resetPwd(UserEntity user) {
+        return toAjax(userService.resetUserPwd(user));
+    }
+
     @RequiresPermissions("system:user:remove")
-    @Log(title = "用户", businessType = BusinessType.DELETE)
+    @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public R remove(String ids) {
@@ -159,12 +131,31 @@ public class UserController extends BaseController {
         return result ? R.ok() : R.error();
     }
 
-    //-------------------
-
-    private void verifyForm(UserEntity user) {
-        Assert.isBlank(user.getLoginName(), "登录名不能为空");
-        Assert.isBlank(user.getEmail(), "email不能为空");
-        Assert.isBlank(user.getPhonenumber(), "手机号不能为空");
-        Assert.isBlank(user.getPassword(), "密码不能为空");
+    /**
+     * 校验用户名
+     */
+    @PostMapping("/checkLoginNameUnique")
+    @ResponseBody
+    public String checkLoginNameUnique(UserEntity user) {
+        return userService.checkLoginNameUnique(user.getLoginName());
     }
+
+    /**
+     * 校验手机号码
+     */
+    @PostMapping("/checkPhoneUnique")
+    @ResponseBody
+    public String checkPhoneUnique(UserEntity user) {
+        return userService.checkPhoneUnique(user);
+    }
+
+    /**
+     * 校验email邮箱
+     */
+    @PostMapping("/checkEmailUnique")
+    @ResponseBody
+    public String checkEmailUnique(UserEntity user) {
+        return userService.checkEmailUnique(user);
+    }
+
 }
