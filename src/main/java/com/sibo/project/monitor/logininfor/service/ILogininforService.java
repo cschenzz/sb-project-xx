@@ -11,4 +11,9 @@ import com.sibo.project.monitor.logininfor.entity.LogininforEntity;
  */
 public interface ILogininforService extends IService<LogininforEntity> {
     IPage<?> listPage(LogininforEntity user);
+
+    /**
+     * 清空系统登录日志
+     */
+    void cleanLogininfor();
 }

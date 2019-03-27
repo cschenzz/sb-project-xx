@@ -57,4 +57,13 @@ public class LogininforController extends BaseController {
         return result ? R.ok() : R.error();
     }
 
+    @RequiresPermissions("monitor:logininfor:remove")
+    @Log(title = "登陆日志", businessType = BusinessType.CLEAN)
+    @PostMapping("/clean")
+    @ResponseBody
+    public R clean() {
+        logininforService.cleanLogininfor();
+        return success();
+    }
+
 }

@@ -52,4 +52,12 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
         //----------------------------------------------
     }
 
+    /**
+     * 清空系统登录日志
+     */
+    @Override
+    public void cleanLogininfor() {
+        baseMapper.cleanLogininfor();
+    }
+
 }
