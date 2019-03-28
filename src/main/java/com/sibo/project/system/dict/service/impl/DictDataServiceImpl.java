@@ -134,6 +134,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
                 //--------where-----------
                 .eq(DictDataEntity::getDictCode, dictData.getDictCode());
 
+        //根据条件更新记录
         return this.update(dictData, wrapper);
     }
 
