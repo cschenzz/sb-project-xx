@@ -9,13 +9,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.Serializable;
 import java.util.Date;
 
-//-----------------------------------
-
 /**
  * 规则表 iot_model_rule
  *
  * @author chenzz
- * @date 2019-03-14
+ * @date 2019-03-28
  */
 @TableName("iot_model_rule")
 public class IotModelRuleEntity extends BaseXEntity implements Serializable {

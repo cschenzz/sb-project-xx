@@ -8,7 +8,7 @@ import com.sibo.project.iot.iotParameterType.entity.IotParameterTypeEntity;
  * 参数类型 服务层
  *
  * @author chenzz
- * @date 2019-03-22
+ * @date 2019-03-28
  */
 public interface IIotParameterTypeService extends IService<IotParameterTypeEntity> {
 

@@ -1,33 +1,29 @@
 package com.sibo.project.iot.iotProjects.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-//----------------------------
+import com.sibo.common.validator.ValidatorUtils;
+import com.sibo.common.validator.group.AddGroup;
+import com.sibo.common.validator.group.UpdateGroup;
 import com.sibo.framework.aspectj.lang.annotation.Log;
 import com.sibo.framework.aspectj.lang.enums.BusinessType;
 import com.sibo.framework.web.controller.BaseController;
 import com.sibo.framework.web.entity.R;
-import com.sibo.common.validator.ValidatorUtils;
-import com.sibo.common.validator.group.AddGroup;
-import com.sibo.common.validator.group.UpdateGroup;
-//-----------------------------
+import com.sibo.project.iot.iotProjects.entity.IotProjectsEntity;
+import com.sibo.project.iot.iotProjects.service.IIotProjectsService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-//import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-//-----------------------
-import com.sibo.project.iot.iotProjects.entity.IotProjectsEntity;
-import com.sibo.project.iot.iotProjects.service.IIotProjectsService;
 
 /**
  * 项目 信息操作处理
  *
  * @author chenzz
- * @date 2019-03-22
+ * @date 2019-03-28
  */
 @Controller
 @RequestMapping("iot/iotProjects")
@@ -85,7 +81,7 @@ public class IotProjectsController extends BaseController {
     @ResponseBody
     @RequiresPermissions("iot:iotProjects:list")
     public R listPage(IotProjectsEntity iotProjects) {
-        IPage<?> listPage = iotProjectsService.listPage();
+        IPage<?> listPage = iotProjectsService.listPage(iotProjects);
         return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
 
@@ -109,9 +105,8 @@ public class IotProjectsController extends BaseController {
     @ResponseBody
     public R addSave(IotProjectsEntity iotProjects) {
         ValidatorUtils.validateEntity(iotProjects, AddGroup.class);
-        iotProjects.setProjectId("SO"+System.currentTimeMillis());
-        iotProjectsService.save(iotProjects);
-        return R.ok();
+        iotProjects.setProjectId("SO" + System.currentTimeMillis());
+        return iotProjectsService.save(iotProjects) ? R.ok() : R.error();
     }
 
     /**
@@ -123,8 +118,7 @@ public class IotProjectsController extends BaseController {
     @ResponseBody
     public R editSave(IotProjectsEntity iotProjects) {
         ValidatorUtils.validateEntity(iotProjects, UpdateGroup.class);
-        iotProjectsService.updateById(iotProjects);
-        return R.ok();
+        return iotProjectsService.updateById(iotProjects) ? R.ok() : R.error();
     }
 
     /**

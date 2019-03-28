@@ -1,13 +1,13 @@
 package com.sibo.project.iot.iotModels.dao;
 
-import com.sibo.project.iot.iotModels.entity.IotModelsEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.sibo.project.iot.iotModels.entity.IotModelsEntity;
 
 /**
  * 模型 数据dao层
- * 
+ *
  * @author chenzz
- * @date 2019-03-14
+ * @date 2019-03-28
  */
 public interface IotModelsDao extends BaseMapper<IotModelsEntity> {
 }

@@ -24,7 +24,7 @@ import java.util.List;
  * 参数类型 信息操作处理
  *
  * @author chenzz
- * @date 2019-03-22
+ * @date 2019-03-28
  */
 @Controller
 @RequestMapping("iot/iotParameterType")
@@ -86,7 +86,6 @@ public class IotParameterTypeController extends BaseController {
         return R.ok().dataRows(listPage.getTotal(), listPage.getPages(), listPage.getRecords());
     }
 
-
     /**
      * 信息
      */
@@ -108,8 +107,7 @@ public class IotParameterTypeController extends BaseController {
     public R addSave(IotParameterTypeEntity iotParameterType) {
         ValidatorUtils.validateEntity(iotParameterType, AddGroup.class);
         iotParameterType.setCreateTime(new Date());
-        iotParameterTypeService.save(iotParameterType);
-        return R.ok();
+        return iotParameterTypeService.save(iotParameterType) ? R.ok() : R.error();
     }
 
     /**
@@ -121,8 +119,7 @@ public class IotParameterTypeController extends BaseController {
     @ResponseBody
     public R editSave(IotParameterTypeEntity iotParameterType) {
         ValidatorUtils.validateEntity(iotParameterType, UpdateGroup.class);
-        iotParameterTypeService.updateById(iotParameterType);
-        return R.ok();
+        return iotParameterTypeService.updateById(iotParameterType) ? R.ok() : R.error();
     }
 
     /**

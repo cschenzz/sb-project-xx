@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
  * 参数类型 服务层实现
  *
  * @author chenzz
- * @date 2019-03-22
+ * @date 2019-03-28
  */
 @Service("iotParameterTypeService")
 public class IotParameterTypeServiceImpl extends ServiceImpl<IotParameterTypeDao, IotParameterTypeEntity> implements IIotParameterTypeService {
@@ -38,7 +38,7 @@ public class IotParameterTypeServiceImpl extends ServiceImpl<IotParameterTypeDao
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotParameterTypeEntity> wrapper = new LambdaQueryWrapper<IotParameterTypeEntity>()
-                    .like(IotParameterTypeEntity::getTypeName, keyWord)
+                    //.like(IotParameterTypeEntity::getTitle, keyWord)
                     //.or().like(IotParameterTypeEntity::getSummary, keyWord)
                     .orderByDesc(IotParameterTypeEntity::getId);
 

@@ -7,7 +7,7 @@ import com.sibo.project.iot.iotParameterType.entity.IotParameterTypeEntity;
  * 参数类型 数据dao层
  *
  * @author chenzz
- * @date 2019-03-22
+ * @date 2019-03-28
  */
 public interface IotParameterTypeDao extends BaseMapper<IotParameterTypeEntity> {
 }
