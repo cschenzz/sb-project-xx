@@ -29,11 +29,15 @@ public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLogEntity
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
 
+        //当系统模块和操作类型有一个有值,根据条件查询,条件不多的时候可以使用mp3.x提供的Wrapper实现
+        //如果条件比较多,建议在xml中直接使用sql实现,因为使用mp实现条件判断太多,反而让程序变复杂
+        //具体实现可以参考sb-admin-fast中实现,可以结合mp3.x的分页插件实现
         if (!StringUtils.isEmpty(operLog.getTitle())
                 || operLog.getBusinessType() != null) {
             //-----------------------
-            Wrapper<OperLogEntity> wrapper = null;
+            Wrapper<OperLogEntity> wrapper;
             if (operLog.getBusinessType() != null) {
+                //按操作类型和系统模块查询(系统模块为空时不影响)
                 wrapper = new LambdaQueryWrapper<OperLogEntity>()
                         .like(OperLogEntity::getTitle, operLog.getTitle())
                         .eq(OperLogEntity::getBusinessType, operLog.getBusinessType())
