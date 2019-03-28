@@ -20,10 +20,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-//----------------------------
-//-----------------------------
-//-----------------------
-
 /**
  * 参数 信息操作处理
  *
