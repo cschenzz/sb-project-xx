@@ -2,10 +2,10 @@ package com.sibo.project.system.dict.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sibo.common.support.Convert;
 import com.sibo.common.utils.StringUtils;
 import com.sibo.common.utils.security.ShiroUtils;
 import com.sibo.framework.web.page.PageDomain;
@@ -13,9 +13,10 @@ import com.sibo.framework.web.page.TableSupport;
 import com.sibo.project.system.dict.dao.DictDataMapper;
 import com.sibo.project.system.dict.entity.DictDataEntity;
 import com.sibo.project.system.dict.service.IDictDataService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,9 +26,6 @@ import java.util.List;
  */
 @Service
 public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEntity> implements IDictDataService {
-
-    @Autowired
-    private DictDataMapper dictDataMapper;
 
     @Override
     public IPage<?> listPage(DictDataEntity dictData) {
@@ -52,16 +50,6 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
         //----------------------------------------------
     }
 
-    /**
-     * 根据条件分页查询字典数据
-     *
-     * @param dictData 字典数据信息
-     * @return 字典数据集合信息
-     */
-    @Override
-    public List<DictDataEntity> selectDictDataList(DictDataEntity dictData) {
-        return dictDataMapper.selectDictDataList(dictData);
-    }
 
     /**
      * 根据字典类型查询字典数据
@@ -71,7 +59,9 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
      */
     @Override
     public List<DictDataEntity> selectDictDataByType(String dictType) {
-        return dictDataMapper.selectDictDataByType(dictType);
+        Wrapper<DictDataEntity> wrapper = new LambdaQueryWrapper<DictDataEntity>()
+                .eq(DictDataEntity::getDictType, dictType);
+        return this.list(wrapper);
     }
 
     /**
@@ -83,7 +73,11 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
      */
     @Override
     public String selectDictLabel(String dictType, String dictValue) {
-        return dictDataMapper.selectDictLabel(dictType, dictValue);
+        Wrapper<DictDataEntity> wrapper = new LambdaQueryWrapper<DictDataEntity>()
+                .eq(DictDataEntity::getDictType, dictType)
+                .eq(DictDataEntity::getDictValue, dictValue);
+        DictDataEntity entity = this.getOne(wrapper);
+        return entity != null ? entity.getDictLabel() : "";
     }
 
     /**
@@ -94,18 +88,9 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
      */
     @Override
     public DictDataEntity selectDictDataById(Long dictCode) {
-        return dictDataMapper.selectDictDataById(dictCode);
-    }
-
-    /**
-     * 通过字典ID删除字典数据信息
-     *
-     * @param dictCode 字典数据ID
-     * @return 结果
-     */
-    @Override
-    public int deleteDictDataById(Long dictCode) {
-        return dictDataMapper.deleteDictDataById(dictCode);
+        Wrapper<DictDataEntity> wrapper = new LambdaQueryWrapper<DictDataEntity>()
+                .eq(DictDataEntity::getDictCode, dictCode);
+        return this.getOne(wrapper);
     }
 
     /**
@@ -115,8 +100,9 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
      * @return 结果
      */
     @Override
-    public int deleteDictDataByIds(String ids) {
-        return dictDataMapper.deleteDictDataByIds(Convert.toStrArray(ids));
+    public boolean deleteDictDataByIds(String ids) {
+        List<String> dictIds = Arrays.asList(ids.split(","));
+        return this.removeByIds(dictIds);
     }
 
     /**
@@ -126,9 +112,10 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
      * @return 结果
      */
     @Override
-    public int insertDictData(DictDataEntity dictData) {
+    public boolean insertDictData(DictDataEntity dictData) {
         dictData.setCreateBy(ShiroUtils.getLoginName());
-        return dictDataMapper.insertDictData(dictData);
+        dictData.setCreateTime(new Date());
+        return this.save(dictData);
     }
 
     /**
@@ -138,9 +125,16 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictDataEnt
      * @return 结果
      */
     @Override
-    public int updateDictData(DictDataEntity dictData) {
+    public boolean updateDictData(DictDataEntity dictData) {
         dictData.setUpdateBy(ShiroUtils.getLoginName());
-        return dictDataMapper.updateDictData(dictData);
+        dictData.setUpdateTime(new Date());
+
+        //更新记录
+        Wrapper<DictDataEntity> wrapper = new QueryWrapper<DictDataEntity>().lambda()
+                //--------where-----------
+                .eq(DictDataEntity::getDictCode, dictData.getDictCode());
+
+        return this.update(dictData, wrapper);
     }
 
 }
