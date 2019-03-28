@@ -41,8 +41,8 @@ public class IotModelRuleServiceImpl extends ServiceImpl<IotModelRuleDao, IotMod
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotModelRuleEntity> wrapper = new LambdaQueryWrapper<IotModelRuleEntity>()
-                    //.like(IotModelRuleEntity::getTitle, keyWord)
-                    //.or().like(IotModelRuleEntity::getSummary, keyWord)
+                    .like(IotModelRuleEntity::getRuleName, keyWord)
+                    .or().like(IotModelRuleEntity::getRuleDescription, keyWord)
                     .orderByDesc(IotModelRuleEntity::getId);
 
             //---------------------------

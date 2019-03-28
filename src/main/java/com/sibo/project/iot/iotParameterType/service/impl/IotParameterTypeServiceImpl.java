@@ -38,8 +38,8 @@ public class IotParameterTypeServiceImpl extends ServiceImpl<IotParameterTypeDao
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotParameterTypeEntity> wrapper = new LambdaQueryWrapper<IotParameterTypeEntity>()
-                    //.like(IotParameterTypeEntity::getTitle, keyWord)
-                    //.or().like(IotParameterTypeEntity::getSummary, keyWord)
+                    .like(IotParameterTypeEntity::getTypeName, keyWord)
+                    // .or().like(IotParameterTypeEntity::getSummary, keyWord)
                     .orderByDesc(IotParameterTypeEntity::getId);
 
             //---------------------------

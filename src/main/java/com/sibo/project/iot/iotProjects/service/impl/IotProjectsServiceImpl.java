@@ -38,8 +38,9 @@ public class IotProjectsServiceImpl extends ServiceImpl<IotProjectsDao, IotProje
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotProjectsEntity> wrapper = new LambdaQueryWrapper<IotProjectsEntity>()
-                    //.like(IotProjectsEntity::getTitle, keyWord)
-                    //.or().like(IotProjectsEntity::getSummary, keyWord)
+                    .like(IotProjectsEntity::getProjectName, keyWord)
+                    .or().like(IotProjectsEntity::getProjectDescription, keyWord)
+                    .or().like(IotProjectsEntity::getProjectCharge, keyWord)
                     .orderByDesc(IotProjectsEntity::getId);
 
             //---------------------------

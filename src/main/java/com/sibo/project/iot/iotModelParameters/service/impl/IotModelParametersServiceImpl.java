@@ -38,8 +38,8 @@ public class IotModelParametersServiceImpl extends ServiceImpl<IotModelParameter
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotModelParametersEntity> wrapper = new LambdaQueryWrapper<IotModelParametersEntity>()
-                    //.like(IotModelParametersEntity::getTitle, keyWord)
-                    //.or().like(IotModelParametersEntity::getSummary, keyWord)
+                    .like(IotModelParametersEntity::getParameterName, keyWord)
+                    .or().like(IotModelParametersEntity::getParameterShowname, keyWord)
                     .orderByDesc(IotModelParametersEntity::getId);
 
             //---------------------------

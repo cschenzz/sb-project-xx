@@ -38,8 +38,8 @@ public class IotProtocolServiceImpl extends ServiceImpl<IotProtocolDao, IotProto
         if (!StringUtils.isEmpty(keyWord)) {
             //-----------------------
             Wrapper<IotProtocolEntity> wrapper = new LambdaQueryWrapper<IotProtocolEntity>()
-                    //.like(IotProtocolEntity::getTitle, keyWord)
-                    //.or().like(IotProtocolEntity::getSummary, keyWord)
+                    .like(IotProtocolEntity::getProtocol, keyWord)
+                    // .or().like(IotProtocolEntity::getSummary, keyWord)
                     .orderByDesc(IotProtocolEntity::getId);
 
             //---------------------------
