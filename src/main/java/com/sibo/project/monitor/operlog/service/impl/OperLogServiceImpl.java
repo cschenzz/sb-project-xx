@@ -22,21 +22,27 @@ import org.springframework.stereotype.Service;
 public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLogEntity> implements IOperLogService {
 
     @Override
-    public IPage<?> listPage(OperLogEntity user) {
+    public IPage<?> listPage(OperLogEntity operLog) {
         //-----------------------
         //http://localhost:5000/sys/user/listFuncs?limit=10&page=1&sidx=create_time&asc=desc&_=1534490135367
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
-        String keyWord = pageDomain.getSearchKeyWord();
 
-        if (!StringUtils.isEmpty(keyWord)) {
+        if (!StringUtils.isEmpty(operLog.getTitle())
+                || operLog.getBusinessType() != null) {
             //-----------------------
-            Wrapper<OperLogEntity> wrapper = new LambdaQueryWrapper<OperLogEntity>()
-                    .like(OperLogEntity::getOperName, keyWord)
-                    .or().like(OperLogEntity::getTitle, keyWord)
-                    .or().like(OperLogEntity::getOperatorType, keyWord)
-                    .orderByDesc(OperLogEntity::getOperId);
+            Wrapper<OperLogEntity> wrapper = null;
+            if (operLog.getBusinessType() != null) {
+                wrapper = new LambdaQueryWrapper<OperLogEntity>()
+                        .like(OperLogEntity::getTitle, operLog.getTitle())
+                        .eq(OperLogEntity::getBusinessType, operLog.getBusinessType())
+                        .orderByDesc(OperLogEntity::getOperId);
+            } else {
+                wrapper = new LambdaQueryWrapper<OperLogEntity>()
+                        .like(OperLogEntity::getTitle, operLog.getTitle())
+                        .orderByDesc(OperLogEntity::getOperId);
+            }
 
             //---------------------------
             IPage<OperLogEntity> pageList = this.page(new Page<>(pageNum, pageSize), wrapper);
