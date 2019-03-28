@@ -53,7 +53,7 @@ public class OnlineSessionFilter extends AccessControlFilter {
                 if (user != null) {
                     onlineSession.setUserId(user.getUserId());
                     onlineSession.setLoginName(user.getLoginName());
-                    onlineSession.setDeptName("无部门");
+                    onlineSession.setDeptName("无");
                     onlineSession.markAttributeChanged();
                 }
             }
