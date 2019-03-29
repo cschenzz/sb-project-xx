@@ -357,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `sys_user_online` (
 -- 正在导出表  sibo-test-xx.sys_user_online 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `sys_user_online` DISABLE KEYS */;
 INSERT INTO `sys_user_online` (`sessionId`, `login_name`, `dept_name`, `ipaddr`, `login_location`, `browser`, `os`, `status`, `start_timestamp`, `last_access_time`, `expire_time`) VALUES
-	('32ca011d-b1e7-4120-97e7-f6b5b51a4367', 'admin', '无部门', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10', 'on_line', '2019-03-28 16:04:44', '2019-03-28 16:13:23', 1800000);
+	('32ca011d-b1e7-4120-97e7-f6b5b51a4367', 'admin', '无', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10', 'on_line', '2019-03-28 16:04:44', '2019-03-28 16:13:23', 1800000);
 /*!40000 ALTER TABLE `sys_user_online` ENABLE KEYS */;
 
 -- 导出  表 sibo-test-xx.sys_user_role 结构
