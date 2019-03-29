@@ -29,8 +29,7 @@ CREATE TABLE IF NOT EXISTS `sys_config` (
 -- 正在导出表  sibo-test-xx.sys_config 的数据：~2 rows (大约)
 /*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
 INSERT INTO `sys_config` (`config_id`, `config_name`, `config_key`, `config_value`, `config_type`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES
-	(1, '主框架页-默认皮肤样式名称', 'sys.index.skinName', 'skin-blue', 'Y', 'admin', '2018-03-16 11:33:00', 'admin', '2019-03-28 15:44:19', '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow'),
-	(2, '用户管理-账号初始密码', 'sys.user.initPassword', '88888888', 'Y', 'admin', '2018-03-16 11:33:00', 'admin', '2019-03-28 15:44:03', '初始化密码 88888888');
+	(1, '用户管理-账号初始密码', 'sys.user.initPassword', '88888888', 'Y', 'admin', '2018-03-16 11:33:00', 'admin', '2019-03-28 15:44:03', '初始化密码 88888888');
 /*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
 
 -- 导出  表 sibo-test-xx.sys_dict_data 结构
@@ -74,11 +73,8 @@ INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value
 	(17, 2, '修改', '2', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '修改操作'),
 	(18, 3, '删除', '3', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '删除操作'),
 	(19, 4, '授权', '4', 'sys_oper_type', '', 'primary', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '授权操作'),
-	(20, 5, '导出', '5', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '导出操作'),
-	(21, 6, '导入', '6', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '导入操作'),
-	(22, 7, '强退', '7', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '强退操作'),
-	(23, 8, '生成代码', '8', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '生成操作'),
-	(24, 8, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '清空操作'),
+	(20, 5, '强退', '5', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '强退操作'),
+	(21, 6, '清空数据', '6', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '清空操作'),
 	(25, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '正常状态'),
 	(26, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '停用状态'),
 	(100, 3, '消息', '3', 'sys_notice_type', NULL, 'default', 'Y', '0', 'admin', '2019-03-28 11:55:15', 'admin', '2019-03-28 11:55:30', '消息.xxx');
