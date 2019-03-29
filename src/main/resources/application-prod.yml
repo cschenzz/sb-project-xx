@@ -65,16 +65,6 @@ spring:
                     config:
                         multi-statement-allow: true
 
-#aliyun
-aliyun.accessKey.id: LTAIFYqytsUOAI8T
-aliyun.accessKey.secret: L4d41D9u9zswDBhn23Od0lcWFFgq7H
-aliyun.sms.template.code: SMS_149375256
-aliyun.sms.template.login: SMS_149375256
-aliyun.sms.template.sos: SMS_152281154
-aliyun.sms.template.sos.xueya: SMS_153995473
-aliyun.sms.template.sos.time: SMS_153331950
-aliyun.sms.sign.name.code: 思博智创
-
 netty:
     port: 8001
     host: 127.0.0.1
