@@ -1,4 +1,4 @@
-package com.sibo.common.support;
+package com.sibo.common.utils.text;
 
 import com.sibo.common.utils.StringUtils;
 

@@ -1,7 +1,6 @@
 package com.sibo.common.utils;
 
-import com.sibo.common.support.StrFormatter;
-import org.apache.commons.lang3.text.StrBuilder;
+import com.sibo.common.utils.text.StrFormatter;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +14,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 空字符串
      */
-    private static final String NULLSTR = "" ;
+    private static final String NULLSTR = "";
 
     /**
      * 下划线
@@ -234,46 +233,40 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 驼峰首字符小写
-     */
-    public static String uncapitalize(String str) {
-        int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
-            return str;
-        }
-        return new StrBuilder(strLen).append(Character.toLowerCase(str.charAt(0))).append(str.substring(1)).toString();
-    }
-
-    /**
      * 下划线转驼峰命名
      */
-    public static String toUnderScoreCase(String s) {
-        if (s == null) {
+    public static String toUnderScoreCase(String str) {
+        if (str == null) {
             return null;
         }
         StringBuilder sb = new StringBuilder();
-        boolean upperCase = false;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-
-            boolean nextUpperCase = true;
-
-            if (i < (s.length() - 1)) {
-                nextUpperCase = Character.isUpperCase(s.charAt(i + 1));
-            }
-
-            if ((i > 0) && Character.isUpperCase(c)) {
-                if (!upperCase || !nextUpperCase) {
-                    sb.append(SEPARATOR);
-                }
-                upperCase = true;
+        // 前置字符是否大写
+        boolean preCharIsUpperCase = true;
+        // 当前字符是否大写
+        boolean curreCharIsUpperCase = true;
+        // 下一字符是否大写
+        boolean nexteCharIsUpperCase = true;
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (i > 0) {
+                preCharIsUpperCase = Character.isUpperCase(str.charAt(i - 1));
             } else {
-                upperCase = false;
+                preCharIsUpperCase = false;
             }
 
+            curreCharIsUpperCase = Character.isUpperCase(c);
+
+            if (i < (str.length() - 1)) {
+                nexteCharIsUpperCase = Character.isUpperCase(str.charAt(i + 1));
+            }
+
+            if (preCharIsUpperCase && curreCharIsUpperCase && !nexteCharIsUpperCase) {
+                sb.append(SEPARATOR);
+            } else if ((i != 0 && !preCharIsUpperCase) && curreCharIsUpperCase) {
+                sb.append(SEPARATOR);
+            }
             sb.append(Character.toLowerCase(c));
         }
-
         return sb.toString();
     }
 
@@ -306,7 +299,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         // 快速检查
         if (name == null || name.isEmpty()) {
             // 没必要转换
-            return "" ;
+            return "";
         } else if (!name.contains("_")) {
             // 不含下划线，仅将首字母大写
             return name.substring(0, 1).toUpperCase() + name.substring(1);

@@ -1,6 +1,6 @@
 package com.sibo.common.utils;
 
-import com.sibo.common.support.Convert;
+import com.sibo.common.utils.text.Convert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
