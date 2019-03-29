@@ -81,7 +81,7 @@
 					<!--================================-->
 					<div class="input-group" style="width: 100%">
 						<select name="userid" class="form-control m-b" th:with="xuser=${@xxuser.getUsers()}">
-							<option th:each="uu : ${xuser}" th:text="${uu.loginName}" th:value="${uu.userId}" th:field="*{userid}"></option>
+							<option th:each="uu : ${xuser}" th:text="${uu.login_name}" th:value="${uu.user_id}" th:field="*{userid}"></option>
 						</select>
 					</div>
 					<!--================================-->
