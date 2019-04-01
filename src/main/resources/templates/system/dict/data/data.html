@@ -51,7 +51,7 @@
         </div>
     </div>
 </div>
-<div th:include="include :: footer"></div>
+<th:block th:include="include::footer"/>
 <script th:src="@{/ajax/libs/select/select2.js}"></script>
 <script th:inline="javascript">
     var editFlag = [[${@permission.hasPermi('system:dict:edit')}]];
