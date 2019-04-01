@@ -77,9 +77,9 @@
 		<div th:include="include_moltran :: bottom"></div>
 	</div>
 
-	<div th:include="include_moltran :: footer"></div>
 </div>
 
+<th:block th:include="include_moltran :: footer"/>
 <!-- ============================================================== -->
 <script th:inline="javascript">
     var forceFlag = [[${@permission.hasPermi('monitor:online:forceLogout')}]];
