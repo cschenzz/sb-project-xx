@@ -1,7 +1,8 @@
-<head th:fragment="header">
+<!-- 通用CSS -->
+<head th:fragment=header(title)>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title th:text="${title}"></title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <link rel="shortcut icon" href="favicon.ico">
@@ -17,6 +18,7 @@
 </head>
 
 <!-- ============================================================== -->
+<!-- 通用JS -->
 <div th:fragment="footer">
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
