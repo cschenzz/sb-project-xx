@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<head th:include="include_moltran :: header('菜单管理')"></head>
-
-<!-- bootstrap-table 表格插件样式 -->
-<link th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
-<link th:href="@{/ajax/libs/bootstrap-treetable/bootstrap-treetable.css}" rel="stylesheet"/>
+<head>
+	<th:block th:include="include_moltran :: header('菜单管理')" />
+	<!-- bootstrap-table 表格插件样式 -->
+	<link th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css}" rel="stylesheet"/>
+	<link th:href="@{/ajax/libs/bootstrap-treetable/bootstrap-treetable.css}" rel="stylesheet"/>
+</head>
 
 <body class="fixed-left">
 <div id="wrapper">
