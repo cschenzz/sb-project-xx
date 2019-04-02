@@ -1,22 +1,24 @@
-<!DOCTYPE HTML>
-<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
-<th:block th:include="include :: header('新增模型')" />
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增模型')" />
+</head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-iotModels-add">
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">模型名称：</label>
 				<div class="col-sm-8">
 					<input id="modelName" name="modelName" class="form-control" type="text">
 				</div>
 			</div>
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">模型说明：</label>
 				<div class="col-sm-8">
 					<input id="modelDescription" name="modelDescription" class="form-control" type="text">
 				</div>
 			</div>
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">协议类型：</label>
 				<div class="col-sm-8">
 					<!--================================-->
@@ -28,7 +30,7 @@
 					<!--================================-->
 				</div>
 			</div>
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">用户id：</label>
 				<div class="col-sm-8">
 					<!--================================-->
@@ -41,7 +43,7 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">状态：</label>
 				<div class="col-sm-8">
 					<!--=====================-->
@@ -58,7 +60,7 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">网关地址：</label>
 				<div class="col-sm-8">
 					<input id="gateWay" name="gateWay" class="form-control" type="text">
@@ -67,7 +69,7 @@
 
 		</form>
 	</div>
-    <th:block th:include="include::footer"/>
+    <th:block th:include="include :: footer" />
     <script type="text/javascript">
 		var prefix = ctx + "iot/iotModels";
 		$("#form-iotModels-add").validate({
@@ -84,7 +86,7 @@
 				},
 			}
 		});
-		
+
 		function submitHandler() {
 	        if ($.validate.form()) {
 	            $.operate.save(prefix + "/add", $('#form-iotModels-add').serialize());

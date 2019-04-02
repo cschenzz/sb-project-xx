@@ -1,23 +1,25 @@
-<!DOCTYPE HTML>
-<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
-<th:block th:include="include :: header('修改模型')" />
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改模型')" />
+</head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-iotModels-edit" th:object="${iotModels}">
             <input id="id" name="id" th:field="*{id}"  type="hidden">
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">模型名称：</label>
 				<div class="col-sm-8">
 					<input id="modelName" name="modelName" th:field="*{modelName}" class="form-control" type="text">
 				</div>
 			</div>
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">模型说明：</label>
 				<div class="col-sm-8">
 					<input id="modelDescription" name="modelDescription" th:field="*{modelDescription}" class="form-control" type="text">
 				</div>
 			</div>
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">协议类型：</label>
 				<div class="col-sm-8">
 
@@ -31,7 +33,7 @@
 
 				</div>
 			</div>
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">用户id：</label>
 				<div class="col-sm-8">
 					<!--================================-->
@@ -44,7 +46,7 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">状态：</label>
 				<div class="col-sm-8">
 					<div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
@@ -54,7 +56,7 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">网关地址：</label>
 				<div class="col-sm-8">
 					<input id="gateWay" name="gateWay" th:field="*{gateWay}" class="form-control" type="text">
@@ -63,7 +65,7 @@
 
 		</form>
     </div>
-    <th:block th:include="include::footer"/>
+    <th:block th:include="include :: footer" />
     <script type="text/javascript">
 		var prefix = ctx + "iot/iotModels";
 		$("#form-iotModels-edit").validate({
@@ -80,7 +82,7 @@
                 },
 			}
 		});
-		
+
 		function submitHandler() {
 	        if ($.validate.form()) {
 	            $.operate.save(prefix + "/edit", $('#form-iotModels-edit').serialize());

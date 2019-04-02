@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<head th:include="include_moltran :: header"></head>
-
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include_moltran :: header('参数类型列表')" />
+</head>
 <body class="fixed-left">
 <div id="wrapper">
     <div th:include="include_moltran :: topbar"></div>
