@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <meta charset="utf-8">
-<head th:include="include :: header"></head>
-<link th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+
+<head>
+	<th:block th:include="include :: header('选择菜单')" />
+	<link th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+</head>
+
 <style>
 body{height:auto;font-family: "Microsoft YaHei";}
 button{font-family: "SimSun","Helvetica Neue",Helvetica,Arial;}
