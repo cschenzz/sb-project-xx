@@ -1,8 +1,8 @@
-<head th:fragment="header">
+<head th:fragment=header(title)>
     <meta charset="utf-8">
 
     <link rel="shortcut icon" href="/assets/images/favicon.ico" th:href="@{/assets/images/favicon.ico}">
-    <title>cnSibo管理平台</title>
+    <title th:text="'cnSibo管理平台-' + ${title}"></title>
     <link href="/assets/css/bootstrap.min.css" th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet"
           type="text/css">
     <link href="/assets/css/core.css" th:href="@{/assets/css/core.css}" rel="stylesheet" type="text/css">
