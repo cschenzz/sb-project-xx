@@ -4,12 +4,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 读取项目相关配置
+ * 读取项目相关配置,对应application-dev.yml中配置项
+ * 用法:使用Autowired声明bean再调用对应的实例方法
  *
  * @author chenzz
  */
 @Component
-@ConfigurationProperties(prefix = "ooooo")
+@ConfigurationProperties(prefix = "cnsibo")
 public class SbConfig {
     /**
      * 项目名称
