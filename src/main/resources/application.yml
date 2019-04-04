@@ -19,7 +19,7 @@ server:
 logging:
   level:
     com.sibo: debug
-    org.springframework: WARN
+    org.springframework: warn
     org.spring.springboot.dao: debug
 
 # ==============================================================================
