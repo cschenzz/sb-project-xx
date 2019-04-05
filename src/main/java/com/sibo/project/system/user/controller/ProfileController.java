@@ -47,6 +47,7 @@ public class ProfileController extends BaseController {
     @GetMapping()
     public String profile(ModelMap mmap) {
         UserEntity user = getUser();
+        user.setSex(dict.getLabel("sys_user_sex", user.getSex()));
         mmap.put("user", user);
         return prefix + "/profile";
     }
