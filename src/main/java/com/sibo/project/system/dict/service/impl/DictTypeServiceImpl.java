@@ -100,16 +100,13 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictTypeEnt
         List<String> dictIds = Arrays.asList(ids.split(","));
         for (String dictId : dictIds) {
             DictTypeEntity dictType = selectDictTypeById(Long.parseLong(dictId));
-
-            Wrapper<DictTypeEntity> wrapper = new LambdaQueryWrapper<DictTypeEntity>()
-                    .eq(DictTypeEntity::getDictType, dictType.getDictType());
-
-            if (this.count(wrapper) > 0) {
+            if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0) {
                 throw new Exception(String.format("%1$s已分配,不能删除", dictType.getDictName()));
             }
         }
 
         return dictTypeMapper.deleteBatchIds(dictIds);
+        //return this.removeByIds(dictIds);
     }
 
     /**
