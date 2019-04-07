@@ -2,8 +2,12 @@ package com.sibo.common.utils;
 
 import com.sibo.common.utils.text.StrFormatter;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 字符串工具类
@@ -317,4 +321,24 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return result.toString();
     }
+
+    private static final Pattern p = Pattern.compile("(\\[[^\\]]*\\])");
+
+    /**
+     * 提取中括号中的内容[]
+     * eg:xxx[chenzz]bb[cs.chenzz@qq.com]eee[1111111]
+     *
+     * @param msg
+     * @return
+     */
+    public static List<String> extractStrByRegular(String msg) {
+        List<String> list = new ArrayList<>();
+
+        Matcher m = p.matcher(msg);
+        while (m.find()) {
+            list.add(m.group().substring(1, m.group().length() - 1));
+        }
+        return list;
+    }
+
 }
