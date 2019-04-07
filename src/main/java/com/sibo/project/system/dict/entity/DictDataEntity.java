@@ -1,5 +1,6 @@
 package com.sibo.project.system.dict.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sibo.framework.web.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,6 +18,7 @@ public class DictDataEntity extends BaseEntity {
     /**
      * 字典编码
      */
+    @TableId
     private Long dictCode;
 
     /**
