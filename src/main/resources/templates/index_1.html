@@ -6,8 +6,8 @@
 </head>
 <body class="fixed-left">
 <div id="wrapper">
-    <div th:include="include_moltran :: topbar"></div>
-    <div th:include="include_moltran :: leftsidebar"></div>
+    <th:block th:include="include_moltran :: topbar"/>
+    <th:block th:include="include_moltran :: leftsidebar"/>
     <div class="content-page">
         <div class="content">
             <!-- ============================================================== -->
@@ -1615,10 +1615,10 @@
         <!-- ============================================================== -->
 
     </div>
-    <div th:include="include_moltran :: bottom"></div>
+    <th:block th:include="include_moltran :: bottom"/>
 </div>
 
-<div th:include="include_moltran :: footer"></div>
+<th:block th:include="include_moltran :: footer"/>
 </div>
 
 </body>
