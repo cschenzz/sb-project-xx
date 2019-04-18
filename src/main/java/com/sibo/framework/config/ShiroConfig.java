@@ -22,6 +22,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,43 +44,66 @@ import java.util.Map;
 public class ShiroConfig {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 
-    // Session超时时间，单位为毫秒（默认30分钟）
+    @Autowired
+    private SbConfig xxConfig;
+
+    /**
+     * Session超时时间，单位为毫秒（默认30分钟）
+     */
     @Value("${shiro.session.expireTime}")
     private int expireTime;
 
-    // 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
+    /**
+     * 相隔多久检查一次session的有效性，单位毫秒，默认就是10分钟
+     */
     @Value("${shiro.session.validationInterval}")
     private int validationInterval;
 
-    // 验证码开关
+    /**
+     * 验证码开关
+     */
     @Value("${shiro.user.captchaEnabled}")
     private boolean captchaEnabled;
 
-    // 验证码类型
+    /**
+     * 验证码类型
+     */
     @Value("${shiro.user.captchaType}")
     private String captchaType;
 
-    // 设置Cookie的域名
+    /**
+     * 设置Cookie的域名
+     */
     @Value("${shiro.cookie.domain}")
     private String domain;
 
-    // 设置cookie的有效访问路径
+    /**
+     * 设置cookie的有效访问路径
+     */
     @Value("${shiro.cookie.path}")
     private String path;
 
-    // 设置HttpOnly属性
+    /**
+     * 设置HttpOnly属性
+     */
     @Value("${shiro.cookie.httpOnly}")
     private boolean httpOnly;
 
-    // 设置Cookie的过期时间，秒为单位
+    /**
+     * 设置Cookie的过期时间，秒为单位
+     */
     @Value("${shiro.cookie.maxAge}")
     private int maxAge;
 
-    // 登录地址
+    /**
+     * 登录地址
+     */
     @Value("${shiro.user.loginUrl}")
     private String loginUrl;
 
-    // 权限认证失败地址
+    /**
+     * 权限认证失败地址
+     */
     @Value("${shiro.user.unauthorizedUrl}")
     private String unauthorizedUrl;
 
@@ -160,7 +184,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 会话管理器
+     * 验证时的会话管理器
      */
     @Bean
     public OnlineWebSessionManager sessionValidationManager() {
@@ -175,6 +199,8 @@ public class ShiroConfig {
         manager.setSessionIdUrlRewritingEnabled(false);
         // 是否定时检查session
         manager.setSessionValidationSchedulerEnabled(true);
+        // 登陆cookie
+        manager.setSessionIdCookie(sessionIdCookie());
         // 自定义SessionDao
         manager.setSessionDAO(sessionDAO());
         // 自定义sessionFactory
@@ -200,6 +226,8 @@ public class ShiroConfig {
         manager.setSessionValidationScheduler(sessionValidationScheduler());
         // 是否定时检查session
         manager.setSessionValidationSchedulerEnabled(true);
+        // 登陆cookie
+        manager.setSessionIdCookie(sessionIdCookie());
         // 自定义SessionDao
         manager.setSessionDAO(sessionDAO());
         // 自定义sessionFactory
@@ -316,6 +344,22 @@ public class ShiroConfig {
         captchaValidateFilter.setCaptchaEnabled(captchaEnabled);
         captchaValidateFilter.setCaptchaType(captchaType);
         return captchaValidateFilter;
+    }
+
+    /**
+     * 配置保存sessionId的cookie
+     * 注意：这里的cookie 不是下面的记住我 cookie 记住我需要一个cookie session管理 也需要自己的cookie
+     *
+     * @return
+     */
+    @Bean("sessionIdCookie")
+    public SimpleCookie sessionIdCookie() {
+        //这个参数是cookie的名称
+        SimpleCookie cookie = new SimpleCookie(xxConfig.getName() + "-oovoo");
+        cookie.setDomain(domain);
+        cookie.setPath(path);
+        cookie.setHttpOnly(httpOnly);
+        return cookie;
     }
 
     /**
