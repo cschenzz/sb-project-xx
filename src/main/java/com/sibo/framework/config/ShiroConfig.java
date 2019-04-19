@@ -366,7 +366,7 @@ public class ShiroConfig {
      * cookie 属性设置
      */
     public SimpleCookie rememberMeCookie() {
-        SimpleCookie cookie = new SimpleCookie("rememberMe");
+        SimpleCookie cookie = new SimpleCookie(xxConfig.getName() + "-rememberMe");
         cookie.setDomain(domain);
         cookie.setPath(path);
         cookie.setHttpOnly(httpOnly);
