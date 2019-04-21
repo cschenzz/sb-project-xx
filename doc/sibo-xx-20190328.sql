@@ -330,8 +330,8 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
 -- 正在导出表  sibo-test-xx.sys_user 的数据：~2 rows (大约)
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `login_name`, `user_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `salt`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES
-	(1, 103, 'admin', 'SIBO', '00', '116211148@qq.com', '13888888888', '1', '', '962ecc2867cf3b7054ed5a9372738509', 'e1f9c6', '0', '0', '127.0.0.1', '2019-03-28 16:04:49', 'admin', '2018-09-10 11:33:00', 'sb', '2018-03-16 11:33:00', '管理员'),
-	(2, 105, 'chenzz', 'SIBO', '00', 'cs.chenzz@qq.com', '15170707553', '0', '', '7bb8aa7e991a5f1e8d0ae2777f63a026', '19e7e2', '0', '0', '127.0.0.1', '2019-03-27 18:02:08', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '测试员,czz');
+	(1, 103, 'admin', 'cnSibo', '00', '116211148@qq.com', '13888888888', '0', '', '962ecc2867cf3b7054ed5a9372738509', 'e1f9c6', '0', '0', '127.0.0.1', '2019-03-28 16:04:49', 'admin', '2018-09-10 11:33:00', 'sb', '2018-03-16 11:33:00', '管理员'),
+	(2, 105, 'chenzz', 'sibo.czz', '00', 'cs.chenzz@qq.com', '15170707553', '0', '', '7bb8aa7e991a5f1e8d0ae2777f63a026', '19e7e2', '0', '0', '127.0.0.1', '2019-03-27 18:02:08', 'admin', '2018-03-16 11:33:00', 'sb', '2018-03-16 11:33:00', '测试员,czz');
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 
 -- 导出  表 sibo-test-xx.sys_user_online 结构
