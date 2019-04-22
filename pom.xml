@@ -26,11 +26,11 @@
 		<thymeleaf.extras.shiro.version>2.0.0</thymeleaf.extras.shiro.version>
 		<fastjson.version>1.2.57</fastjson.version>
 		<druid.version>1.1.16</druid.version>
-		<commons.io.version>2.6</commons.io.version>
+		<commons.io.version>2.5</commons.io.version>
 		<commons.fileupload.version>1.4</commons.fileupload.version>
 		<bitwalker.version>1.21</bitwalker.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
-		<oshi.version>3.13.0</oshi.version>
+		<oshi.version>3.9.1</oshi.version>
 	</properties>
 
 	<dependencies>
