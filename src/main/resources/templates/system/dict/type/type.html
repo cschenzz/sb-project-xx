@@ -124,7 +124,7 @@
                     title: '字典类型',
                     sortable: true,
                     formatter: function(value, row, index) {
-                        return '<a href="#" onclick="detail(\'' + row.dictId + '\')">' + value + '</a>';
+                        return '<a href="javascript:void(0)" onclick="detail(\'' + row.dictId + '\')">' + value + '</a>';
                     }
                 },
                 {
@@ -149,9 +149,9 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.dictId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-info btn-sm ' + listFlag + '" href="#" onclick="detail(\'' + row.dictId + '\')"><i class="fa fa-list-ul"></i>列表</a> ');
-                        actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.dictId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.dictId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-info btn-sm ' + listFlag + '" href="javascript:void(0)" onclick="detail(\'' + row.dictId + '\')"><i class="fa fa-list-ul"></i>列表</a> ');
+                        actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.dictId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
                 }]
