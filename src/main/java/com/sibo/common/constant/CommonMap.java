@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @author chenzz
  */
-public class CommonMap {
+public final class CommonMap {
     /**
      * 状态编码转换
      */
