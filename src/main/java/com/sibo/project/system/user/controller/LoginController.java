@@ -37,6 +37,13 @@ public class LoginController extends BaseController {
     @PostMapping("/login")
     @ResponseBody
     public R ajaxLogin(String username, String password, Boolean rememberMe) {
+        if (StringUtils.isEmpty(username)) {
+            return R.error("用户名/邮箱/手机号:不能为空");
+        }
+        if (StringUtils.isEmpty(password)) {
+            return R.error("密码不能为空");
+        }
+        //----------------------------
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {
