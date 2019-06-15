@@ -164,40 +164,20 @@
 <script th:src="@{/sb-ooo/js/ry-ui.js?v=3.0.0}"></script>
 <script th:inline="javascript">
     //----------------------------
-    var loginType = "帐号登录";
     $(function () {
         validateForm_login();
-
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            // 获取已激活的标签页的名称
-            var activeTab = $(e.target).text().trim();
-            loginType = activeTab;
-        });
     });
     //----------------------------
-    document.onkeydown = function (event) {
-        var e = event || window.event || arguments.callee.caller.arguments[0];
-        if (e && e.keyCode == 13) {
-            userlogin();
-        }
-    };
 
     // 初始化表单校验
     function validateForm_login() {
         var form = $('#userloginForm');
         form.bootstrapValidator({
             fields: {
-                username: {
+                xxxxxx: {
                     validators: {
                         notEmpty: {
                             message: '帐号不能为空'
-                        }
-                    }
-                },
-                password: {
-                    validators: {
-                        notEmpty: {
-                            message: '登录密码不能为空'
                         }
                     }
                 }
@@ -205,11 +185,9 @@
         });
     }
 
-    // 登录
+    // 用户名/密码登录
     function userlogin() {
-        //$("#userlogin_btn").button('loading');
-        //$("#login-error").hide();
-        $.modal.loading($("#userlogin_btn").data("loading"));
+        $.modal.loading("正在登录...");
         var username = $.common.trim($("input[name='username']").val());
         var password = $.common.trim($("input[name='password']").val());
         var rememberMe = false;
@@ -219,9 +197,7 @@
             data: {
                 "username": username,
                 "password": password,
-                "validateCode": "",
                 "rememberMe": rememberMe,
-                "isValidCode": false
             },
             success: function (r) {
                 if (r.code == 200) {
