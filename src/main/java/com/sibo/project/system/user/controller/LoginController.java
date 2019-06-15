@@ -31,7 +31,7 @@ public class LoginController extends BaseController {
             return ServletUtils.renderString(response, "{\"code\":\"1\",\"msg\":\"未登录或登录超时。请重新登录\"}");
         }
 
-        return "login";
+        return "login_moltran";
     }
 
     @PostMapping("/login")
