@@ -24,9 +24,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/sibo-gxy?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-                username: sibo-gxy
-                password: sibo-gxy
+                url: jdbc:mysql://localhost:3306/sb-test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: sibo-test
+                password: sibo-test
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
