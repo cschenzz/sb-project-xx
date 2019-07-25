@@ -1,0 +1,91 @@
+package com.example.framework.web.service;
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.project.iot.iotModels.entity.IotModelsEntity;
+import com.example.project.iot.iotModels.service.IIotModelsService;
+import com.example.project.iot.iotParameterType.entity.IotParameterTypeEntity;
+import com.example.project.iot.iotParameterType.service.IIotParameterTypeService;
+import com.example.project.iot.iotProjects.entity.IotProjectsEntity;
+import com.example.project.iot.iotProjects.service.IIotProjectsService;
+import com.example.project.iot.iotProtocol.entity.IotProtocolEntity;
+import com.example.project.iot.iotProtocol.service.IIotProtocolService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author chenzz
+ */
+@Service("iotss")
+public class IotService {
+
+    @Autowired
+    private IIotProjectsService projectsService;
+
+
+    /**
+     * 返回所有项目
+     *
+     * @return
+     */
+    public List<Map<String, Object>> getProjects() {
+        Wrapper<IotProjectsEntity> wrapper = new LambdaQueryWrapper<IotProjectsEntity>()
+                .select(IotProjectsEntity::getId, IotProjectsEntity::getProjectName, IotProjectsEntity::getToken)
+                .orderByDesc(IotProjectsEntity::getId);
+
+        return projectsService.listMaps(wrapper);
+    }
+
+    @Autowired
+    private IIotProtocolService protocolService;
+
+
+    /**
+     * 返回所有协议
+     *
+     * @return
+     */
+    public List<Map<String, Object>> getProtocols() {
+        Wrapper<IotProtocolEntity> wrapper = new LambdaQueryWrapper<IotProtocolEntity>()
+                .select(IotProtocolEntity::getId, IotProtocolEntity::getProtocol)
+                .orderByDesc(IotProtocolEntity::getId);
+
+        return protocolService.listMaps(wrapper);
+    }
+
+    @Autowired
+    private IIotModelsService modelsService;
+
+    /**
+     * 返回所有模型
+     *
+     * @return
+     */
+    public List<Map<String, Object>> getModels() {
+        Wrapper<IotModelsEntity> wrapper = new LambdaQueryWrapper<IotModelsEntity>()
+                .select(IotModelsEntity::getId, IotModelsEntity::getModelName, IotModelsEntity::getModelId, IotModelsEntity::getToken)
+                .orderByDesc(IotModelsEntity::getId);
+
+        //注意,listMaps返回的是数据库对应的字段(id,model_name,model_id,token)
+        return modelsService.listMaps(wrapper);
+    }
+
+    @Autowired
+    private IIotParameterTypeService typeService;
+
+    /**
+     * 返回参数类型
+     *
+     * @return
+     */
+    public List<Map<String, Object>> getParameterTypes() {
+        Wrapper<IotParameterTypeEntity> wrapper = new LambdaQueryWrapper<IotParameterTypeEntity>()
+                .select(IotParameterTypeEntity::getId, IotParameterTypeEntity::getTypeName)
+                .orderByDesc(IotParameterTypeEntity::getId);
+
+        return typeService.listMaps(wrapper);
+    }
+}

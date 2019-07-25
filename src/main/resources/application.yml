@@ -18,7 +18,7 @@ server:
 # 日志配置
 logging:
   level:
-    com.sibo: debug
+    com.example: debug
     org.springframework: warn
     org.spring.springboot.dao: debug
 
@@ -60,7 +60,7 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
   # 实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.sibo.project.**.entity
+  typeAliasesPackage: com.example.project.**.entity
   global-config:
     # 数据库相关配置
     db-config:

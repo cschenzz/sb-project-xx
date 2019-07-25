@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sibo.project.monitor.operlog.dao.OperLogMapper">
+<mapper namespace="com.example.project.monitor.operlog.dao.OperLogMapper">
 
 	<resultMap type="OperLogEntity" id="OperLogResult">
 		<id     property="operId"         column="oper_id"       />
