@@ -48,7 +48,7 @@
 **4、视图层**
 
 - Bootstrap 3.3
-- moltran
+- Moltran
 - Thymeleaf 3.0
 
 ### 演示图
