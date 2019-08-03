@@ -55,34 +55,34 @@
 
 <table>
     <tr>
-        <td><img src="screenshot/p1.png"/></td>
+        <td><img src="screenshot-small/p1.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p2.png"/></td>
+        <td><img src="screenshot-small/p2.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p3.png"/></td>
+        <td><img src="screenshot-small/p3.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p4.png"/></td>
+        <td><img src="screenshot-small/p4.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p5.png"/></td>
+        <td><img src="screenshot-small/p5.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p6.png"/></td>
+        <td><img src="screenshot-small/p6.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p7.png"/></td>
+        <td><img src="screenshot-small/p7.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p8.png"/></td>
+        <td><img src="screenshot-small/p8.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p9.png"/></td>
+        <td><img src="screenshot-small/p9.png"/></td>
     </tr>
     <tr>
-        <td><img src="screenshot/p10.png"/></td>
+        <td><img src="screenshot-small/p10.png"/></td>
     </tr>
     
 </table>
