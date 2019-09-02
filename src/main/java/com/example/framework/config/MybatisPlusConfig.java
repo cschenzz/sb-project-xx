@@ -2,11 +2,9 @@ package com.example.framework.config;
 
 import com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 /**
  * mybatis-plus配置
@@ -47,13 +45,4 @@ public class MybatisPlusConfig {
         return new H2KeyGenerator();
     }
 
-
-    /**
-     * 性能分析拦截器，不建议生产使用
-     */
-    @Bean
-    @Profile({"dev", "test"})// 设置 dev test 环境开启
-    public PerformanceInterceptor performanceInterceptor() {
-        return new PerformanceInterceptor();
-    }
 }
