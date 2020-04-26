@@ -2,8 +2,8 @@ package com.example.common.utils.file;
 
 import com.example.common.exception.file.FileNameLengthLimitExceededException;
 import com.example.framework.config.SbConfig;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.tomcat.util.http.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -34,7 +34,7 @@ public class FileUploadUtils {
     /**
      * 默认文件类型jpg
      */
-    public static final String IMAGE_JPG_EXTENSION = ".jpg" ;
+    public static final String IMAGE_JPG_EXTENSION = ".jpg";
 
     private static int counter = 0;
 
@@ -80,9 +80,9 @@ public class FileUploadUtils {
     /**
      * 文件上传
      *
-     * @param baseDir                   相对应用的基目录
-     * @param file                      上传的文件
-     * @param extension                 上传文件类型
+     * @param baseDir   相对应用的基目录
+     * @param file      上传的文件
+     * @param extension 上传文件类型
      * @return 返回上传成功的文件名
      * @throws FileSizeLimitExceededException       如果超出最大大小
      * @throws FileNameLengthLimitExceededException 文件名太长
