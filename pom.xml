@@ -26,7 +26,7 @@
 		<thymeleaf.extras.shiro.version>2.0.0</thymeleaf.extras.shiro.version>
 		<fastjson.version>1.2.61</fastjson.version>
 		<druid.version>1.1.21</druid.version>
-		<commons.io.version>2.5</commons.io.version>
+		<commons.io.version>2.7</commons.io.version>
 		<commons.fileupload.version>1.4</commons.fileupload.version>
 		<bitwalker.version>1.21</bitwalker.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
